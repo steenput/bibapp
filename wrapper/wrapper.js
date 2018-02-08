@@ -17,7 +17,7 @@ let get_library_name = function(c) {
     let code = c.toUpperCase();
     if (code === hepia_code) return 'hepia';
     if (code === lullier_code) return 'lullier';
-}
+};
 
 let get_by_code = function(code, year, month) {
     return axios.get(base_url_nebis + 'documents', {
@@ -30,9 +30,9 @@ let get_by_code = function(code, year, month) {
     });
 };
 
-let compute_documents = function(documents, results, code) {
-    if (results.data.result.hits.totalhits != 0) {
-        results.data.result.document.forEach(d => {
+let compute_documents = function(documents, result, code) {
+    if (result.hits.totalhits != 0) {
+        result.document.forEach(d => {
             let availability = [];
             d.availability.itemList.forEach(i => {
                 if (i['z30-sub-library-code'] === hepia_code || i['z30-sub-library-code'] === lullier_code) {
@@ -69,13 +69,13 @@ app.get('/news/:year/:month', function(req, res) {
     const month = req.params.month;
 
     axios.all([get_by_code(hepia_code, year, month), get_by_code(lullier_code, year, month)])
-    .then(axios.spread(function(hepia, lullier) {
+    .then(axios.spread((hepia, lullier) => {
         log.debug(hepia.data);
         log.debug(lullier.data);
 
         let documents = [];
-        documents = compute_documents(documents, hepia, hepia_code);
-        documents = compute_documents(documents, lullier, lullier_code);
+        documents = compute_documents(documents, hepia.data.result, hepia_code);
+        documents = compute_documents(documents, lullier.data.result, lullier_code);
 
         res.status(200).end(JSON.stringify({
             date: new Date(),
@@ -87,6 +87,17 @@ app.get('/news/:year/:month', function(req, res) {
         log.error('error', error);
         res.status(404).end(JSON.stringify({error: true}));
     });
+});
+
+app.get('/search/:by/:keywords/:sortfield', function(req, res) {
+    log.debug('request url', req.url);
+    log.debug('request params', req.params);
+    res.type('json');
+
+    // .catch(error => {
+    //     log.error('error', error);
+    //     res.status(404).end(JSON.stringify({error: true}));
+    // });
 });
 
 app.all('*', function(req, res) {
