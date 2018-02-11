@@ -63,7 +63,6 @@ let compute_documents = function(documents, result, code) {
 app.get('/news/:year/:month', function(req, res) {
     log.debug('request url', req.url);
     log.debug('request params', req.params);
-    res.type('json');
 
     const year = req.params.year;
     const month = req.params.month;
@@ -77,33 +76,35 @@ app.get('/news/:year/:month', function(req, res) {
         documents = compute_documents(documents, hepia.data.result, hepia_code);
         documents = compute_documents(documents, lullier.data.result, lullier_code);
 
-        res.status(200).end(JSON.stringify({
+        res.status(200).json({
+            error: false,
             date: new Date(),
             size: documents.length,
             documents: documents
-        }));
+        });
     }))
     .catch(error => {
-        log.error('error', error);
-        res.status(404).end(JSON.stringify({error: true}));
+        log.error(error);
+        res.status(404).json({
+            error: true,
+            date: new Date(),
+            code: error.code
+        });
     });
 });
 
 app.get('/search/:by/:keywords/:sortfield', function(req, res) {
     log.debug('request url', req.url);
     log.debug('request params', req.params);
-    res.type('json');
 
-    // .catch(error => {
-    //     log.error('error', error);
-    //     res.status(404).end(JSON.stringify({error: true}));
-    // });
 });
 
 app.all('*', function(req, res) {
     log.error('Requested:', req.url, req.params);
-    res.type('html');
-	res.status(404).send('404 Page not found.');
+	res.status(404).json({
+        error: true,
+        code: '404 Page not found.'
+    });
 });
 
 app.listen(8081);
