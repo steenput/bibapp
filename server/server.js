@@ -39,13 +39,18 @@ const news = mongoose.model('news', {
 
 // Routes
 app.get('/news/:year/:month', function(req, res) {
-    log.debug('get news');
     const year = req.params.year;
     const month = req.params.month;
 
     axios.get(base_url_wrapper + '/news/' + year + '/' + month)
     .then(news => {
         news = news.data;
+
+        // TODO: split ISBN or ISSN and search for abstract in MongoDB and add it to document
+        // news.documents.forEach(document => {
+            
+        // });
+
         news.date = new Date();
         res.status(200).json(news);
     })
@@ -60,7 +65,31 @@ app.get('/news/:year/:month', function(req, res) {
 });
 
 app.post('/news', function(req, res) {
-
+    news.create({
+        id: req.body.id,
+        abstract: req.body.abstract
+    })
+    .then((n) => {
+        news.find({ id: n.id }, function(error, nn) {
+            if (error) {
+                log.error(error);
+                res.status(500).json({
+                    error: true,
+                    date: new Date(),
+                    code: error
+                });
+            }
+            res.status(200).json(nn);
+        });
+    })
+    .catch(error => {
+        log.error(error);
+        res.status(500).json({
+            error: true,
+            date: new Date(),
+            code: error
+        });
+    })
 });
 
 app.all('*', function(req, res) {

@@ -6,12 +6,15 @@ const log = new Log('debug');
 const cors = require('cors');
 const express = require('express');
 const app = express();
+const morgan = require('morgan');
 
+app.use(morgan('dev'));
 app.use(cors());
 
-const base_url_nebis = 'http://www.library.ethz.ch/rib/v1/primo/';
+const base_url_nebis = 'http://www.library.ethz.ch/rib/v1/primo/documents';
 const hepia_code = 'E41';
 const lullier_code = 'E67';
+const bulksize = '500'; // maximum authorized by API
 
 let get_library_name = function(c) {
     let code = c.toUpperCase();
@@ -20,12 +23,12 @@ let get_library_name = function(c) {
 };
 
 let get_by_code = function(code, year, month) {
-    return axios.get(base_url_nebis + 'documents', {
+    return axios.get(base_url_nebis, {
         params: {
             q: code + year + month,
             aleph_items: true,
             lang: 'fr',
-            bulksize: '500',   // maximum authorized by API
+            bulksize: bulksize,
         }
     });
 };
@@ -61,9 +64,6 @@ let compute_documents = function(documents, result, code) {
 };
 
 app.get('/news/:year/:month', function(req, res) {
-    log.debug('request url', req.url);
-    log.debug('request params', req.params);
-
     const year = req.params.year;
     const month = req.params.month;
 
@@ -93,10 +93,44 @@ app.get('/news/:year/:month', function(req, res) {
     });
 });
 
-app.get('/search/:by/:keywords/:sortfield', function(req, res) {
-    log.debug('request url', req.url);
-    log.debug('request params', req.params);
+app.get('/search/:by/:keywords', function(req, res) {
+    const by = req.params.by;
+    const keywords = req.params.keywords;
 
+    // TODO: some checks on :by and :keywords
+    // restrict by : title, creator, isbn, issn, cdate
+
+    axios.get(base_url_nebis, {
+        params: {
+            q: keywords,
+            searchfield: by,
+            aleph_items: true,
+            lang: 'fr',
+            bulksize: bulksize,
+        }
+    })
+    // TODO: if there is more than bulksize results, do a pagination
+    .then(search => {
+        log.debug(search.data);
+
+        let documents = [];
+        documents = compute_documents(documents, search.data.result, hepia_code);
+
+        res.status(200).json({
+            error: false,
+            date: new Date(),
+            size: documents.length,
+            documents: documents
+        });
+    })
+    .catch(error => {
+        log.error(error);
+        res.status(404).json({
+            error: true,
+            date: new Date(),
+            code: error.code
+        });
+    });
 });
 
 app.all('*', function(req, res) {
