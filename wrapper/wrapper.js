@@ -137,6 +137,7 @@ app.all('*', function(req, res) {
     log.error('Requested:', req.url, req.params);
 	res.status(404).json({
         error: true,
+        date: new Date(),
         code: '404 Page not found.'
     });
 });

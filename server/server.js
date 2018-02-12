@@ -32,64 +32,73 @@ app.use(function(req, res, next) {
 });
 
 // Models
-const news = mongoose.model('news', {
+const aNews = mongoose.model('news', {
     id: String,
     abstract: String
 });
+
+let send_error = function(error, res, status, code) {
+    log.error(error);
+    res.status(status).json({
+        error: true,
+        date: new Date(),
+        code: code ? error.code : error
+    });
+};
+
+let search_news = function(id, mongo_news, document) {
+    let isxn = id.split(' ')[0];
+    let found = mongo_news.find(n => { return n.id === isxn});
+    if (found) { document.abstract = found.abstract; }
+};
 
 // Routes
 app.get('/news/:year/:month', function(req, res) {
     const year = req.params.year;
     const month = req.params.month;
+    let mongo_news = [];
 
-    axios.get(base_url_wrapper + '/news/' + year + '/' + month)
+    aNews.find().exec()
+    .then(found => {
+        found.forEach(f => {
+            mongo_news.push(f);
+        });
+        return axios.get(base_url_wrapper + '/news/' + year + '/' + month);
+    })
     .then(news => {
         news = news.data;
 
-        // TODO: split ISBN or ISSN and search for abstract in MongoDB and add it to document
-        // news.documents.forEach(document => {
-            
-        // });
+        news.documents.forEach(document => {
+            let id = document.identifier;
+            if (id !== null) {
+                if (typeof id.ISBN !== 'undefined') search_news(id.ISBN, mongo_news, document);
+                else {
+                    if (typeof id.ISSN !== 'undefined') search_news(id.ISSN, mongo_news, document);
+                }
+            }
+            else {
+                // TODO: set an id 
+            }
+        });
 
         news.date = new Date();
         res.status(200).json(news);
     })
-    .catch(error => {
-        log.error(error);
-        res.status(404).json({
-            error: true,
-            date: new Date(),
-            code: error.code
-        });
-    });
+    .catch(error => { send_error(error, res, 404, true); });
 });
 
 app.post('/news', function(req, res) {
-    news.create({
+    aNews.create({
         id: req.body.id,
         abstract: req.body.abstract
     })
     .then((n) => {
-        news.find({ id: n.id }, function(error, nn) {
-            if (error) {
-                log.error(error);
-                res.status(500).json({
-                    error: true,
-                    date: new Date(),
-                    code: error
-                });
-            }
-            res.status(200).json(nn);
+        aNews.find({ id: n.id }, function(error, news) {
+            if (error) send_error(error, res, 500, false);
+            res.status(200).json(news);
         });
     })
-    .catch(error => {
-        log.error(error);
-        res.status(500).json({
-            error: true,
-            date: new Date(),
-            code: error
-        });
-    })
+    .catch(error => { send_error(error, res, 500, false); });
 });
 
 app.all('*', function(req, res) {
