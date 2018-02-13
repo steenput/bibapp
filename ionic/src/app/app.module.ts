@@ -14,6 +14,7 @@ import { ReviewsPage } from '../pages/reviews/reviews';
 
 import { AddNewsPage } from '../pages/add-news/add-news';
 import { DataProvider } from '../providers/data/data';
+import { NewsProvider } from '../providers/news/news';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import { DataProvider } from '../providers/data/data';
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    DataProvider
+    DataProvider,
+    NewsProvider
   ]
 })
 export class AppModule {}

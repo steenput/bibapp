@@ -7,14 +7,14 @@ import { ViewController, NavParams } from 'ionic-angular';
 })
 export class AddNewsPage {
   id: string;
-  comment: string;
+  abstract: string;
 
   constructor(public view: ViewController, params: NavParams) {
     this.id = params.get('id');
   }
 
-  saveComment() {
-    this.view.dismiss({id : this.id, comment : this.comment});
+  saveAbstract() {
+    this.view.dismiss({id: this.id, abstract: this.abstract});
   }
     
   close() {

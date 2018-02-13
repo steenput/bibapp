@@ -46,12 +46,6 @@ let send_error = function(error, res, status, code) {
     });
 };
 
-let search_news = function(id, mongo_news, document) {
-    let isxn = id.split(' ')[0];
-    let found = mongo_news.find(n => { return n.id === isxn});
-    if (found) { document.abstract = found.abstract; }
-};
-
 // Routes
 app.get('/news/:year/:month', function(req, res) {
     const year = req.params.year;
@@ -69,16 +63,20 @@ app.get('/news/:year/:month', function(req, res) {
         news = news.data;
 
         news.documents.forEach(document => {
-            let id = document.identifier;
-            if (id !== null) {
-                if (typeof id.ISBN !== 'undefined') search_news(id.ISBN, mongo_news, document);
-                else {
-                    if (typeof id.ISSN !== 'undefined') search_news(id.ISSN, mongo_news, document);
-                }
+            let id = '';
+            if (document.isbn) {
+                id = document.id = document.isbn;
+                // document.id = id;
+            }
+            else if (document.issn) {
+                id = document.id = document.issn;
+                // document.id = id;
             }
             else {
                 // TODO: set an id 
             }
+            let found = mongo_news.find(n => { return n.id === id});
+            if (found) { document.abstract = found.abstract; }
         });
 
         news.date = new Date();

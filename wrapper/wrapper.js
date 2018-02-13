@@ -33,6 +33,13 @@ let get_by_code = function(code, year, month) {
     });
 };
 
+let extract_isxn = function(isxn) {
+    if (isxn === undefined) return;
+    if (isxn !== null) {
+        return isxn.split(' ')[0];
+    }
+}
+
 let compute_documents = function(documents, result, code) {
     if (result.hits.totalhits != 0) {
         result.document.forEach(d => {
@@ -42,18 +49,22 @@ let compute_documents = function(documents, result, code) {
                     availability.push(i);
                 }
             });
+            let bib = d.biblioData;
             let doc = {
-                title: d.biblioData.title,
-                author: d.biblioData.creator,
-                type: d.biblioData.type,
-                identifier: d.biblioData.identifier,
-                creationdate: d.biblioData.creationdate,
-                publisher: d.biblioData.publisher,
-                edition: d.biblioData.edition,
-                description: d.biblioData.description,
-                language: d.biblioData.language,
-                format: d.biblioData.format,
-                keywords: d.biblioData.keywords,
+                title: bib.title,
+                author: bib.creator,
+                type: bib.type,
+                isbn: bib.identifier !== null ? extract_isxn(bib.identifier.ISBN) : undefined,
+                issn: bib.identifier !== null ? extract_isxn(bib.identifier.ISSN) : undefined,
+                isbn_full: bib.identifier !== null ? bib.identifier.ISBN : undefined,
+                issn_full: bib.identifier !== null ? bib.identifier.ISSN : undefined,
+                creationdate: bib.creationdate,
+                publisher: bib.publisher,
+                edition: bib.edition,
+                description: bib.description,
+                language: bib.language,
+                format: bib.format,
+                keywords: bib.keywords,
                 availability: availability,
                 library: get_library_name(code)
             };
