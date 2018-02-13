@@ -1,27 +1,23 @@
-import { Section } from "./section-class";
-
 export class News {
   id: string;
   title: string;
   author: string;
   language: string;
-  year: string;
+  creationdate: string;
   description: string;
-  editor: string;
-  section: Section;
-  comment: string;
+  publisher: string;
+  abstract: string;
 
   constructor(
-    id: string, title: string, author: string, language: string, year: string, 
-    description: string, editor: string, section: Section, comment: string) {
+    id: string, title: string, author: string, language: string, creationdate: string, 
+    description: string, publisher: string, abstract: string) {
     this.id = id;
     this.title = title;
     this.author = author;
     this.language = language;
-    this.year = year;
+    this.creationdate = creationdate;
     this.description = description;
-    this.editor = editor;
-    this.section = section;
-    this.comment = comment;
+    this.publisher = publisher;
+    this.abstract = abstract;
   }
 }

@@ -66,11 +66,9 @@ app.get('/news/:year/:month', function(req, res) {
             let id = '';
             if (document.isbn) {
                 id = document.id = document.isbn;
-                // document.id = id;
             }
             else if (document.issn) {
                 id = document.id = document.issn;
-                // document.id = id;
             }
             else {
                 // TODO: set an id 
@@ -86,15 +84,17 @@ app.get('/news/:year/:month', function(req, res) {
 });
 
 app.post('/news', function(req, res) {
+    log.debug(req.body);
     aNews.create({
         id: req.body.id,
         abstract: req.body.abstract
     })
     .then((n) => {
-        aNews.find({ id: n.id }, function(error, news) {
-            if (error) send_error(error, res, 500, false);
-            res.status(200).json(news);
-        });
+        // aNews.find({ id: n.id }, function(error, news) {
+        //     if (error) send_error(error, res, 500, false);
+        //     res.status(200).json(news);
+        // });
+        res.status(200).json(n);        
     })
     .catch(error => { send_error(error, res, 500, false); });
 });

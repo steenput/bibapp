@@ -16,16 +16,17 @@
             <h2>Titre : <strong>{{ n.title }}</strong></h2>
             <h3>Auteur : <strong>{{ n.author }}</strong></h3>
             <h3>
-              Section <strong>{{ n.section.acronym }}</strong>, 
-              publié en <strong>{{ n.year }}</strong> 
-              par <strong>{{ n.editor }}</strong>
+              id <strong>{{ n.id }}</strong>, 
+              publié en <strong>{{ n.creationdate }}</strong> 
+              par <strong>{{ n.publisher }}</strong>
             </h3>
+            <p>{{ n.description }}</p>
         </ion-col>
         <ion-col col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6>
-          <h3>Commentaire de la bibliothèque :</h3>
-          <p>{{ n.comment }}</p>
+          <h3>Résumé du livre :</h3>
+          <p>{{ n.abstract }}</p>
           <ion-buttons>
-            <button ion-button icon-only (click)="addComment(n.id)"><ion-icon name="add-circle"></ion-icon></button>
+            <button ion-button icon-only (click)="addAbstract(n.id)"><ion-icon name="add-circle"></ion-icon></button>
           </ion-buttons>
         </ion-col>
       </ion-row>
