@@ -80,8 +80,8 @@ app.get('/news/:year/:month', function(req, res) {
 
     axios.all([get_by_code(hepia_code, year, month), get_by_code(lullier_code, year, month)])
     .then(axios.spread((hepia, lullier) => {
-        log.debug(hepia.data);
-        log.debug(lullier.data);
+        log.debug(hepia.data.result.search, hepia.data.result.hits);
+        log.debug(lullier.data.result.search, lullier.data.result.hits);
 
         let documents = [];
         documents = compute_documents(documents, hepia.data.result, hepia_code);

@@ -15,12 +15,10 @@ export class AddNewsPage {
 
   saveAbstract() {
     let data = {id: this.id, abstract: this.abstract};
-    console.log('in add-news, data', data);
     this.view.dismiss(data);
   }
     
   close() {
     this.view.dismiss();
   }
-
 }

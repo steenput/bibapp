@@ -10,12 +10,13 @@ import 'rxjs/add/operator/map';
 */
 @Injectable()
 export class NewsProvider {
-
   data: any;
-  // headers: any;
+  headers: any;
 
   constructor(public http: Http) {
     this.data = null;
+    this.headers = new Headers();
+    this.headers.append('Content-Type', 'application/json');
   }
 
   getNews(year, month) {
@@ -34,12 +35,7 @@ export class NewsProvider {
   }
 
   saveAbstract(data) {
-    console.log('in newsProvider, data', data);
-
-    let headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-
-    this.http.post('http://localhost:8082/news', JSON.stringify(data), {headers: headers})
+    this.http.post('http://localhost:8082/news', JSON.stringify(data), {headers: this.headers})
     .subscribe(res => {
       console.log(res.json());
     });

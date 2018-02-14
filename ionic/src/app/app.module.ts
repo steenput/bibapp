@@ -13,7 +13,6 @@ import { HeartsPage } from '../pages/hearts/hearts';
 import { ReviewsPage } from '../pages/reviews/reviews';
 
 import { AddNewsPage } from '../pages/add-news/add-news';
-import { DataProvider } from '../providers/data/data';
 import { NewsProvider } from '../providers/news/news';
 
 @NgModule({
@@ -44,7 +43,6 @@ import { NewsProvider } from '../providers/news/news';
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    DataProvider,
     NewsProvider
   ]
 })

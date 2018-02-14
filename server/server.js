@@ -90,10 +90,6 @@ app.post('/news', function(req, res) {
         abstract: req.body.abstract
     })
     .then((n) => {
-        // aNews.find({ id: n.id }, function(error, news) {
-        //     if (error) send_error(error, res, 500, false);
-        //     res.status(200).json(news);
-        // });
         res.status(200).json(n);        
     })
     .catch(error => { send_error(error, res, 500, false); });

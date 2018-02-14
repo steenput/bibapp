@@ -16,7 +16,7 @@ import { NewsProvider } from '../../providers/news/news';
 })
 export class NewsPage {
   page: Page;
-  news: Array<News>;
+  news = new Array<News>();
   
   constructor(
     public navCtrl: NavController,
@@ -26,24 +26,19 @@ export class NewsPage {
     public http: Http
   ) {
     this.page = this.navParams.get('page');
-    this.news = new Array<News>();
-
-    this.http.get('http://localhost:8082/news/2018/02')
-    .map(res => res.json())
-    .subscribe(snews => {
-      // console.log(snews);
-      snews.documents.forEach(doc => {
+    this.newsProvider.getNews('2018', '02').then(data => {
+      data.documents.forEach(doc => {
         this.news.push(new News(doc.id, doc.title, doc.author, doc.language, 
-          doc.creationdate, doc.description,doc.publisher, doc.abstract));
+          doc.creationdate, doc.description, doc.publisher, doc.abstract));
       });
-    })
+    });
   }
 
   addAbstract(id: string) {    
-    let addModal = this.modalCtrl.create(AddNewsPage, {id: id});
+    let addModal = this.modalCtrl.create(AddNewsPage, { id: id });
     addModal.onDidDismiss((data) => {
       if (data) {
-        // TODO: add to news local, to load fast
+        this.news.find(n => { return n.id === id }).abstract = data.abstract;
         this.saveAbstract(data); 
       }
     });
