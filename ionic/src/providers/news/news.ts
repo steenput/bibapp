@@ -35,6 +35,7 @@ export class NewsProvider {
   }
 
   saveAbstract(data) {
+    this.data.documents.find(n => { return n.id === data.id }).abstract = data.abstract;
     this.http.post('http://localhost:8082/news', JSON.stringify(data), {headers: this.headers})
     .subscribe(res => {
       console.log(res.json());
