@@ -21,7 +21,7 @@ const UserSchema = new mongoose.Schema({
 }, { timestamps: true });
 
 UserSchema.pre('save', function(next) {
-    const SALT_FACTOR = 5;
+    const SALT_FACTOR = 42;
     let user = this;
 
     if (!user.isModified('password')) return next();
@@ -39,7 +39,7 @@ UserSchema.pre('save', function(next) {
 
 UserSchema.methods.comparePassword = function(passwordAttempt, cb) {
     bcrypt.compare(passwordAttempt, this.password, function(err, isMatch) {
-        if(err) return cb(err);
+        if (err) return cb(err);
         else cb(null, isMatch);
     });
 };

@@ -7,6 +7,8 @@ import { NewsPage } from '../news/news';
 import { HeartsPage } from '../hearts/hearts';
 import { ReviewsPage } from '../reviews/reviews';
 
+import { LoginPage } from '../login/login';
+
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html'
@@ -26,6 +28,10 @@ export class HomePage {
     this.navCtrl.push(page.component, {
       page: page
     });
+  }
+
+  login() {
+    this.navCtrl.push(LoginPage);
   }
 
 }

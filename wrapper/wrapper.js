@@ -75,6 +75,9 @@ let compute_documents = function(documents, result, code) {
 };
 
 app.get('/news/:year/:month', function(req, res) {
+    // const offline = JSON.parse(fs.readFileSync('../../bibapp_divers/wrapper201802.json', 'utf8'));
+    // res.status(200).json(offline);
+
     const year = req.params.year;
     const month = req.params.month;
 
