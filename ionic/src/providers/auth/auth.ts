@@ -23,7 +23,6 @@ export class AuthProvider {
     return new Promise((resolve, reject) => {
         //Load token if exists
         this.storage.get('token').then(value => {
-          console.log(value);
           this.token = value;
           let headers = new Headers();
           headers.append('Authorization', this.token);
@@ -65,7 +64,7 @@ export class AuthProvider {
 
         this.http.post(this.url + 'login', JSON.stringify(credentials), { headers: headers })
           .subscribe(res => {
-            console.log('in login', res);
+            console.log('in auth login', res);
             let data = res.json();
             this.token = data.token;
             this.storage.set('token', data.token);

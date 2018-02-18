@@ -40,7 +40,7 @@ export class LoginPage {
 
       this.authService.login(credentials).then(result => {
         this.loading.dismiss();
-        console.log('in login', result);
+        console.log('in login.ts, login', result);
         this.navCtrl.setRoot(HomePage);
       }, err => {
         this.loading.dismiss();

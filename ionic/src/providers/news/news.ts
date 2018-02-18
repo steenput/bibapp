@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { Http, Headers } from '@angular/http';
 import 'rxjs/add/operator/map';
 
+import { AuthProvider } from '../auth/auth';
+
 /*
   Generated class for the NewsProvider provider.
 
@@ -11,19 +13,16 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class NewsProvider {
   data: any;
-  headers: any;
 
-  constructor(public http: Http) {
+  constructor(public http: Http, public authService: AuthProvider) {
     this.data = null;
-    this.headers = new Headers();
-    this.headers.append('Content-Type', 'application/json');
   }
 
   getNews(year, month) {
     if (this.data) {
       return Promise.resolve(this.data);
     }
- 
+
     return new Promise(resolve => {
       this.http.get('http://localhost:8082/news/' + year + '/' + month)
         .map(res => res.json())
@@ -35,8 +34,11 @@ export class NewsProvider {
   }
 
   saveAbstract(data) {
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append('Authorization', this.authService.token);
     this.data.documents.find(n => { return n.id === data.id }).abstract = data.abstract;
-    this.http.post('http://localhost:8082/news', JSON.stringify(data), {headers: this.headers})
+    this.http.post('http://localhost:8082/news', JSON.stringify(data), {headers: headers})
     .subscribe(res => {
       console.log(res.json());
     });

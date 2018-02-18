@@ -13,8 +13,8 @@ const localLogin = new LocalStrategy(localOptions, function(email, password, don
     User.findOne({
         email: email
     }, function(err, user) {
-        if(err) return done(err);
-        if(!user) return done(null, false, {error: 'Login failed. Please try again.'});
+        if (err) return done(err);
+        if (!user) return done(null, false, {error: 'Login failed. Please try again.'});
 
         user.comparePassword(password, function(err, isMatch) {
             if (err) return done(err);
@@ -25,14 +25,14 @@ const localLogin = new LocalStrategy(localOptions, function(email, password, don
 });
 
 const jwtOptions = {
-    jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+    jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme('jwt'),
     secretOrKey: config.secret
 };
 
 const jwtLogin = new JwtStrategy(jwtOptions, function(payload, done) {
     User.findById(payload._id, function(err, user) {
-        if(err) return done(err, false);
-        if(user) done(null, user);
+        if (err) return done(err, false);
+        if (user) done(null, user);
         else done(null, false);
     });
 });
