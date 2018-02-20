@@ -1,7 +1,8 @@
 const authController = require('./controllers/authentication');
 const newsController = require('./controllers/news');
+const imagesController = require('./controllers/images');
 const express = require('express');
-const passportService = require('./config/passport');
+const passportService = require('../config/passport');
 const passport = require('passport');
 
 const requireAuth = passport.authenticate('jwt', {session: false});
@@ -11,6 +12,7 @@ module.exports = function(app) {
     const router = express.Router();
     const authRoutes = express.Router();
     const newsRoutes = express.Router();
+    const imagesRoutes = express.Router();
 
     // Auth Routes
     router.use('/auth', authRoutes);
@@ -22,11 +24,16 @@ module.exports = function(app) {
         res.json({ content: 'Success' });
     });
 
-    // Todo Routes
+    // News Routes
     router.use('/news', newsRoutes);
     newsRoutes.get('/:year/:month', newsController.getNews);
     newsRoutes.post('/', requireAuth, authController.roleAuthorization(['librarian', 'admin']), newsController.setAbstract);
-    // newsRoutes.delete('/:todo_id', requireAuth, authController.roleAuthorization(['librarian', 'admin']), newsController.deleteTodo);
+    // newsRoutes.delete('/:news_id', requireAuth, authController.roleAuthorization(['librarian', 'admin']), newsController.deleteTodo);
+
+    // Images Routes
+    router.use('/images', imagesRoutes);
+    imagesRoutes.get('/:id', imagesController.getImage);
+    imagesRoutes.post('/:id', imagesController.images.single('image'), imagesController.setImage);
 
     // Set up routes
     app.use('/', router);

@@ -1,17 +1,9 @@
 const axios = require('axios');
 const Log = require('log');
 const log = new Log('debug');
+const use = require('./use');
 
 const Book = require('../models/book');
-
-function send_error(error, res, status, code) {
-    log.error(error);
-    res.status(status).json({
-        error: true,
-        date: new Date(),
-        code: code ? error.code : error
-    });
-}
 
 const base_url_wrapper = 'http://localhost:8081';
 
@@ -48,7 +40,7 @@ exports.getNews = function(req, res) {
         news.date = new Date();
         res.status(200).json(news);
     })
-    .catch(error => { send_error(error, res, 404, true); });
+    .catch(error => { use.send_error(error, res, 404, true); });
 }
 
 exports.setAbstract = function(req, res) {
@@ -60,5 +52,5 @@ exports.setAbstract = function(req, res) {
     .then((n) => {
         res.status(200).json(n);        
     })
-    .catch(error => { send_error(error, res, 500, false); });
+    .catch(error => { use.send_error(error, res, 500, false); });
 }
