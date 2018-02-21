@@ -5,20 +5,20 @@ const use = require('./use');
 
 const Book = require('../models/book');
 
-const base_url_wrapper = 'http://localhost:8081';
+const baseUrlWrapper = 'http://localhost:8081';
 
 exports.getNews = function(req, res) {
     // TODO: valid year and month
     const year = req.params.year;
     const month = req.params.month;
-    let mongo_news = [];
+    let books = [];
 
     Book.find()
     .then(found => {
         found.forEach(f => {
-            mongo_news.push(f);
+            books.push(f);
         });
-        return axios.get(base_url_wrapper + '/news/' + year + '/' + month);
+        return axios.get(baseUrlWrapper + '/news/' + year + '/' + month);
     })
     .then(news => {
         news = news.data;
@@ -33,7 +33,7 @@ exports.getNews = function(req, res) {
             else {
                 // TODO: set an id 
             }
-            let found = mongo_news.find(n => { return n.id === id});
+            let found = books.find(n => { return n.id === id});
             if (found) { document.abstract = found.abstract; }
         });
 

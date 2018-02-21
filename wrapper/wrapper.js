@@ -11,53 +11,55 @@ const morgan = require('morgan');
 app.use(morgan('dev'));
 app.use(cors());
 
-const base_url_nebis = 'http://www.library.ethz.ch/rib/v1/primo/documents';
-const hepia_code = 'E41';
-const lullier_code = 'E67';
+const baseUrlNebis = 'http://www.library.ethz.ch/rib/v1/primo/documents';
+const hepiaCode = 'E41';
+const lullierCode = 'E67';
 const bulksize = '500'; // maximum authorized by API
 
-let get_library_name = function(c) {
-    let code = c.toUpperCase();
-    if (code === hepia_code) return 'hepia';
-    if (code === lullier_code) return 'lullier';
-};
-
-let get_by_code = function(code, year, month) {
-    return axios.get(base_url_nebis, {
+function getByCode(code, year, month) {
+    return axios.get(baseUrlNebis, {
         params: {
             q: code + year + month,
-            aleph_items: true,
+            // aleph_items: true, // no need of availability to construct the list
             lang: 'fr',
             bulksize: bulksize,
         }
     });
-};
+}
 
-let extract_isxn = function(isxn) {
+function extractIsxn(isxn) {
     if (isxn === undefined) return;
     if (isxn !== null) {
         return isxn.split(' ')[0];
     }
 }
 
-let compute_documents = function(documents, result, code) {
+function computeDocuments(documents, result, code) {
     if (result.hits.totalhits != 0) {
         result.document.forEach(d => {
-            let availability = [];
-            d.availability.itemList.forEach(i => {
-                if (i['z30-sub-library-code'] === hepia_code || i['z30-sub-library-code'] === lullier_code) {
-                    availability.push(i);
-                }
-            });
+            let availability = undefined;
+            if (d.availability.itemList) {
+                let availability = [];
+                d.availability.itemList.forEach(i => {
+                    if (i['z30-sub-library-code'] === hepiaCode || i['z30-sub-library-code'] === lullierCode) {
+                        let a = {
+                            library: i['z30-sub-library'],
+                            callNo: i['z30-call-no'],
+                            status: i.status === null ? 'available' : i.status
+                        }
+                        availability.push(a);
+                    }
+                });
+            }
             let bib = d.biblioData;
             let doc = {
                 title: bib.title,
                 author: bib.creator,
                 type: bib.type,
-                isbn: bib.identifier !== null ? extract_isxn(bib.identifier.ISBN) : undefined,
-                issn: bib.identifier !== null ? extract_isxn(bib.identifier.ISSN) : undefined,
-                isbn_full: bib.identifier !== null ? bib.identifier.ISBN : undefined,
-                issn_full: bib.identifier !== null ? bib.identifier.ISSN : undefined,
+                isbn: bib.identifier !== null ? extractIsxn(bib.identifier.ISBN) : undefined,
+                issn: bib.identifier !== null ? extractIsxn(bib.identifier.ISSN) : undefined,
+                isbnFull: bib.identifier !== null ? bib.identifier.ISBN : undefined,
+                issnFull: bib.identifier !== null ? bib.identifier.ISSN : undefined,
                 creationdate: bib.creationdate,
                 publisher: bib.publisher,
                 edition: bib.edition,
@@ -65,30 +67,30 @@ let compute_documents = function(documents, result, code) {
                 language: bib.language,
                 format: bib.format,
                 keywords: bib.keywords,
-                availability: availability,
-                library: get_library_name(code)
+                availability: availability
             };
             documents.push(doc);
         });
     }
     return documents;
-};
+}
 
 app.get('/news/:year/:month', function(req, res) {
-    // const offline = JSON.parse(fs.readFileSync('../../bibapp_divers/wrapper201802.json', 'utf8'));
+    // const offline = JSON.parse(fs.readFileSync('../../bibapp_divers/wrapper_news_2018_02.json', 'utf8'));
     // res.status(200).json(offline);
+    // return;
 
     const year = req.params.year;
     const month = req.params.month;
 
-    axios.all([get_by_code(hepia_code, year, month), get_by_code(lullier_code, year, month)])
+    axios.all([getByCode(hepiaCode, year, month), getByCode(lullierCode, year, month)])
     .then(axios.spread((hepia, lullier) => {
         log.debug(hepia.data.result.search, hepia.data.result.hits);
         log.debug(lullier.data.result.search, lullier.data.result.hits);
 
         let documents = [];
-        documents = compute_documents(documents, hepia.data.result, hepia_code);
-        documents = compute_documents(documents, lullier.data.result, lullier_code);
+        documents = computeDocuments(documents, hepia.data.result, hepiaCode);
+        documents = computeDocuments(documents, lullier.data.result, lullierCode);
 
         res.status(200).json({
             error: false,
@@ -114,7 +116,7 @@ app.get('/search/:by/:keywords', function(req, res) {
     // TODO: some checks on :by and :keywords
     // restrict by : title, creator, isbn, issn, cdate
 
-    axios.get(base_url_nebis, {
+    axios.get(baseUrlNebis, {
         params: {
             q: keywords,
             searchfield: by,
@@ -128,7 +130,7 @@ app.get('/search/:by/:keywords', function(req, res) {
         log.debug(search.data);
 
         let documents = [];
-        documents = compute_documents(documents, search.data.result, hepia_code);
+        documents = computeDocuments(documents, search.data.result, hepiaCode);
 
         res.status(200).json({
             error: false,

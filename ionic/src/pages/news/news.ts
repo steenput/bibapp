@@ -26,7 +26,9 @@ export class NewsPage {
     public http: Http
   ) {
     this.page = this.navParams.get('page');
-    this.newsProvider.getNews('2018', '02').then(data => {
+    let date = new Date();
+    let month = date.getMonth() < 9 ? '0' + (date.getMonth() + 1).toString() : (date.getMonth() + 1).toString();
+    this.newsProvider.getNews(date.getFullYear().toString(), month).then(data => {
       data.documents.forEach(doc => {
         this.news.push(new News(doc.id, doc.title, doc.author, doc.language, 
           doc.creationdate, doc.description, doc.publisher, doc.abstract));

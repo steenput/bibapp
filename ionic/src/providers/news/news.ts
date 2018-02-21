@@ -18,7 +18,7 @@ export class NewsProvider {
     this.data = null;
   }
 
-  getNews(year, month) {
+  getNews(year: string, month: string) {
     if (this.data) {
       return Promise.resolve(this.data);
     }
