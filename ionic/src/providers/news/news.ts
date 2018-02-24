@@ -4,18 +4,14 @@ import 'rxjs/add/operator/map';
 
 import { AuthProvider } from '../auth/auth';
 
-/*
-  Generated class for the NewsProvider provider.
-
-  See https://angular.io/guide/dependency-injection for more info on providers
-  and Angular DI.
-*/
 @Injectable()
 export class NewsProvider {
   data: any;
+  url: string;
 
   constructor(public http: Http, public authService: AuthProvider) {
     this.data = null;
+    this.url = 'http://localhost:8082/news/';
   }
 
   getNews(year: string, month: string) {
@@ -24,7 +20,7 @@ export class NewsProvider {
     }
 
     return new Promise(resolve => {
-      this.http.get('http://localhost:8082/news/' + year + '/' + month)
+      this.http.get(this.url + year + '/' + month)
         .map(res => res.json())
         .subscribe(data => {
           this.data = data;
@@ -33,12 +29,12 @@ export class NewsProvider {
     });
   }
 
-  saveAbstract(data) {
+  saveComment(data) {
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
     headers.append('Authorization', this.authService.token);
-    this.data.documents.find(n => { return n.id === data.id }).abstract = data.abstract;
-    this.http.post('http://localhost:8082/news', JSON.stringify(data), {headers: headers})
+    this.data.documents.find(n => { return n.id === data.id }).comment = data.comment;
+    this.http.post(this.url, JSON.stringify(data), {headers: headers})
     .subscribe(res => {
       console.log(res.json());
     });

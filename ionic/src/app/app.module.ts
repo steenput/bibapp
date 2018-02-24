@@ -13,10 +13,12 @@ import { HeartsPage } from '../pages/hearts/hearts';
 import { ReviewsPage } from '../pages/reviews/reviews';
 import { LoginPage } from '../pages/login/login';
 import { RegisterPage } from '../pages/register/register';
+import { BookPage } from '../pages/book/book';
 
 import { AddNewsPage } from '../pages/add-news/add-news';
 import { NewsProvider } from '../providers/news/news';
 import { AuthProvider } from '../providers/auth/auth';
+import { ImagesProvider } from '../providers/images/images';
 
 @NgModule({
   declarations: [
@@ -27,7 +29,8 @@ import { AuthProvider } from '../providers/auth/auth';
     ReviewsPage,
     AddNewsPage,
     LoginPage,
-    RegisterPage
+    RegisterPage,
+    BookPage
   ],
   imports: [
     BrowserModule,
@@ -44,7 +47,8 @@ import { AuthProvider } from '../providers/auth/auth';
     ReviewsPage,
     AddNewsPage,
     LoginPage,
-    RegisterPage
+    RegisterPage,
+    BookPage
   ],
   providers: [
     IonicStorageModule,
@@ -52,7 +56,8 @@ import { AuthProvider } from '../providers/auth/auth';
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     NewsProvider,
-    AuthProvider
+    AuthProvider,
+    ImagesProvider
   ]
 })
 export class AppModule {}

@@ -34,7 +34,7 @@ exports.getNews = function(req, res) {
                 // TODO: set an id 
             }
             let found = books.find(n => { return n.id === id});
-            if (found) { document.abstract = found.abstract; }
+            if (found) { document.comment = found.comment; }
         });
 
         news.date = new Date();
@@ -43,11 +43,11 @@ exports.getNews = function(req, res) {
     .catch(error => { use.send_error(error, res, 404, true); });
 }
 
-exports.setAbstract = function(req, res) {
+exports.setComment = function(req, res) {
     log.debug(req.body);
     Book.create({
         id: req.body.id,
-        abstract: req.body.abstract
+        comment: req.body.comment
     })
     .then((n) => {
         res.status(200).json(n);        

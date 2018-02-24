@@ -5,13 +5,12 @@ const bookSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    // TODO: add abstract's author
-    abstract: String,
+    // TODO: add comment's author
+    comment: String,
     image: {
         filename: String,
         created: {
-            type: Date,
-            default: Date.now
+            type: Date
         }
     }
 }, { timestamps: true });

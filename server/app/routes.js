@@ -27,13 +27,13 @@ module.exports = function(app) {
     // News Routes
     router.use('/news', newsRoutes);
     newsRoutes.get('/:year/:month', newsController.getNews);
-    newsRoutes.post('/', requireAuth, authController.roleAuthorization(['librarian', 'admin']), newsController.setAbstract);
+    newsRoutes.post('/', requireAuth, authController.roleAuthorization(['librarian', 'admin']), newsController.setComment);
     // newsRoutes.delete('/:news_id', requireAuth, authController.roleAuthorization(['librarian', 'admin']), newsController.deleteTodo);
 
     // Images Routes
     router.use('/images', imagesRoutes);
     imagesRoutes.get('/:id', imagesController.getImage);
-    imagesRoutes.post('/:id', imagesController.images.single('image'), imagesController.setImage);
+    imagesRoutes.post('/:id', requireAuth, authController.roleAuthorization(['librarian', 'admin']), imagesController.images.single('image'), imagesController.setImage);
 
     // Set up routes
     app.use('/', router);

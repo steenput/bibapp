@@ -8,6 +8,8 @@ import { HeartsPage } from '../hearts/hearts';
 import { ReviewsPage } from '../reviews/reviews';
 
 import { LoginPage } from '../login/login';
+import { AuthProvider } from '../../providers/auth/auth';
+
 
 @Component({
   selector: 'page-home',
@@ -16,7 +18,7 @@ import { LoginPage } from '../login/login';
 export class HomePage {
   pages: Array<Page>;
 
-  constructor(public navCtrl: NavController) {
+  constructor(public navCtrl: NavController, public authService: AuthProvider) {
     this.pages = [
       { title: 'Nouveautés', component: NewsPage },
       { title: 'Coups de coeur', component: HeartsPage },      
@@ -32,6 +34,10 @@ export class HomePage {
 
   login() {
     this.navCtrl.push(LoginPage);
+  }
+
+  logout() {
+    this.authService.logout();
   }
 
 }

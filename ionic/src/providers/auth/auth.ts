@@ -3,12 +3,6 @@ import { Http, Headers } from '@angular/http';
 import { Storage } from '@ionic/storage';
 import 'rxjs/add/operator/map';
 
-/*
-  Generated class for the AuthProvider provider.
-
-  See https://angular.io/guide/dependency-injection for more info on providers
-  and Angular DI.
-*/
 @Injectable()
 export class AuthProvider {
 
@@ -76,6 +70,7 @@ export class AuthProvider {
   }
 
   logout() {
+    console.log('logout');
     this.storage.set('token', '');
   }
 }

@@ -4,6 +4,8 @@ const use = require('./use');
 const path = require('path');
 const fs = require('fs');
 const del = require('del');
+const Log = require('log');
+const log = new Log('debug');
 
 const IMAGES_PATH = 'images';
 
@@ -26,12 +28,15 @@ exports.getImage = function(req, res) {
         res.setHeader('Content-Type', 'image/jpeg');
         fs.createReadStream(path.join(IMAGES_PATH, image.filename)).pipe(res);
     })
-    .catch(error => { use.send_error(error, res, 404, false); })
+    .catch(() => {
+        res.setHeader('Content-Type', 'image/jpeg');
+        fs.createReadStream(path.join(IMAGES_PATH, 'no_image.jpg')).pipe(res);
+    })
 }
 
 exports.setImage = function(req, res) {
     const id = req.params.id;
-
+    log.debug(req.file);
     let newImage = {
         filename: req.file.filename
     };

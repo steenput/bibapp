@@ -10,26 +10,13 @@
 
 <ion-content padding>
   <ion-list>
-    <ion-item text-wrap *ngFor="let n of news">
-      <ion-row>
-        <ion-col col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6>
-            <h2>Titre : <strong>{{ n.title }}</strong></h2>
-            <h3>Auteur : <strong>{{ n.author }}</strong></h3>
-            <h3>
-              id <strong>{{ n.id }}</strong>, 
-              publié en <strong>{{ n.creationdate }}</strong> 
-              par <strong>{{ n.publisher }}</strong>
-            </h3>
-            <p>{{ n.description }}</p>
-        </ion-col>
-        <ion-col col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6>
-          <h3>Résumé du livre :</h3>
-          <p>{{ n.abstract }}</p>
-          <ion-buttons>
-            <button ion-button icon-only (click)="addAbstract(n.id)"><ion-icon name="add-circle"></ion-icon></button>
-          </ion-buttons>
-        </ion-col>
-      </ion-row>
-    </ion-item>
+    <button ion-item text-wrap *ngFor="let n of news" (click)="openBook(n.id)">
+      <ion-thumbnail item-start>
+        <img src="http://localhost:8082/images/{{ n.id }}">
+      </ion-thumbnail>
+      <h2>{{ n.title }}</h2>
+      <h3>{{ n.author }}</h3>
+      <h3>{{ n.creationdate }}</h3>
+    </button>
   </ion-list>
 </ion-content>

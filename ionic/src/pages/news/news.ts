@@ -1,14 +1,16 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ModalController } from 'ionic-angular';
+import { NavController, NavParams, ModalController, LoadingController } from 'ionic-angular';
 import { Http } from '@angular/http';
 import 'rxjs/add/operator/map';
 
 import { Page } from '../page-interface';
-import { News } from '../news-class';
+import { Book } from '../book';
 
 import { AddNewsPage } from '../add-news/add-news';
+import { BookPage } from '../book/book';
 
 import { NewsProvider } from '../../providers/news/news';
+import { ImagesProvider } from '../../providers/images/images';
 
 @Component({
   selector: 'page-news',
@@ -16,39 +18,47 @@ import { NewsProvider } from '../../providers/news/news';
 })
 export class NewsPage {
   page: Page;
-  news = new Array<News>();
+  news = new Array<Book>();
+  loading: any;
   
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
     public modalCtrl: ModalController,
     public newsProvider: NewsProvider,
-    public http: Http
+    public imagesProvider: ImagesProvider,
+    public http: Http,
+    public loadingCtrl: LoadingController
   ) {
+    this.showLoader();
     this.page = this.navParams.get('page');
     let date = new Date();
     let month = date.getMonth() < 9 ? '0' + (date.getMonth() + 1).toString() : (date.getMonth() + 1).toString();
     this.newsProvider.getNews(date.getFullYear().toString(), month).then(data => {
       data.documents.forEach(doc => {
-        this.news.push(new News(doc.id, doc.title, doc.author, doc.language, 
-          doc.creationdate, doc.description, doc.publisher, doc.abstract));
+        this.news.push(doc);
       });
+      this.loading.dismiss();
+    })
+    .catch(err => {
+      this.loading.dismiss();
     });
   }
 
-  addAbstract(id: string) {    
-    let addModal = this.modalCtrl.create(AddNewsPage, { id: id });
-    addModal.onDidDismiss((data) => {
-      if (data) {
-        this.news.find(n => { return n.id === id }).abstract = data.abstract;
-        this.saveAbstract(data); 
-      }
+  showLoader() {
+    this.loading = this.loadingCtrl.create({
+      content: 'Loading...'
     });
-    addModal.present();
+    this.loading.present();
   }
 
-  saveAbstract(data: any) {
-    this.newsProvider.saveAbstract(data);
+  openBook(id) {
+    if (id) {
+      this.navCtrl.push(BookPage, {
+        id: id,
+        book: this.news.find(b => { return b.id === id })
+      });
+    }
   }
 
 }

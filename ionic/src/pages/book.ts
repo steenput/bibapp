@@ -1,4 +1,4 @@
-export class News {
+export class Book {
   id: string;
   title: string;
   author: string;
@@ -6,11 +6,11 @@ export class News {
   creationdate: string;
   description: string;
   publisher: string;
-  abstract: string;
+  comment: string;
 
   constructor(
     id: string, title: string, author: string, language: string, creationdate: string, 
-    description: string, publisher: string, abstract: string) {
+    description: string, publisher: string, comment: string) {
     this.id = id;
     this.title = title;
     this.author = author;
@@ -18,6 +18,6 @@ export class News {
     this.creationdate = creationdate;
     this.description = description;
     this.publisher = publisher;
-    this.abstract = abstract;
+    this.comment = comment;
   }
 }
