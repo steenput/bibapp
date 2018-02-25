@@ -31,7 +31,7 @@ exports.getNews = function(req, res) {
                 id = document.id = document.issn;
             }
             else {
-                // TODO: set an id 
+                // TODO: set an id
             }
             let found = books.find(n => { return n.id === id});
             if (found) { document.comment = found.comment; }
@@ -40,7 +40,30 @@ exports.getNews = function(req, res) {
         news.date = new Date();
         res.status(200).json(news);
     })
-    .catch(error => { use.send_error(error, res, 404, true); });
+    .catch(error => { use.send_error(error, res, 404, error); });
+}
+
+exports.getBook = function(req, res) {
+    const id = req.params.id;
+    let db = {};
+
+    Book.findOne({ id: id })
+    .then(found => {
+        db = found;
+        return axios.get(baseUrlWrapper + '/book/' + id);
+    })
+    .then(result => {
+        result = result.data;
+        
+        if (db) {
+            // result.book.id = db.id;
+            result.book.comment = db.comment;
+        }
+
+        result.date = new Date();
+        res.status(200).json(result);
+    })
+    .catch(error => { use.send_error(error, res, 404, error); });
 }
 
 exports.setComment = function(req, res) {
@@ -50,7 +73,7 @@ exports.setComment = function(req, res) {
         comment: req.body.comment
     })
     .then((n) => {
-        res.status(200).json(n);        
+        res.status(200).json(n);
     })
-    .catch(error => { use.send_error(error, res, 500, false); });
+    .catch(error => { use.send_error(error, res, 500, error); });
 }

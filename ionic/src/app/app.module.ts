@@ -16,9 +16,9 @@ import { RegisterPage } from '../pages/register/register';
 import { BookPage } from '../pages/book/book';
 
 import { AddNewsPage } from '../pages/add-news/add-news';
-import { NewsProvider } from '../providers/news/news';
 import { AuthProvider } from '../providers/auth/auth';
 import { ImagesProvider } from '../providers/images/images';
+import { BookProvider } from '../providers/book/book';
 
 @NgModule({
   declarations: [
@@ -55,9 +55,9 @@ import { ImagesProvider } from '../providers/images/images';
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    NewsProvider,
     AuthProvider,
-    ImagesProvider
+    ImagesProvider,
+    BookProvider
   ]
 })
 export class AppModule {}

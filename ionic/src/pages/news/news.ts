@@ -6,10 +6,9 @@ import 'rxjs/add/operator/map';
 import { Page } from '../page-interface';
 import { Book } from '../book';
 
-import { AddNewsPage } from '../add-news/add-news';
 import { BookPage } from '../book/book';
 
-import { NewsProvider } from '../../providers/news/news';
+import { BookProvider } from '../../providers/book/book';
 import { ImagesProvider } from '../../providers/images/images';
 
 @Component({
@@ -25,7 +24,7 @@ export class NewsPage {
     public navCtrl: NavController,
     public navParams: NavParams,
     public modalCtrl: ModalController,
-    public newsProvider: NewsProvider,
+    public bookProvider: BookProvider,
     public imagesProvider: ImagesProvider,
     public http: Http,
     public loadingCtrl: LoadingController
@@ -34,7 +33,7 @@ export class NewsPage {
     this.page = this.navParams.get('page');
     let date = new Date();
     let month = date.getMonth() < 9 ? '0' + (date.getMonth() + 1).toString() : (date.getMonth() + 1).toString();
-    this.newsProvider.getNews(date.getFullYear().toString(), month).then(data => {
+    this.bookProvider.getNews(date.getFullYear().toString(), month).then(data => {
       data.documents.forEach(doc => {
         this.news.push(doc);
       });

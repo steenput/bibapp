@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, ModalController } from 'ionic-angular';
-import { Book } from '../book';
 
 import { AddNewsPage } from '../add-news/add-news';
-import { NewsProvider } from '../../providers/news/news';
+import { BookProvider } from '../../providers/book/book';
 
 @Component({
   selector: 'page-book',
@@ -11,16 +10,23 @@ import { NewsProvider } from '../../providers/news/news';
 })
 export class BookPage {
   id: string;
-  book: Book;
+  book: any;
 
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
     public modalCtrl: ModalController,
-    public newsProvider: NewsProvider
+    public bookProvider: BookProvider
   ) {
     this.id = this.navParams.get('id');
     this.book = this.navParams.get('book');
+    
+    this.bookProvider.getBook(this.id).then(data => {
+      this.book = data;
+    })
+    .catch(err => {
+      console.log(err);
+    });
   }
 
   addComment() {
@@ -28,7 +34,7 @@ export class BookPage {
     addModal.onDidDismiss((data) => {
       if (data) {
         this.book.comment = data.comment;
-        this.newsProvider.saveComment(data);
+        this.bookProvider.saveComment(data);
       }
     });
     addModal.present();

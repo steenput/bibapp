@@ -9,19 +9,31 @@
 
 
 <ion-content padding>
-  <img class="image" src="http://localhost:8082/images/{{ book.id }}">
+  <img class="image" src="http://localhost:8082/images/{{ id }}">
   <h1>{{ book.title }}</h1>
   <h2>Écrit par {{ book.author }}</h2>
-  <h3>{{ book.id }}</h3>
-  <p><strong>{{ book.type }}</strong>, publié en <strong>{{ book.creationdate }}</strong>, 
-    par <strong>{{ book.publisher }}</strong>, édition <strong>{{ book.edition }}</strong></p>
-  <p>Langue : <strong>{{ book.language }}</strong>, format : <strong>{{ book.format }}</strong></p>
-  <p>{{ book.description }}</p>
-  <p>Mots-clé : </p>
-  <ul>
+  <h3 *ngIf="id">{{ id }}</h3>
+  <p>
+    <strong *ngIf="book.type">{{ book.type }}, </strong>
+    <span *ngIf="book.creationdate"><strong>{{ book.creationdate }}</strong>, </span>
+    <span *ngIf="book.publisher"> publié par <strong>{{ book.publisher }}</strong>, </span>
+    <span *ngIf="book.edition">édition <strong>{{ book.edition }}</strong></span>
+  </p>
+  <p>
+    <span *ngIf="book.language">Langue : <strong>{{ book.language }}</strong>, </span>
+    <span *ngIf="book.format">format : <strong>{{ book.format }}</strong></span>
+  </p>
+  <p *ngIf="book.description">{{ book.description }}</p>
+  <p *ngIf="book.keywords">Mots-clé : </p>
+  <ul *ngIf="book.keywords">
     <li *ngFor="let keyword of book.keywords">{{ keyword }}</li>
   </ul>
+  <p *ngIf="book.availability">Statut en bibliothèques :</p>
+  <ul *ngIf="book.availability">
+    <li *ngFor="let ava of book.availability">{{ ava.status }} à {{ ava.library }} ({{ ava.callNo }})</li>
+  </ul>
+  <p *ngIf="book.comment">Commentaire de la bibliothèque : {{ book.comment }}</p>
   <ion-buttons>
-    <button ion-button icon-only (click)="addComment()"><ion-icon name="add-circle"></ion-icon></button>
+    <button ion-button (click)="addComment()">Ajouter/modifier commentaire</button>
   </ion-buttons>
 </ion-content>

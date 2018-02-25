@@ -34,18 +34,17 @@ function extractIsxn(isxn) {
     }
 }
 
-function computeDocuments(documents, result, code) {
+function computeDocuments(documents, result) {
     if (result.hits.totalhits != 0) {
         result.document.forEach(d => {
-            let availability = undefined;
+            let availability = [];
             if (d.availability.itemList) {
-                let availability = [];
                 d.availability.itemList.forEach(i => {
                     if (i['z30-sub-library-code'] === hepiaCode || i['z30-sub-library-code'] === lullierCode) {
                         let a = {
                             library: i['z30-sub-library'],
                             callNo: i['z30-call-no'],
-                            status: i.status === null ? 'available' : i.status
+                            status: i.status === null ? 'disponible' : i.status
                         }
                         availability.push(a);
                     }
@@ -89,8 +88,8 @@ app.get('/news/:year/:month', function(req, res) {
         log.debug(lullier.data.result.search, lullier.data.result.hits);
 
         let documents = [];
-        documents = computeDocuments(documents, hepia.data.result, hepiaCode);
-        documents = computeDocuments(documents, lullier.data.result, lullierCode);
+        documents = computeDocuments(documents, hepia.data.result);
+        documents = computeDocuments(documents, lullier.data.result);
 
         res.status(200).json({
             error: false,
@@ -112,10 +111,10 @@ app.get('/news/:year/:month', function(req, res) {
 app.get('/search/:by/:keywords', function(req, res) {
     const by = req.params.by;
     const keywords = req.params.keywords;
-
+    
     // TODO: some checks on :by and :keywords
     // restrict by : title, creator, isbn, issn, cdate
-
+    
     axios.get(baseUrlNebis, {
         params: {
             q: keywords,
@@ -128,15 +127,43 @@ app.get('/search/:by/:keywords', function(req, res) {
     // TODO: if there is more than bulksize results, do a pagination
     .then(search => {
         log.debug(search.data);
-
+        
         let documents = [];
-        documents = computeDocuments(documents, search.data.result, hepiaCode);
-
+        documents = computeDocuments(documents, search.data.result);
+        
         res.status(200).json({
             error: false,
             date: new Date(),
             size: documents.length,
             documents: documents
+        });
+    })
+    .catch(error => {
+        log.error(error);
+        res.status(404).json({
+            error: true,
+            date: new Date(),
+            code: error.code
+        });
+    });
+});
+
+app.get('/book/:id', function(req, res) {
+    const id = req.params.id;
+    const wrapperUrl = 'http://localhost:8081/search/'
+
+    axios.all([axios.get(wrapperUrl + 'isbn/' + id), axios.get(wrapperUrl + 'issn/' + id)])
+    .then(results => {
+        let book = {};
+        results.forEach(r => {
+            if (r.data.size > 0) {
+                book = r.data.documents[0];
+            }
+        });
+        res.status(200).json({
+            error: false,
+            date: new Date(),
+            book: book
         });
     })
     .catch(error => {
