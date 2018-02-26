@@ -1,0 +1,20 @@
+<ion-header>
+  <ion-toolbar color="secondary">
+    <ion-title>
+      Ajouter/Modifier un coup de coeur
+    </ion-title>
+      <ion-buttons end>
+        <button ion-button icon-only (click)="close()"><ion-icon name="close"></ion-icon></button>
+      </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+ 
+<ion-content>
+  <ion-item>
+    <ion-label floating>Coup de coeur</ion-label>
+    <ion-textarea [(ngModel)]="favourite"></ion-textarea>
+  </ion-item>
+ 
+  <button full ion-button color="secondary" (click)="saveFavourite()">Sauvegarder</button>
+ 
+</ion-content>

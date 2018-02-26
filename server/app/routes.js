@@ -1,41 +1,45 @@
-const authController = require('./controllers/authentication');
-const bookController = require('./controllers/book');
-const imagesController = require('./controllers/images');
+const authCont = require('./controllers/authentication');
+const bookCont = require('./controllers/book');
+const imagesCont = require('./controllers/images');
 const express = require('express');
 const passportService = require('../config/passport');
 const passport = require('passport');
 
-const requireAuth = passport.authenticate('jwt', {session: false});
-const requireLogin = passport.authenticate('local', {session: false});
+const reqAuth = passport.authenticate('jwt', {session: false});
+const reqLogin = passport.authenticate('local', {session: false});
 
 module.exports = function(app) {
     const router = express.Router();
     const authRoutes = express.Router();
     const bookRoutes = express.Router();
+    const newsRoutes = express.Router();
     const imagesRoutes = express.Router();
 
     // Auth Routes
     router.use('/auth', authRoutes);
-    authRoutes.post('/register', authController.register);
+    authRoutes.post('/register', authCont.register);
     // TODO: restrict admin only to create new accounts
     // authRoutes.post('/register', authController.roleAuthorization(['admin']), authController.register);
-    authRoutes.post('/login', requireLogin, authController.login);
-    authRoutes.get('/protected', requireAuth, function(req, res) {
+    authRoutes.post('/login', reqLogin, authCont.login);
+    authRoutes.get('/protected', reqAuth, function(req, res) {
         res.json({ content: 'Success' });
     });
 
     // Book Routes
-    router.use('/', bookRoutes);
-    bookRoutes.get('/book/:id', bookController.getBook);
-    bookRoutes.get('/news/:year/:month', bookController.getNews);
-    bookRoutes.post('/news', requireAuth, authController.roleAuthorization(['librarian', 'admin']), bookController.setComment);
+    router.use('/book', bookRoutes);
+    bookRoutes.get('/:id', bookCont.getBook);
+    bookRoutes.post('/comment', reqAuth, authCont.roleAuthorization(['librarian', 'admin']), bookCont.setComment);
     // newsRoutes.delete('/:news_id', requireAuth, authController.roleAuthorization(['librarian', 'admin']), newsController.deleteTodo);
+    
+    // News Routes
+    router.use('/news', newsRoutes)
+    newsRoutes.get('/:year/:month', bookCont.getNews);
 
     // Images Routes
     router.use('/images', imagesRoutes);
-    imagesRoutes.get('/:id', imagesController.getImage);
-    imagesRoutes.post('/:id', requireAuth, authController.roleAuthorization(['librarian', 'admin']), 
-        imagesController.images.single('image'), imagesController.setImage);
+    imagesRoutes.get('/:id', imagesCont.getImage);
+    imagesRoutes.post('/:id', reqAuth, authCont.roleAuthorization(['librarian', 'admin']), 
+        imagesCont.images.single('image'), imagesCont.setImage);
 
     // Set up routes
     app.use('/', router);

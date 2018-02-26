@@ -49,7 +49,7 @@ export class BookProvider {
     headers.append('Content-Type', 'application/json');
     headers.append('Authorization', this.authService.token);
     this.news.documents.find(n => { return n.id === data.id }).comment = data.comment;
-    this.http.post(this.url + 'news', JSON.stringify(data), {headers: headers})
+    this.http.post(this.url + 'book/comment', JSON.stringify(data), {headers: headers})
     .subscribe(res => {
       console.log(res.json());
     });

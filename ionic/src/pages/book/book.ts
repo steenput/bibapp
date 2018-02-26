@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, ModalController } from 'ionic-angular';
 
-import { AddNewsPage } from '../add-news/add-news';
+import { ManageCommentPage } from '../manage-comment/manage-comment';
 import { BookProvider } from '../../providers/book/book';
 
 @Component({
@@ -30,7 +30,7 @@ export class BookPage {
   }
 
   addComment() {
-    let addModal = this.modalCtrl.create(AddNewsPage, { id: this.id });
+    let addModal = this.modalCtrl.create(ManageCommentPage, { id: this.id });
     addModal.onDidDismiss((data) => {
       if (data) {
         this.book.comment = data.comment;

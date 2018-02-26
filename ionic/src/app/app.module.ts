@@ -14,8 +14,10 @@ import { ReviewsPage } from '../pages/reviews/reviews';
 import { LoginPage } from '../pages/login/login';
 import { RegisterPage } from '../pages/register/register';
 import { BookPage } from '../pages/book/book';
+import { ManageCommentPage } from '../pages/manage-comment/manage-comment';
+import { ManageFavouritePage } from '../pages/manage-favourite/manage-favourite';
+import { ManageReviewPage } from '../pages/manage-review/manage-review';
 
-import { AddNewsPage } from '../pages/add-news/add-news';
 import { AuthProvider } from '../providers/auth/auth';
 import { ImagesProvider } from '../providers/images/images';
 import { BookProvider } from '../providers/book/book';
@@ -27,7 +29,9 @@ import { BookProvider } from '../providers/book/book';
     NewsPage,
     HeartsPage,
     ReviewsPage,
-    AddNewsPage,
+    ManageCommentPage,
+    ManageFavouritePage,
+    ManageReviewPage,
     LoginPage,
     RegisterPage,
     BookPage
@@ -45,7 +49,9 @@ import { BookProvider } from '../providers/book/book';
     NewsPage,
     HeartsPage,
     ReviewsPage,
-    AddNewsPage,
+    ManageCommentPage,
+    ManageFavouritePage,
+    ManageReviewPage,
     LoginPage,
     RegisterPage,
     BookPage

@@ -1,20 +1,20 @@
 import { Component } from '@angular/core';
-import { ViewController, NavParams } from 'ionic-angular';
+import { NavParams, ViewController } from 'ionic-angular';
 
 @Component({
-  selector: 'page-add-news',
-  templateUrl: 'add-news.html',
+  selector: 'page-manage-review',
+  templateUrl: 'manage-review.html',
 })
-export class AddNewsPage {
+export class ManageReviewPage {
   id: string;
-  comment: string;
+  review: string;
 
   constructor(public view: ViewController, params: NavParams) {
     this.id = params.get('id');
   }
 
-  saveComment() {
-    let data = {id: this.id, comment: this.comment};
+  saveReview() {
+    let data = {id: this.id, review: this.review};
     this.view.dismiss(data);
   }
     
