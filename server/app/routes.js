@@ -38,7 +38,7 @@ module.exports = function(app) {
     // Images Routes
     router.use('/images', imagesRoutes);
     imagesRoutes.get('/:id', imagesCont.getImage);
-    imagesRoutes.post('/:id', reqAuth, authCont.roleAuthorization(['librarian', 'admin']), 
+    imagesRoutes.post('/', reqAuth, authCont.roleAuthorization(['librarian', 'admin']), 
         imagesCont.images.single('image'), imagesCont.setImage);
 
     // Set up routes

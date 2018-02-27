@@ -56,7 +56,6 @@ exports.getBook = function(req, res) {
         result = result.data;
         
         if (db) {
-            // result.book.id = db.id;
             result.book.comment = db.comment;
         }
 

@@ -21,6 +21,10 @@ import { ManageReviewPage } from '../pages/manage-review/manage-review';
 import { AuthProvider } from '../providers/auth/auth';
 import { ImagesProvider } from '../providers/images/images';
 import { BookProvider } from '../providers/book/book';
+import { FileTransfer } from '@ionic-native/file-transfer';
+import { Camera } from '@ionic-native/camera';
+import { CameraMock } from '@ionic-native-mocks/camera';
+import { FileTransferMock } from "@ionic-native-mocks/file-transfer";
 
 @NgModule({
   declarations: [
@@ -63,7 +67,9 @@ import { BookProvider } from '../providers/book/book';
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     AuthProvider,
     ImagesProvider,
-    BookProvider
+    BookProvider,
+    { provide: Camera, useClass: CameraMock },
+    { provide: FileTransfer, useClass: FileTransferMock }
   ]
 })
 export class AppModule {}

@@ -1,14 +1,15 @@
 import { Injectable } from '@angular/core';
-import { Http, Headers } from '@angular/http';
+import { Http } from '@angular/http';
 import 'rxjs/add/operator/map';
 
+import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer';
 import { AuthProvider } from '../auth/auth';
 
 @Injectable()
 export class ImagesProvider {
   url: string;
 
-  constructor(public http: Http, public authService: AuthProvider) {
+  constructor(public http: Http, public authService: AuthProvider, private transfer: FileTransfer) {
     this.url = 'http://localhost:8082/images/';
   }
 
@@ -22,15 +23,17 @@ export class ImagesProvider {
     });
   }
 
-  saveImage(data) {
-    // let headers = new Headers();
-    // headers.append('Content-Type', 'application/json');
-    // headers.append('Authorization', this.authService.token);
-    // this.data.documents.find(n => { return n.id === data.id }).comment = data.comment;
-    // this.http.post(this.url + data.id, JSON.stringify(data), {headers: headers})
-    // .subscribe(res => {
-    //   console.log(res.json());
-    // });
+  saveImage(id, image) {
+    let options: FileUploadOptions = {
+      fileKey: 'image',
+      chunkedMode: false,
+      mimeType: 'multipart/form-data',
+      params: { 'id': id }
+    };
+    const fileTransfer: FileTransferObject = this.transfer.create();
+
+    // Use the FileTransfer to upload the image
+    return fileTransfer.upload(image, this.url, options);
   }
 
   deleteImage(id) {

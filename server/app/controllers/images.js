@@ -35,7 +35,7 @@ exports.getImage = function(req, res) {
 }
 
 exports.setImage = function(req, res) {
-    const id = req.params.id;
+    const id = req.body.id;
     log.debug(req.file);
     let newImage = {
         filename: req.file.filename
