@@ -10,7 +10,12 @@ export class AuthProvider {
   private url: string;
 
   constructor(public http: Http, public storage: Storage) {
+    this.token = null;
     this.url = 'http://localhost:8082/auth/';
+  }
+
+  isConnected() {
+    return this.token !== null;
   }
 
   checkAuthentication() {
@@ -72,5 +77,6 @@ export class AuthProvider {
   logout() {
     console.log('logout');
     this.storage.set('token', '');
+    this.token = null;
   }
 }

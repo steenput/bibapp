@@ -7,12 +7,15 @@ import { AuthProvider } from '../auth/auth';
 @Injectable()
 export class BookProvider {
   url: string;
+  headers: Headers;
   news: any;
   favourites: any;
   reviews: any;
 
   constructor(public http: Http, public authService: AuthProvider) {
     this.url = 'http://localhost:8082/';
+    this.headers = new Headers();
+    this.headers.append('Content-Type', 'application/json');
     this.news = null;
     this.favourites = null;
     this.reviews = null;
@@ -45,11 +48,27 @@ export class BookProvider {
   }
 
   saveComment(data) {
-    let headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    headers.append('Authorization', this.authService.token);
+    this.headers.append('Authorization', this.authService.token);
     this.news.documents.find(n => { return n.id === data.id }).comment = data.comment;
-    this.http.post(this.url + 'book/comment', JSON.stringify(data), {headers: headers})
+    this.http.post(this.url + 'book/comment', JSON.stringify(data), {headers: this.headers})
+    .subscribe(res => {
+      console.log(res.json());
+    });
+  }
+
+  saveFavourite(data) {
+    this.headers.append('Authorization', this.authService.token);
+    this.favourites.documents.find(n => { return n.id === data.id }).favourite = data.favourite;
+    this.http.post(this.url + 'book/favourite', JSON.stringify(data), {headers: this.headers})
+    .subscribe(res => {
+      console.log(res.json());
+    });
+  }
+
+  saveReview(data) {
+    this.headers.append('Authorization', this.authService.token);
+    this.reviews.documents.find(n => { return n.id === data.id }).review = data.review;
+    this.http.post(this.url + 'book/review', JSON.stringify(data), {headers: this.headers})
     .subscribe(res => {
       console.log(res.json());
     });

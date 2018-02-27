@@ -32,8 +32,23 @@
   <ul *ngIf="book.availability">
     <li *ngFor="let ava of book.availability">{{ ava.status }} à {{ ava.library }} ({{ ava.callNo }})</li>
   </ul>
+
   <p *ngIf="book.comment">Commentaire de la bibliothèque : {{ book.comment }}</p>
-  <ion-buttons>
+  <ion-buttons *ngIf="userConnected">
     <button ion-button (click)="addComment()">Ajouter/modifier commentaire</button>
+  </ion-buttons>
+
+  <p *ngIf="book.favourite">Coup de coeur de la bibliothèque : {{ book.favourite }}</p>
+  <ion-buttons *ngIf="userConnected">
+    <button ion-button (click)="addFavourite()">Ajouter/modifier coup de coeur</button>
+  </ion-buttons>
+
+  <p *ngIf="book.review">Revue de presse de la bibliothèque : {{ book.review }}</p>
+  <ion-buttons *ngIf="userConnected">
+    <button ion-button (click)="addReview()">Ajouter/modifier revue</button>
+  </ion-buttons>
+
+  <ion-buttons *ngIf="userConnected">
+    <button ion-button (click)="addImage()">Ajouter/modifier image</button>
   </ion-buttons>
 </ion-content>
