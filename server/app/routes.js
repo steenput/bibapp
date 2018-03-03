@@ -38,7 +38,7 @@ module.exports = function(app) {
     
     // News Routes
     router.use('/news', newsRoutes)
-    newsRoutes.get('/:year/:month', bookCont.getNews);
+    newsRoutes.get('/:year?/:month?', bookCont.getNews);
 
     // Favourites Routes
     router.use('/favourites', favouritesRoutes)

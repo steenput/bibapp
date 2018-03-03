@@ -33,7 +33,22 @@ export class BookProvider {
     });
   }
 
-  getNews(year: string, month: string) {
+  getNews() {
+    if (this.news !== null) {
+      return Promise.resolve(this.news);
+    }
+
+    return new Promise(resolve => {
+      this.http.get(this.url + 'news')
+        .map(res => res.json())
+        .subscribe(data => {
+          this.news = data;
+          resolve(this.news);
+        });
+    });
+  }
+
+  getNewsDate(year: string, month: string) {
     if (this.news !== null) {
       return Promise.resolve(this.news);
     }
@@ -98,23 +113,40 @@ export class BookProvider {
   }
 
   saveFavourite(data) {
-    if (this.favourites !== null)
-      this.favourites.documents.find(n => { return n.id === data.id }).favourite = data.favourite;
-    
     this.http.post(this.url + 'book/favourite', JSON.stringify(data), {headers: this.headers})
     .subscribe(res => {
       console.log(res.json());
     });
+    if (this.favourites !== null) {
+      let found = this.favourites.documents.find(n => { return n.id === data.id });
+      if (found) {
+        found.favourite = data.favourite;
+      }
+      else {
+        this.getBook(data.id).then(result => {
+          this.favourites.documents.push(result);
+        })
+      }
+    }
   }
 
   saveReview(data) {
-    if (this.reviews !== null)
-      this.reviews.documents.find(n => { return n.id === data.id }).review = data.review;
-
     this.http.post(this.url + 'book/review', JSON.stringify(data), {headers: this.headers})
     .subscribe(res => {
       console.log(res.json());
     });
+
+    if (this.reviews !== null) {
+      let found = this.reviews.documents.find(n => { return n.id === data.id });
+      if (found) {
+        found.review = data.review;
+      }
+      else {
+        this.getBook(data.id).then(result => {
+          this.reviews.documents.push(result);
+        })
+      }
+    }
   }
 
 }

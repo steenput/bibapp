@@ -108,9 +108,10 @@ app.get('/news/:year/:month', function(req, res) {
     });
 });
 
-app.get('/search/:by/:keywords', function(req, res) {
+app.get('/search/:by/:keywords/:fast?', function(req, res) {
     const by = req.params.by;
     const keywords = req.params.keywords;
+    const fast = req.params.fast === undefined;
     
     // TODO: some checks on :by and :keywords
     // restrict by : title, creator, isbn, issn, cdate
@@ -119,9 +120,9 @@ app.get('/search/:by/:keywords', function(req, res) {
         params: {
             q: keywords,
             searchfield: by,
-            aleph_items: true,
+            aleph_items: fast,
             lang: 'fr',
-            bulksize: bulksize,
+            bulksize: 100,
         }
     })
     // TODO: if there is more than bulksize results, do a pagination
@@ -148,11 +149,12 @@ app.get('/search/:by/:keywords', function(req, res) {
     });
 });
 
-app.get('/book/:id', function(req, res) {
+app.get('/book/:id/:fast?', function(req, res) {
     const id = req.params.id;
-    const wrapperUrl = 'http://localhost:8081/search/'
+    const wrapperUrl = 'http://localhost:8081/search/';
+    const fast = req.params.fast ? '/fast' : '';
 
-    axios.all([axios.get(wrapperUrl + 'isbn/' + id), axios.get(wrapperUrl + 'issn/' + id)])
+    axios.all([axios.get(wrapperUrl + 'isbn/' + id + fast), axios.get(wrapperUrl + 'issn/' + id + fast)])
     .then(results => {
         let book = {};
         results.forEach(r => {

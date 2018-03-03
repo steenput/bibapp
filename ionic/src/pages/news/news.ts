@@ -31,9 +31,7 @@ export class NewsPage {
   ) {
     this.showLoader();
     this.page = this.navParams.get('page');
-    let date = new Date();
-    let month = date.getMonth() < 9 ? '0' + (date.getMonth() + 1).toString() : (date.getMonth() + 1).toString();
-    this.bookProvider.getNews(date.getFullYear().toString(), month).then(data => {
+    this.bookProvider.getNews().then(data => {
       data.documents.forEach(doc => {
         this.news.push(doc);
       });
