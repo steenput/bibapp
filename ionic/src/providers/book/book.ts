@@ -106,14 +106,14 @@ export class BookProvider {
     if (this.news !== null)
       this.news.documents.find(n => { return n.id === data.id }).comment = data.comment;
 
-    this.http.post(this.url + 'book/comment', JSON.stringify(data), {headers: this.headers})
+    this.http.post(this.url + 'book/comment', JSON.stringify(data), { headers: this.headers })
     .subscribe(res => {
       console.log(res.json());
     });
   }
 
   saveFavourite(data) {
-    this.http.post(this.url + 'book/favourite', JSON.stringify(data), {headers: this.headers})
+    this.http.post(this.url + 'book/favourite', JSON.stringify(data), { headers: this.headers })
     .subscribe(res => {
       console.log(res.json());
     });
@@ -125,13 +125,13 @@ export class BookProvider {
       else {
         this.getBook(data.id).then(result => {
           this.favourites.documents.push(result);
-        })
+        });
       }
     }
   }
 
   saveReview(data) {
-    this.http.post(this.url + 'book/review', JSON.stringify(data), {headers: this.headers})
+    this.http.post(this.url + 'book/review', JSON.stringify(data), { headers: this.headers })
     .subscribe(res => {
       console.log(res.json());
     });
@@ -144,8 +144,47 @@ export class BookProvider {
       else {
         this.getBook(data.id).then(result => {
           this.reviews.documents.push(result);
-        })
+        });
       }
+    }
+  }
+
+  deleteComment(id) {
+    console.log('comment', id);
+    this.http.delete(this.url + 'book/comment/' + id, { headers: this.headers })
+    .subscribe(res => {
+      console.log(res.json());
+    });
+    if (this.news !== null) {
+      const index = this.news.documents.findIndex(i => { return i.id === id });
+      if (index > -1)
+        this.news.documents.splice(index, 1);
+    }
+  }
+
+  deleteFavourite(id) {
+    console.log('favourite', id);
+    this.http.delete(this.url + 'book/favourite/' + id, { headers: this.headers })
+    .subscribe(res => {
+      console.log(res.json());
+    });
+    if (this.favourites !== null) {
+      const index = this.favourites.documents.findIndex(i => { return i.id === id });
+      if (index > -1)
+        this.favourites.documents.splice(index, 1);
+    }
+  }
+
+  deleteReview(id) {
+    console.log('review', id);
+    this.http.delete(this.url + 'book/review/' + id, { headers: this.headers })
+    .subscribe(res => {
+      console.log(res.json());
+    });
+    if (this.reviews !== null) {
+      const index = this.reviews.documents.findIndex(i => { return i.id === id });
+      if (index > -1)
+        this.reviews.documents.splice(index, 1);
     }
   }
 

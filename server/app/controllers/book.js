@@ -37,7 +37,6 @@ function getBooksWithContent(res, search) {
         return axios.all(requests);
     })
     .then(results => {
-        log.debug('coucou');
         let documents = results.map(r => r.data.book);
         addContent(documents, books);
         res.status(200).json({ error: false, date: new Date(), documents: documents });
@@ -127,13 +126,73 @@ exports.search = function(req, res) {
 }
 
 exports.setComment = function(req, res) {
-    setContent(req, res, {comment: req.body.comment});
+    setContent(req, res, { comment: req.body.comment });
 }
 
 exports.setFavourite = function(req, res) {
-    setContent(req, res, {favourite: req.body.favourite});
+    setContent(req, res, { favourite: req.body.favourite });
 }
 
 exports.setReview = function(req, res) {
-    setContent(req, res, {review: req.body.review});
+    setContent(req, res, { review: req.body.review });
+}
+
+exports.deleteComment = function(req, res) {
+    log.debug(req.params);
+    Book.findOneAndRemove({ id: req.params.id })
+    .then(n => {
+        const reinsert = {
+            id: n.id,
+            favourite: n.favourite,
+            review: n.review,
+            image: n.image
+        };
+        log.debug(reinsert)
+        return Book.create(reinsert);
+    })
+    .then(book => {
+        log.debug(book);
+        res.status(200).json(book);
+    })
+    .catch(error => { use.send_error(error, res, 500, error); });
+}
+
+exports.deleteFavourite = function(req, res) {
+    log.debug(req.params);
+    Book.findOneAndRemove({ id: req.params.id })
+    .then(n => {
+        const reinsert = {
+            id: n.id,
+            comment: n.comment,
+            review: n.review,
+            image: n.image
+        };
+        log.debug(reinsert)
+        return Book.create(reinsert);
+    })
+    .then(book => {
+        log.debug(book);
+        res.status(200).json(book);
+    })
+    .catch(error => { use.send_error(error, res, 500, error); });
+}
+
+exports.deleteReview = function(req, res) {
+    log.debug(req.params);
+    Book.findOneAndRemove({ id: req.params.id })
+    .then(n => {
+        const reinsert = {
+            id: n.id,
+            comment: n.comment,
+            favourite: n.favourite,
+            image: n.image
+        };
+        log.debug(reinsert)
+        return Book.create(reinsert);
+    })
+    .then(book => {
+        log.debug(book);
+        res.status(200).json(book);
+    })
+    .catch(error => { use.send_error(error, res, 500, error); });
 }

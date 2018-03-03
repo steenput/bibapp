@@ -34,7 +34,9 @@ module.exports = function(app) {
     bookRoutes.post('/comment', reqAuth, authCont.roleAuthorization(['librarian', 'admin']), bookCont.setComment);
     bookRoutes.post('/favourite', reqAuth, authCont.roleAuthorization(['librarian', 'admin']), bookCont.setFavourite);
     bookRoutes.post('/review', reqAuth, authCont.roleAuthorization(['librarian', 'admin']), bookCont.setReview);
-    // newsRoutes.delete('/:news_id', requireAuth, authController.roleAuthorization(['librarian', 'admin']), newsController.deleteTodo);
+    bookRoutes.delete('/comment/:id', reqAuth, authCont.roleAuthorization(['librarian', 'admin']), bookCont.deleteComment);
+    bookRoutes.delete('/favourite/:id', reqAuth, authCont.roleAuthorization(['librarian', 'admin']), bookCont.deleteFavourite);
+    bookRoutes.delete('/review/:id', reqAuth, authCont.roleAuthorization(['librarian', 'admin']), bookCont.deleteReview);
     
     // News Routes
     router.use('/news', newsRoutes)

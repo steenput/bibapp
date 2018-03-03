@@ -71,6 +71,24 @@ export class BookPage {
     addModal.present();
   }
 
+  deleteComment() {
+    console.log('delete comment');
+    this.book.comment = undefined;
+    this.bookProvider.deleteComment(this.id);
+  }
+
+  deleteFavourite() {
+    console.log('delete favourite');
+    this.book.favourite = undefined;
+    this.bookProvider.deleteFavourite(this.id);
+  }
+
+  deleteReview() {
+    console.log('delete review');
+    this.book.review = undefined;
+    this.bookProvider.deleteReview(this.id);
+  }
+
   addImage() {
     // Create options for the Camera Dialog
     let options = {
