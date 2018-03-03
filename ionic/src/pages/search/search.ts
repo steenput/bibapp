@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, ModalController, LoadingController } from 'ionic-angular';
-
 import { Page } from '../page-interface';
 import { Book } from '../book';
 import { BookProvider } from '../../providers/book/book';
@@ -9,13 +8,15 @@ import { Http } from '@angular/http';
 import { BookPage } from '../book/book';
 
 @Component({
-  selector: 'page-hearts',
-  templateUrl: 'hearts.html',
+  selector: 'page-search',
+  templateUrl: 'search.html',
 })
-export class HeartsPage {
+export class SearchPage {
   page: Page;
-  favourites = new Array<Book>();
+  results = new Array<Book>();
   loading: any;
+  searchQuery: string = '';
+  items: any;
   
   constructor(
     public navCtrl: NavController,
@@ -26,17 +27,23 @@ export class HeartsPage {
     public http: Http,
     public loadingCtrl: LoadingController
   ) {
-    this.showLoader();
+    // this.showLoader();
     this.page = this.navParams.get('page');
-    this.bookProvider.getFavourites().then(data => {
-      data.documents.forEach(doc => {
-        this.favourites.push(doc);
-      });
-      this.loading.dismiss();
-    })
-    .catch(err => {
-      this.loading.dismiss();
-    });
+    
+  }
+
+  getItems(ev: any) {
+    // set val to the value of the searchbar
+    let val = ev.target.value;
+
+    // if the value is an empty string don't filter the items
+    if (val && val.trim() != '') {
+      console.log(val);
+      this.bookProvider.search(val).then(data => {
+        this.items = data;
+        console.log(this.items);
+      })
+    }
   }
 
   showLoader() {
@@ -50,8 +57,9 @@ export class HeartsPage {
     if (id) {
       this.navCtrl.push(BookPage, {
         id: id,
-        book: this.favourites.find(b => { return b.id === id })
+        book: this.items.find(b => { return b.id === id })
       });
     }
   }
+
 }

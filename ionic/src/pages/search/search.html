@@ -1,4 +1,3 @@
-
 <ion-header>
 
   <ion-navbar>
@@ -9,8 +8,9 @@
 
 
 <ion-content padding>
+  <ion-searchbar (ionInput)="getItems($event)"></ion-searchbar>
   <ion-list>
-    <button ion-item text-wrap *ngFor="let n of reviews" (click)="openBook(n.id)">
+    <button ion-item text-wrap *ngFor="let n of items" (click)="openBook(n.id)">
       <ion-thumbnail item-start>
         <img src="http://localhost:8082/images/{{ n.id }}">
       </ion-thumbnail>

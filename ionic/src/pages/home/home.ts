@@ -9,6 +9,7 @@ import { ReviewsPage } from '../reviews/reviews';
 
 import { LoginPage } from '../login/login';
 import { AuthProvider } from '../../providers/auth/auth';
+import { SearchPage } from '../search/search';
 
 
 @Component({
@@ -22,7 +23,8 @@ export class HomePage {
     this.pages = [
       { title: 'Nouveautés', component: NewsPage },
       { title: 'Coups de coeur', component: HeartsPage },      
-      { title: 'Revue de presse', component: ReviewsPage }
+      { title: 'Revue de presse', component: ReviewsPage },
+      { title: 'Recherche', component: SearchPage }
     ];
   }
 

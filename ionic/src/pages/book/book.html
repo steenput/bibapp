@@ -33,7 +33,7 @@
     <li *ngFor="let ava of book.availability">{{ ava.status }} à {{ ava.library }} ({{ ava.callNo }})</li>
   </ul>
 
-  <p *ngIf="book.comment">Commentaire de la bibliothèque : {{ book.comment }}</p>
+  <p *ngIf="book.comment">Commentaire des bibliothécaires : {{ book.comment }}</p>
   <ion-buttons *ngIf="userConnected">
     <button ion-button (click)="addComment()">Ajouter/modifier commentaire</button>
   </ion-buttons>

@@ -11,6 +11,7 @@ export class ManageCommentPage {
 
   constructor(public view: ViewController, params: NavParams) {
     this.id = params.get('id');
+    this.comment = params.get('comment');
   }
 
   saveComment() {

@@ -5,8 +5,9 @@ const bookSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    // TODO: add comment's author
     comment: String,
+    favourite: String,
+    review: String,
     image: {
         filename: String,
         created: {

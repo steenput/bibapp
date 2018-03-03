@@ -39,7 +39,7 @@ export class BookPage {
   }
 
   addComment() {
-    let addModal = this.modalCtrl.create(ManageCommentPage, { id: this.id });
+    let addModal = this.modalCtrl.create(ManageCommentPage, { id: this.id, comment: this.book.comment });
     addModal.onDidDismiss((data) => {
       if (data) {
         this.book.comment = data.comment;

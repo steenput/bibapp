@@ -17,6 +17,7 @@ import { BookPage } from '../pages/book/book';
 import { ManageCommentPage } from '../pages/manage-comment/manage-comment';
 import { ManageFavouritePage } from '../pages/manage-favourite/manage-favourite';
 import { ManageReviewPage } from '../pages/manage-review/manage-review';
+import { SearchPage } from "../pages/search/search";
 
 import { AuthProvider } from '../providers/auth/auth';
 import { ImagesProvider } from '../providers/images/images';
@@ -38,7 +39,8 @@ import { FileTransferMock } from "@ionic-native-mocks/file-transfer";
     ManageReviewPage,
     LoginPage,
     RegisterPage,
-    BookPage
+    BookPage,
+    SearchPage
   ],
   imports: [
     BrowserModule,
@@ -58,7 +60,8 @@ import { FileTransferMock } from "@ionic-native-mocks/file-transfer";
     ManageReviewPage,
     LoginPage,
     RegisterPage,
-    BookPage
+    BookPage,
+    SearchPage
   ],
   providers: [
     IonicStorageModule,

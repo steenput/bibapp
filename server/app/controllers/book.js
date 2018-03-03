@@ -43,6 +43,65 @@ exports.getNews = function(req, res) {
     .catch(error => { use.send_error(error, res, 404, error); });
 }
 
+exports.getFavourites = function(req, res) {
+    let favourites = [];
+
+    Book.find().exists('favourite')
+    .then(found => {
+        found.forEach(f => {
+            favourites.push(f);
+        });
+        let requests = found.map(f => axios.get(baseUrlWrapper + '/book/' + f.id));
+        return axios.all(requests);
+    })
+    .then(results => {
+        let documents = results.map(r => r.data.book);
+        documents.forEach(document => {
+            if (document.isbn) {
+                id = document.id = document.isbn;
+            }
+            else if (document.issn) {
+                id = document.id = document.issn;
+            }
+            let found = favourites.find(n => { return n.id === id});
+            if (found) { document.favourite = found.favourite; }
+        });
+    
+        res.status(200).json({ error: false, date: new Date(), documents: documents });
+    })
+    .catch(error => { use.send_error(error, res, 404, error); });
+}
+
+exports.getReviews = function(req, res) {
+    let reviews = [];
+
+    Book.find().exists('review')
+    .then(found => {
+        found.forEach(f => {
+            log.debug(f.id)
+            reviews.push(f);
+        });
+        let requests = found.map(f => axios.get(baseUrlWrapper + '/book/' + f.id));
+        return axios.all(requests);
+    })
+    .then(results => {
+        let documents = results.map(r => r.data.book);
+        documents.forEach(document => {
+            if (document.isbn) {
+                id = document.id = document.isbn;
+            }
+            else if (document.issn) {
+                id = document.id = document.issn;
+            }
+            let found = reviews.find(n => { return n.id === id});
+            if (found) { document.review = found.review; }
+        });
+    
+        res.status(200).json({ error: false, date: new Date(), documents: documents });
+    })
+    .catch(error => { use.send_error(error, res, 404, error); });
+}
+
 exports.getBook = function(req, res) {
     const id = req.params.id;
     let db = {};
@@ -57,6 +116,8 @@ exports.getBook = function(req, res) {
         
         if (db) {
             result.book.comment = db.comment;
+            result.book.favourite = db.favourite;
+            result.book.review = db.review;
         }
 
         result.date = new Date();
@@ -65,11 +126,66 @@ exports.getBook = function(req, res) {
     .catch(error => { use.send_error(error, res, 404, error); });
 }
 
+exports.search = function(req, res) {
+    const str = req.params.str;
+    let documents = [];
+
+    axios.get(baseUrlWrapper + '/search/all/' + str)
+    .then(search => {
+        documents = search.data.documents;
+        return Book.find();
+    })
+    .then(found => {
+        documents.forEach(document => {
+            if (document.isbn) {
+                id = document.id = document.isbn;
+            }
+            else if (document.issn) {
+                id = document.id = document.issn;
+            }
+            found = found.find(n => { return n.id === id});
+            if (found) {
+                document.comment = found.comment;
+                document.favourite = found.favourite; 
+            }
+        });
+
+        // documents.date = new Date();
+        res.status(200).json({ error: false, date: new Date(), documents: documents });
+    })
+    .catch(error => { use.send_error(error, res, 404, error); });
+
+}
+
 exports.setComment = function(req, res) {
     log.debug(req.body);
-    Book.create({
-        id: req.body.id,
-        comment: req.body.comment
+    Book.findOneAndUpdate({id: req.body.id}, {comment: req.body.comment}, {
+        new: true,
+        upsert: true
+    })
+    .then((n) => {
+        res.status(200).json(n);
+    })
+    .catch(error => { use.send_error(error, res, 500, error); });
+}
+
+exports.setFavourite = function(req, res) {
+    log.debug(req.body);
+    Book.findOneAndUpdate({id: req.body.id}, {favourite: req.body.favourite}, {
+        new: true,
+        upsert: true
+    })
+    .then((n) => {
+        res.status(200).json(n);
+    })
+    .catch(error => { use.send_error(error, res, 500, error); });
+}
+
+exports.setReview = function(req, res) {
+    log.debug(req.body);
+    Book.findOneAndUpdate({id: req.body.id}, {review: req.body.review}, {
+        new: true,
+        upsert: true
     })
     .then((n) => {
         res.status(200).json(n);

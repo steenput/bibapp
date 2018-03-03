@@ -13,6 +13,9 @@ module.exports = function(app) {
     const authRoutes = express.Router();
     const bookRoutes = express.Router();
     const newsRoutes = express.Router();
+    const favouritesRoutes = express.Router();
+    const reviewsRoutes = express.Router();
+    const searchRoutes = express.Router();
     const imagesRoutes = express.Router();
 
     // Auth Routes
@@ -29,11 +32,25 @@ module.exports = function(app) {
     router.use('/book', bookRoutes);
     bookRoutes.get('/:id', bookCont.getBook);
     bookRoutes.post('/comment', reqAuth, authCont.roleAuthorization(['librarian', 'admin']), bookCont.setComment);
+    bookRoutes.post('/favourite', reqAuth, authCont.roleAuthorization(['librarian', 'admin']), bookCont.setFavourite);
+    bookRoutes.post('/review', reqAuth, authCont.roleAuthorization(['librarian', 'admin']), bookCont.setReview);
     // newsRoutes.delete('/:news_id', requireAuth, authController.roleAuthorization(['librarian', 'admin']), newsController.deleteTodo);
     
     // News Routes
     router.use('/news', newsRoutes)
     newsRoutes.get('/:year/:month', bookCont.getNews);
+
+    // Favourites Routes
+    router.use('/favourites', favouritesRoutes)
+    favouritesRoutes.get('/', bookCont.getFavourites);
+
+    // Reviews Routes
+    router.use('/reviews', reviewsRoutes)
+    reviewsRoutes.get('/', bookCont.getReviews);
+
+    // Search Routes
+    router.use('/search', searchRoutes)
+    searchRoutes.get('/:str', bookCont.search);
 
     // Images Routes
     router.use('/images', imagesRoutes);
