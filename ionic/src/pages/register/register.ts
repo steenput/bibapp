@@ -25,7 +25,7 @@ export class RegisterPage {
       role: this.role
     };
     console.log(details);
-    this.authService.createAccount(details).then((result) => {
+    this.authService.register(details).then((result) => {
       this.loading.dismiss();
       console.log('in register', result);
       this.navCtrl.setRoot(HomePage);

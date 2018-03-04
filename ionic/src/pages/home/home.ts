@@ -10,6 +10,7 @@ import { ReviewsPage } from '../reviews/reviews';
 import { LoginPage } from '../login/login';
 import { AuthProvider } from '../../providers/auth/auth';
 import { SearchPage } from '../search/search';
+import { RegisterPage } from '../register/register';
 
 
 @Component({
@@ -18,8 +19,10 @@ import { SearchPage } from '../search/search';
 })
 export class HomePage {
   pages: Array<Page>;
+  logText: string;
 
   constructor(public navCtrl: NavController, public authService: AuthProvider) {
+    this.logText = this.authService.isConnected() ? 'log-out' : 'log-in';
     this.pages = [
       { title: 'Nouveautés', component: NewsPage },
       { title: 'Coups de coeur', component: HeartsPage },      
@@ -34,12 +37,18 @@ export class HomePage {
     });
   }
 
-  login() {
-    this.navCtrl.push(LoginPage);
+  log() {
+    if (this.authService.isConnected()) {
+      this.authService.logout();
+      this.logText = 'log-in';
+      this.navCtrl.setRoot(HomePage);
+    }
+    else {
+      this.navCtrl.push(LoginPage);
+    }
   }
 
-  logout() {
-    this.authService.logout();
+  register() {
+    this.navCtrl.push(RegisterPage);
   }
-
 }

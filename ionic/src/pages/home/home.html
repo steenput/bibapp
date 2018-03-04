@@ -3,6 +3,14 @@
     <ion-title>
       BibApp Hepia
     </ion-title>
+    <ion-buttons end>
+      <button ion-button (click)="log()">
+        <ion-icon name="{{ logText }}"> {{ logText }}</ion-icon>
+      </button>
+      <button ion-button (click)="register()">
+        <ion-icon name="create"> register</ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
@@ -14,11 +22,6 @@
           {{ p.title }}
         </button>
       </ion-col>
-    </ion-row>
-
-    <ion-row>
-      <button ion-button (click)="login()">Login</button>
-      <button ion-button (click)="logout()">Logout</button>
     </ion-row>
   </ion-grid>
 </ion-content>

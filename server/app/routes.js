@@ -20,10 +20,8 @@ module.exports = function(app) {
 
     // Auth Routes
     router.use('/auth', authRoutes);
-    authRoutes.post('/register', authCont.register);
-    // TODO: restrict admin only to create new accounts
-    // authRoutes.post('/register', authController.roleAuthorization(['admin']), authController.register);
     authRoutes.post('/login', reqLogin, authCont.login);
+    authRoutes.post('/register', reqAuth, authCont.roleAuthorization(['admin']), authCont.register);
     authRoutes.get('/protected', reqAuth, function(req, res) {
         res.json({ content: 'Success' });
     });
