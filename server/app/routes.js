@@ -56,9 +56,11 @@ module.exports = function(app) {
 
     // Images Routes
     router.use('/images', imagesRoutes);
+    imagesRoutes.get('/add', imagesCont.addImage);
     imagesRoutes.get('/:id', imagesCont.getImage);
     imagesRoutes.post('/', reqAuth, authCont.roleAuthorization(['librarian', 'admin']), 
         imagesCont.images.single('image'), imagesCont.setImage);
+    imagesRoutes.delete('/:id', reqAuth, authCont.roleAuthorization(['librarian', 'admin']), imagesCont.deleteImage);
 
     // Set up routes
     app.use('/', router);

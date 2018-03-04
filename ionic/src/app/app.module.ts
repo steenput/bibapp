@@ -22,10 +22,6 @@ import { SearchPage } from "../pages/search/search";
 import { AuthProvider } from '../providers/auth/auth';
 import { ImagesProvider } from '../providers/images/images';
 import { BookProvider } from '../providers/book/book';
-import { FileTransfer } from '@ionic-native/file-transfer';
-import { Camera } from '@ionic-native/camera';
-import { CameraMock } from '@ionic-native-mocks/camera';
-import { FileTransferMock } from "@ionic-native-mocks/file-transfer";
 
 @NgModule({
   declarations: [
@@ -70,9 +66,7 @@ import { FileTransferMock } from "@ionic-native-mocks/file-transfer";
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     AuthProvider,
     ImagesProvider,
-    BookProvider,
-    { provide: Camera, useClass: CameraMock },
-    { provide: FileTransfer, useClass: FileTransferMock }
+    BookProvider
   ]
 })
 export class AppModule {}

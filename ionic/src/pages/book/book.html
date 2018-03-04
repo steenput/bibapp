@@ -51,12 +51,7 @@
     <button ion-button (click)="deleteReview()">Supprimer revue</button>
   </ion-buttons>
 
-  <!-- <ion-buttons *ngIf="userConnected">
-    <button ion-button (click)="addImage()">Ajouter/modifier image</button>
-  </ion-buttons> -->
-
-  <!-- <form action="http://localhost:8082/images" method="POST">
-    <input type="file" id="image" name="image">
-    <input type="submit" value="Send">
-  </form> -->
+  <ion-buttons *ngIf="userConnected">
+    <a target="_blank" href="http://localhost:8082/images/add?id={{ id }}&token={{ authProvider.token }}">Ajouter image</a>
+  </ion-buttons>
 </ion-content>

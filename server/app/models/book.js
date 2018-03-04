@@ -9,10 +9,13 @@ const bookSchema = new mongoose.Schema({
     favourite: String,
     review: String,
     image: {
+        originalname: String,
         filename: String,
-        created: {
-            type: Date
-        }
+        encoding: String,
+        mimetype: String,
+        destination: String,
+        path: String,
+        size: Number
     }
 }, { timestamps: true });
 

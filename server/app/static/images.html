@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Manage images</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- <link rel="stylesheet" type="text/css" media="screen" href="main.css" /> -->
+</head>
+
+<body>
+    <!-- <form action="/images" method="POST">
+        <input type="file" id="image" name="image">
+        <input type="submit" value="Send">
+    </form> -->
+
+    <input type="file" name="image" id="image" />
+
+    <script>
+        function getUrlParams(field, url) {
+            let href = url ? url : window.location.href;
+            let reg = new RegExp('[?&]' + field + '=([^&#]*)', 'i');
+            let string = reg.exec(href);
+            return string ? string[1].replace('%20', ' ') : null;
+        }
+
+        document.querySelector('#image').addEventListener('change', function(e) {
+        let file = this.files[0];
+        let fd = new FormData();
+        fd.append('image', file);
+        fd.append('id', getUrlParams('id'));
+
+        let xhr = new XMLHttpRequest();
+        xhr.open('POST', '/images');
+        xhr.setRequestHeader('Authorization', getUrlParams('token'));
+
+        xhr.onload = function() {
+            if (this.status === 200)
+                console.log('Server got:', JSON.parse(this.response));
+            else
+                console.log('Server got:', this.response);
+            // let text = document.createElement('p');
+            // text.value = resp.message;
+            // document.body.appendChild(text);
+        };
+
+        xhr.send(fd);
+        }, false);
+    </script>
+</body>
+
+</html>

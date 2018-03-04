@@ -147,7 +147,7 @@ exports.deleteComment = function(req, res) {
             review: n.review,
             image: n.image
         };
-        log.debug(reinsert)
+        log.debug(reinsert);
         return Book.create(reinsert);
     })
     .then(book => {
@@ -167,7 +167,7 @@ exports.deleteFavourite = function(req, res) {
             review: n.review,
             image: n.image
         };
-        log.debug(reinsert)
+        log.debug(reinsert);
         return Book.create(reinsert);
     })
     .then(book => {
@@ -187,7 +187,7 @@ exports.deleteReview = function(req, res) {
             favourite: n.favourite,
             image: n.image
         };
-        log.debug(reinsert)
+        log.debug(reinsert);
         return Book.create(reinsert);
     })
     .then(book => {
