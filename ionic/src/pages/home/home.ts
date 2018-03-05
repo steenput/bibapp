@@ -26,8 +26,7 @@ export class HomePage {
     this.pages = [
       { title: 'Nouveautés', component: NewsPage },
       { title: 'Coups de coeur', component: HeartsPage },      
-      { title: 'Revue de presse', component: ReviewsPage },
-      { title: 'Recherche', component: SearchPage }
+      { title: 'Revue de presse', component: ReviewsPage }
     ];
   }
 
@@ -50,5 +49,13 @@ export class HomePage {
 
   register() {
     this.navCtrl.push(RegisterPage);
+  }
+
+  search(val: string) {
+    let page: Page = { title: 'Recherche', component: SearchPage }
+    this.navCtrl.push(page.component, {
+      page: page,
+      val: val
+    });
   }
 }

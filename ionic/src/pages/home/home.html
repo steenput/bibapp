@@ -17,6 +17,9 @@
 <ion-content class="grid-basic-page">
   <ion-grid>
     <ion-row>
+      <ion-searchbar #q [showCancelButton]="true" (keyup.enter)="search(q.value)"></ion-searchbar>
+    </ion-row>
+    <ion-row>
       <ion-col col-12 col-sm-12 col-md-6 col-lg-4 col-xl-4 *ngFor="let p of pages">
         <button ion-button (click)="openPage(p)">
           {{ p.title }}

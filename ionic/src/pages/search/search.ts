@@ -13,9 +13,7 @@ import { BookPage } from '../book/book';
 })
 export class SearchPage {
   page: Page;
-  results = new Array<Book>();
   loading: any;
-  searchQuery: string = '';
   items: any;
   
   constructor(
@@ -28,12 +26,10 @@ export class SearchPage {
     public loadingCtrl: LoadingController
   ) {
     this.page = this.navParams.get('page');
+    this.search(this.navParams.get('val'));
   }
 
-  getItems(ev: any) {
-    // set val to the value of the searchbar
-    let val = ev.target.value;
-    
+  search(val: string) {
     // if the value is an empty string don't filter the items
     if (val && val.trim() != '') {
       this.showLoader();
