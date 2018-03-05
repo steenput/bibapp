@@ -3,18 +3,20 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>Manage images</title>
+    <title>Ajouter une image</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- <link rel="stylesheet" type="text/css" media="screen" href="main.css" /> -->
+    <link rel="stylesheet" type="text/css" media="screen" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
 </head>
 
 <body>
-    <!-- <form action="/images" method="POST">
-        <input type="file" id="image" name="image">
-        <input type="submit" value="Send">
-    </form> -->
-
-    <input type="file" name="image" id="image" />
+    <div class="container text-center">
+        <h1>Ajouter une image</h1>
+        <h4 id="book"></h4>
+        <form>
+            <input type="file" name="image" id="image" />
+        </form>
+        <p id="result"></p>
+    </div>
 
     <script>
         function getUrlParams(field, url) {
@@ -24,24 +26,40 @@
             return string ? string[1].replace('%20', ' ') : null;
         }
 
+        const id = getUrlParams('id');
+
+        let xhr = new XMLHttpRequest();
+        xhr.open('GET', '/book/' + id);
+        xhr.onload = function() {
+            let book = JSON.parse(this.response);
+            book = book.book;
+            console.log('Book', JSON.parse(this.response));
+            document.getElementById('book').innerHTML = 'Pour le livre "' + book.title + '" et écrit par <em>' + book.author + '</em>';            
+        };
+        xhr.send(null);
+
         document.querySelector('#image').addEventListener('change', function(e) {
         let file = this.files[0];
         let fd = new FormData();
         fd.append('image', file);
-        fd.append('id', getUrlParams('id'));
+        fd.append('id', id);
 
-        let xhr = new XMLHttpRequest();
+        xhr = new XMLHttpRequest();
         xhr.open('POST', '/images');
         xhr.setRequestHeader('Authorization', getUrlParams('token'));
 
         xhr.onload = function() {
-            if (this.status === 200)
-                console.log('Server got:', JSON.parse(this.response));
-            else
-                console.log('Server got:', this.response);
-            // let text = document.createElement('p');
-            // text.value = resp.message;
-            // document.body.appendChild(text);
+            let resp = '';
+            if (this.status === 200) {
+                resp = JSON.parse(this.response);
+                resp = resp.message;
+            }
+            else {
+                resp = this.response;
+            }
+            
+            console.log('Server got:', resp);
+            document.getElementById('result').innerHTML = resp;
         };
 
         xhr.send(fd);
