@@ -6,6 +6,7 @@ import { ManageCommentPage } from '../manage-comment/manage-comment';
 import { ManageFavouritePage } from '../manage-favourite/manage-favourite';
 import { ManageReviewPage } from '../manage-review/manage-review';
 import { AuthProvider } from '../../providers/auth/auth';
+import { ImagesProvider } from '../../providers/images/images';
 
 @Component({
   selector: 'page-book',
@@ -21,6 +22,7 @@ export class BookPage {
     private modalCtrl: ModalController,
     private bookProvider: BookProvider,
     public authProvider: AuthProvider,
+    private imagesProvider: ImagesProvider
   ) {
     this.id = this.navParams.get('id');
     this.book = this.navParams.get('book');
@@ -68,21 +70,22 @@ export class BookPage {
   }
 
   deleteComment() {
-    console.log('delete comment');
     this.book.comment = undefined;
     this.bookProvider.deleteComment(this.id);
   }
 
   deleteFavourite() {
-    console.log('delete favourite');
     this.book.favourite = undefined;
     this.bookProvider.deleteFavourite(this.id);
   }
 
   deleteReview() {
-    console.log('delete review');
     this.book.review = undefined;
     this.bookProvider.deleteReview(this.id);
+  }
+
+  deleteImage() {
+    this.imagesProvider.deleteImage(this.id);
   }
 
 }

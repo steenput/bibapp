@@ -9,49 +9,58 @@
 
 
 <ion-content padding>
-  <img class="image" src="http://localhost:8082/images/{{ id }}">
-  <h1>{{ book.title }}</h1>
-  <h2>Écrit par {{ book.author }}</h2>
-  <h3 *ngIf="id">{{ id }}</h3>
-  <p>
-    <strong *ngIf="book.type">{{ book.type }}, </strong>
-    <span *ngIf="book.creationdate"><strong>{{ book.creationdate }}</strong>, </span>
-    <span *ngIf="book.publisher"> publié par <strong>{{ book.publisher }}</strong>, </span>
-    <span *ngIf="book.edition">édition <strong>{{ book.edition }}</strong></span>
-  </p>
-  <p>
-    <span *ngIf="book.language">Langue : <strong>{{ book.language }}</strong>, </span>
-    <span *ngIf="book.format">format : <strong>{{ book.format }}</strong></span>
-  </p>
-  <p *ngIf="book.description">{{ book.description }}</p>
-  <p *ngIf="book.keywords">Mots-clé : </p>
-  <ul *ngIf="book.keywords">
-    <li *ngFor="let keyword of book.keywords">{{ keyword }}</li>
-  </ul>
-  <p *ngIf="book.availability">Statut en bibliothèques :</p>
-  <ul *ngIf="book.availability">
-    <li *ngFor="let ava of book.availability">{{ ava.status }} à {{ ava.library }} ({{ ava.callNo }})</li>
-  </ul>
+  <ion-row>
+    <ion-col col-12 col-xs-12 col-sm-12 col-md-6 col-lg-4 col-xl-4>
+      <img class="image" src="http://localhost:8082/images/{{ id }}">
+    </ion-col>
+    <ion-col col-12 col-xs-12 col-sm-12 col-md-6 col-lg-4 col-xl-4>
+      <h1>{{ book.title }}</h1>
+      <h2>Écrit par {{ book.author }}</h2>
+      <h3 *ngIf="id">{{ id }}</h3>
+      <p>
+        <strong *ngIf="book.type">{{ book.type }}, </strong>
+        <span *ngIf="book.creationdate"><strong>{{ book.creationdate }}</strong>, </span>
+        <span *ngIf="book.publisher"> publié par <strong>{{ book.publisher }}</strong>, </span>
+        <span *ngIf="book.edition">édition <strong>{{ book.edition }}</strong></span>
+      </p>
+      <p>
+        <span *ngIf="book.language">Langue : <strong>{{ book.language }}</strong>, </span>
+        <span *ngIf="book.format">format : <strong>{{ book.format }}</strong></span>
+      </p>
+      <p *ngIf="book.description">{{ book.description }}</p>
+      <p *ngIf="book.keywords">Mots-clé : </p>
+      <ul *ngIf="book.keywords">
+        <li *ngFor="let keyword of book.keywords">{{ keyword }}</li>
+      </ul>
+      <p *ngIf="book.availability">Statut en bibliothèques :</p>
+      <ul *ngIf="book.availability">
+        <li *ngFor="let ava of book.availability">{{ ava.status }} à {{ ava.library }} ({{ ava.callNo }})</li>
+      </ul>
+    </ion-col>
+    <ion-col col-12 col-xs-12 col-sm-12 col-md-6 col-lg-4 col-xl-4>
+      <p *ngIf="book.comment">Commentaire des bibliothécaires : {{ book.comment }}</p>
+      <ion-buttons *ngIf="userConnected">
+        <button ion-button (click)="addComment()">Ajouter/modifier commentaire</button>
+        <button ion-button color="danger" (click)="deleteComment()">Supprimer commentaire</button>
+      </ion-buttons>
+    
+      <p *ngIf="book.favourite">Coup de coeur des bibliothécaires : {{ book.favourite }}</p>
+      <ion-buttons *ngIf="userConnected">
+        <button ion-button (click)="addFavourite()">Ajouter/modifier coup de coeur</button>
+        <button ion-button color="danger" (click)="deleteFavourite()">Supprimer coup de coeur</button>
+      </ion-buttons>
+    
+      <p *ngIf="book.review">Revue de presse des bibliothécaires : {{ book.review }}</p>
+      <ion-buttons *ngIf="userConnected">
+        <button ion-button (click)="addReview()">Ajouter/modifier revue</button>
+        <button ion-button color="danger" (click)="deleteReview()">Supprimer revue</button>
+      </ion-buttons>
+    
+      <ion-buttons *ngIf="userConnected">
+        <a ion-button color="secondary" target="_blank" href="http://localhost:8082/images/add?id={{ id }}&token={{ authProvider.token }}">Ajouter image</a>
+        <button ion-button color="danger" (click)="deleteImage()">Supprimer image</button>
+      </ion-buttons>
+    </ion-col>
+  </ion-row>
 
-  <p *ngIf="book.comment">Commentaire des bibliothécaires : {{ book.comment }}</p>
-  <ion-buttons *ngIf="userConnected">
-    <button ion-button (click)="addComment()">Ajouter/modifier commentaire</button>
-    <button ion-button (click)="deleteComment()">Supprimer commentaire</button>
-  </ion-buttons>
-
-  <p *ngIf="book.favourite">Coup de coeur des bibliothécaires : {{ book.favourite }}</p>
-  <ion-buttons *ngIf="userConnected">
-    <button ion-button (click)="addFavourite()">Ajouter/modifier coup de coeur</button>
-    <button ion-button (click)="deleteFavourite()">Supprimer coup de coeur</button>
-  </ion-buttons>
-
-  <p *ngIf="book.review">Revue de presse des bibliothécaires : {{ book.review }}</p>
-  <ion-buttons *ngIf="userConnected">
-    <button ion-button (click)="addReview()">Ajouter/modifier revue</button>
-    <button ion-button (click)="deleteReview()">Supprimer revue</button>
-  </ion-buttons>
-
-  <ion-buttons *ngIf="userConnected">
-    <a target="_blank" href="http://localhost:8082/images/add?id={{ id }}&token={{ authProvider.token }}">Ajouter image</a>
-  </ion-buttons>
 </ion-content>

@@ -48,10 +48,6 @@ export class LoginPage {
       });
   }
 
-  launchRegister() {
-    this.navCtrl.push(RegisterPage);
-  }
-
   showLoader() {
     this.loading = this.loadingCtrl.create({
       content: 'Authenticating...'
