@@ -9,11 +9,12 @@ export class ContentPage {
   private id: string;
   private content: string;
   private title: string;
+  private params: NavParams
 
-  constructor(private view: ViewController, private params: NavParams) {
-    this.id = params.get('id');
-    this.content = params.get('content');
-    this.title = params.get('title');
+  constructor(private view: ViewController) {
+    this.id = this.params.get('id');
+    this.content = this.params.get('content');
+    this.title = this.params.get('title');
   }
 
   saveContent() {

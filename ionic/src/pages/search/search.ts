@@ -1,9 +1,7 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ModalController, LoadingController } from 'ionic-angular';
+import { NavController, NavParams, LoadingController } from 'ionic-angular';
 import { Page } from '../page-interface';
 import { BookProvider } from '../../providers/book/book';
-import { ImagesProvider } from '../../providers/images/images';
-import { Http } from '@angular/http';
 import { BookPage } from '../book/book';
 
 @Component({
@@ -18,10 +16,7 @@ export class SearchPage {
   constructor(
     private navCtrl: NavController,
     private navParams: NavParams,
-    private modalCtrl: ModalController,
     private bookProvider: BookProvider,
-    private imagesProvider: ImagesProvider,
-    private http: Http,
     private loadingCtrl: LoadingController
   ) {
     this.page = this.navParams.get('page');

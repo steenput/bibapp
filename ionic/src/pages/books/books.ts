@@ -4,7 +4,6 @@ import { NavController, NavParams, LoadingController } from 'ionic-angular';
 import { Page } from '../page-interface';
 import { BookPage } from '../book/book';
 import { BookProvider } from '../../providers/book/book';
-import { TypeList } from '../typeList';
 
 @Component({
   selector: 'page-books',
@@ -23,22 +22,8 @@ export class BooksPage {
   ) {
     this.showLoader();
     this.page = this.navParams.get('page');
-    let list = undefined;
-    // switch (this.page.type) {
-    //   case TypeList.News:
-    //     list = this.bookProvider.getNews();
-    //     break;
-    //   case TypeList.Favourites:
-    //     list = this.bookProvider.getFavourites();
-    //     break;
-    //   case TypeList.Reviews:
-    //     list = this.bookProvider.getReviews();
-    //     break;
-    //   default:
-    //     break;
-    // }
+    
     this.bookProvider.getBooks(this.page.type).then(data => {
-      console.log(data)
       data.documents.forEach(doc => {
         this.books.push(doc);
       });
