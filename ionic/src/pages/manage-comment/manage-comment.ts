@@ -15,7 +15,7 @@ export class ManageCommentPage {
   }
 
   saveComment() {
-    let data = {id: this.id, comment: this.comment};
+    let data = {id: this.id, content: this.comment};
     this.view.dismiss(data);
   }
     

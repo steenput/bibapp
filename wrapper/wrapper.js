@@ -151,10 +151,10 @@ app.get('/search/:by/:keywords/:fast?', function(req, res) {
 
 app.get('/book/:id/:fast?', function(req, res) {
     const id = req.params.id;
-    const wrapperUrl = 'http://localhost:8081/search/';
+    const searchUrl = 'http://localhost:8081/search/';
     const fast = req.params.fast ? '/fast' : '';
 
-    axios.all([axios.get(wrapperUrl + 'isbn/' + id + fast), axios.get(wrapperUrl + 'issn/' + id + fast)])
+    axios.all([axios.get(searchUrl + 'isbn/' + id + fast), axios.get(searchUrl + 'issn/' + id + fast)])
     .then(results => {
         let book = {};
         results.forEach(r => {

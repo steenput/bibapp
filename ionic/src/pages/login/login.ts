@@ -3,7 +3,6 @@ import { NavController, LoadingController } from 'ionic-angular';
 
 import { AuthProvider } from '../../providers/auth/auth';
 import { HomePage } from '../home/home';
-import { RegisterPage } from '../register/register';
 
 @Component({
   selector: 'page-login',
@@ -40,7 +39,6 @@ export class LoginPage {
 
       this.authService.login(credentials).then(result => {
         this.loading.dismiss();
-        console.log('in login.ts, login', result);
         this.navCtrl.setRoot(HomePage);
       }, err => {
         this.loading.dismiss();

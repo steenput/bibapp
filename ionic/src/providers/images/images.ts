@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { Http, Headers } from '@angular/http';
 import 'rxjs/add/operator/map';
 
 import { AuthProvider } from '../auth/auth';
@@ -7,9 +7,12 @@ import { AuthProvider } from '../auth/auth';
 @Injectable()
 export class ImagesProvider {
   url: string;
+  headers: Headers;
 
   constructor(public http: Http, public authService: AuthProvider) {
     this.url = 'http://localhost:8082/images/';
+    this.headers = new Headers();
+    this.headers.append('Authorization', this.authService.token);
   }
 
   getImage(id: string) {
@@ -23,6 +26,8 @@ export class ImagesProvider {
   }
 
   deleteImage(id) {
-
+    this.http.delete(this.url + id, { headers: this.headers }).subscribe(res => {
+      console.log(res);
+    });
   }
 }

@@ -14,7 +14,7 @@ export class ManageReviewPage {
   }
 
   saveReview() {
-    let data = {id: this.id, review: this.review};
+    let data = {id: this.id, content: this.review};
     this.view.dismiss(data);
   }
     

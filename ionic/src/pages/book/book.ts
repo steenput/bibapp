@@ -40,7 +40,7 @@ export class BookPage {
     let addModal = this.modalCtrl.create(ManageCommentPage, { id: this.id, comment: this.book.comment });
     addModal.onDidDismiss((data) => {
       if (data) {
-        this.book.comment = data.comment;
+        this.book.comment = data.content;
         this.bookProvider.saveComment(data);
       }
     });
@@ -51,7 +51,7 @@ export class BookPage {
     let addModal = this.modalCtrl.create(ManageFavouritePage, { id: this.id });
     addModal.onDidDismiss((data) => {
       if (data) {
-        this.book.favourite = data.favourite;
+        this.book.favourite = data.content;
         this.bookProvider.saveFavourite(data);
       }
     });
@@ -62,7 +62,7 @@ export class BookPage {
     let addModal = this.modalCtrl.create(ManageReviewPage, { id: this.id });
     addModal.onDidDismiss((data) => {
       if (data) {
-        this.book.review = data.review;
+        this.book.review = data.content;
         this.bookProvider.saveReview(data);
       }
     });

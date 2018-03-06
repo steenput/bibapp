@@ -14,7 +14,7 @@ export class ManageFavouritePage {
   }
 
   saveFavourite() {
-    let data = {id: this.id, favourite: this.favourite};
+    let data = {id: this.id, content: this.favourite};
     this.view.dismiss(data);
   }
     

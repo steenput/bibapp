@@ -1,5 +1,5 @@
 const authCont = require('./controllers/authentication');
-const bookCont = require('./controllers/book');
+const bookCont = require('./controllers/books');
 const imagesCont = require('./controllers/images');
 const express = require('express');
 const passportService = require('../config/passport');

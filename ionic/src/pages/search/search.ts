@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, ModalController, LoadingController } from 'ionic-angular';
 import { Page } from '../page-interface';
-import { Book } from '../book';
 import { BookProvider } from '../../providers/book/book';
 import { ImagesProvider } from '../../providers/images/images';
 import { Http } from '@angular/http';

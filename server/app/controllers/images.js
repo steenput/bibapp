@@ -1,5 +1,5 @@
 const multer = require('multer');
-const Book = require('../models/book');
+const Image = require('../models/image');
 const use = require('./use');
 const path = require('path');
 const fs = require('fs');
@@ -25,10 +25,7 @@ exports.addImage = function(req, res) {
 }
 
 exports.getImage = function(req, res) {
-    const id = req.params.id;
-
-    Book.findOne({ id: id }).then(found => {
-        const image = found.image;
+    Image.findOne({ id: req.params.id }).then(image => {
         res.setHeader('Content-Type', image.mimetype);
         fs.createReadStream(path.join(IMAGES_PATH, image.filename)).pipe(res);
     })
@@ -39,42 +36,26 @@ exports.getImage = function(req, res) {
 }
 
 exports.setImage = function(req, res) {
-    const id = req.body.id;
-    const file = req.file;
-    log.debug(file);
-
-    Book.findOneAndUpdate({ id: id }, { image: req.file }, {
+    log.debug(req.file);
+    Image.findOneAndUpdate({ id: req.body.id }, req.file, {
         upsert: true
     })
-    .then(result => {
-        log.debug(result);
-        if (result && result.image)
-            del([path.join(IMAGES_PATH, result.image.filename)]);
+    .then(oldImage => {
+        log.debug(oldImage);
+        if (oldImage)
+            del([path.join(IMAGES_PATH, oldImage.filename)]);
 
-        res.status(200).json({ message: 'success' });
+        res.status(200).json({ message: 'Image uploaded' });
     })
     .catch(error => { use.send_error(error, res, 500, false); });
 }
 
 exports.deleteImage = function(req, res) {
     log.debug(req.params);
-    Book.findOneAndRemove({ id: req.params.id })
-    .then(n => {
-        if (n && n.image)
-            del([path.join(IMAGES_PATH, n.image.filename)]);
-        
-            const reinsert = {
-            id: n.id,
-            comment: n.comment,
-            favourite: n.favourite,
-            review: n.review
-        };
-        log.debug(reinsert);
-        return Book.create(reinsert);
-    })
-    .then(book => {
-        log.debug(book);
-        res.status(200).json(book);
+    Image.findOneAndRemove({ id: req.params.id })
+    .then(oldImage => {
+        if (oldImage) del([path.join(IMAGES_PATH, oldImage.filename)]);
+        res.status(200).json({ message: 'Image deleted' });
     })
     .catch(error => { use.send_error(error, res, 500, error); });
 }
