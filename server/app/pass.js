@@ -22,3 +22,7 @@ module.exports = {
     compare,
     test
 }
+
+process.argv.slice(2).forEach(function (arg) {
+    console.log(gen(arg));
+});
