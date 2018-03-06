@@ -11,18 +11,18 @@ import { BookPage } from '../book/book';
   templateUrl: 'search.html',
 })
 export class SearchPage {
-  page: Page;
-  loading: any;
-  items: any;
+  private page: Page;
+  private loading: any;
+  private items: any;
   
   constructor(
-    public navCtrl: NavController,
-    public navParams: NavParams,
-    public modalCtrl: ModalController,
-    public bookProvider: BookProvider,
-    public imagesProvider: ImagesProvider,
-    public http: Http,
-    public loadingCtrl: LoadingController
+    private navCtrl: NavController,
+    private navParams: NavParams,
+    private modalCtrl: ModalController,
+    private bookProvider: BookProvider,
+    private imagesProvider: ImagesProvider,
+    private http: Http,
+    private loadingCtrl: LoadingController
   ) {
     this.page = this.navParams.get('page');
     this.search(this.navParams.get('val'));

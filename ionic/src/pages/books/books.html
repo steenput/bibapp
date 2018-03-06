@@ -10,13 +10,13 @@
 
 <ion-content padding>
   <ion-list>
-    <button ion-item text-wrap *ngFor="let n of news" (click)="openBook(n.id)">
+    <button ion-item text-wrap *ngFor="let b of books" (click)="openBook(b.id)">
       <ion-thumbnail item-start>
-        <img src="http://localhost:8082/images/{{ n.id }}">
+        <img src="http://localhost:8082/images/{{ b.id }}">
       </ion-thumbnail>
-      <h2>{{ n.title }}</h2>
-      <h3>{{ n.author }}</h3>
-      <h3>{{ n.creationdate }}</h3>
+      <h2>{{ b.title }}</h2>
+      <h3>{{ b.author }}</h3>
+      <h3>{{ b.creationdate }}</h3>
     </button>
   </ion-list>
 </ion-content>

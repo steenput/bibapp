@@ -47,7 +47,7 @@ exports.setImage = function(req, res) {
 
         res.status(200).json({ message: 'Image uploaded' });
     })
-    .catch(error => { use.send_error(error, res, 500, false); });
+    .catch(error => { use.sendError(error, res, 500, false); });
 }
 
 exports.deleteImage = function(req, res) {
@@ -57,5 +57,5 @@ exports.deleteImage = function(req, res) {
         if (oldImage) del([path.join(IMAGES_PATH, oldImage.filename)]);
         res.status(200).json({ message: 'Image deleted' });
     })
-    .catch(error => { use.send_error(error, res, 500, error); });
+    .catch(error => { use.sendError(error, res, 500, error); });
 }

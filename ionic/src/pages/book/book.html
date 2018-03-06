@@ -40,20 +40,20 @@
     <ion-col col-12 col-xs-12 col-sm-12 col-md-6 col-lg-4 col-xl-4>
       <p *ngIf="book.comment">Commentaire des bibliothécaires : {{ book.comment }}</p>
       <ion-buttons *ngIf="userConnected">
-        <button ion-button (click)="addComment()">Ajouter/modifier commentaire</button>
-        <button ion-button color="danger" (click)="deleteComment()">Supprimer commentaire</button>
+        <button ion-button (click)="addContent('comment')">Ajouter/modifier commentaire</button>
+        <button ion-button color="danger" (click)="deleteContent('comment')">Supprimer commentaire</button>
       </ion-buttons>
     
       <p *ngIf="book.favourite">Coup de coeur des bibliothécaires : {{ book.favourite }}</p>
       <ion-buttons *ngIf="userConnected">
-        <button ion-button (click)="addFavourite()">Ajouter/modifier coup de coeur</button>
-        <button ion-button color="danger" (click)="deleteFavourite()">Supprimer coup de coeur</button>
+        <button ion-button (click)="addContent('favourite')">Ajouter/modifier coup de coeur</button>
+        <button ion-button color="danger" (click)="deleteContent('favourite')">Supprimer coup de coeur</button>
       </ion-buttons>
     
       <p *ngIf="book.review">Revue de presse des bibliothécaires : {{ book.review }}</p>
       <ion-buttons *ngIf="userConnected">
-        <button ion-button (click)="addReview()">Ajouter/modifier revue</button>
-        <button ion-button color="danger" (click)="deleteReview()">Supprimer revue</button>
+        <button ion-button (click)="addContent('review')">Ajouter/modifier revue</button>
+        <button ion-button color="danger" (click)="deleteContent('review')">Supprimer revue</button>
       </ion-buttons>
     
       <ion-buttons *ngIf="userConnected">

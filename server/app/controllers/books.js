@@ -34,15 +34,15 @@ function getBooksWithUrl(res, axiosFunction) {
         addContent(books.documents, values[0], values[1], values[2]);
         res.status(200).json(books);
     })
-    .catch(error => { use.send_error(error, res, 404, error); });
+    .catch(error => { use.sendError(error, res, 404, error); });
 }
 
 function getBooksWithContent(res, search, extraContent) {
     Promise.resolve(search)
     .then(found => {
         if (found.length === 0) {
-            res.status(200).json({ error: false, date: new Date(), size: 0, documents: [] });
-            return;
+            // res.status(200).json({ error: false, date: new Date(), size: 0, documents: [] });
+            return Promise.reject('no documents');
         }
         else {
             let requests = found.map(f => axios.get(urlWrapper + '/book/' + f.id + '/fast'));
@@ -54,7 +54,7 @@ function getBooksWithContent(res, search, extraContent) {
         addContent(documents, values[0], [], values[1]);
         res.status(200).json({ error: false, date: new Date(), size: documents.length, documents: documents });
     })
-    .catch(error => { use.send_error(error, res, 404, error); });
+    .catch(error => { use.sendError(error, res, 404, error); });
 }
 
 function setContent(req, res, model) {
@@ -66,13 +66,13 @@ function setContent(req, res, model) {
     .then(n => {
         res.status(200).json(n);
     })
-    .catch(error => { use.send_error(error, res, 500, error); });
+    .catch(error => { use.sendError(error, res, 500, error); });
 }
 
 function deleteContent(req, res, model) {
     model.findOneAndRemove({ id: req.params.id })
     .then(book => { res.status(200).json(book); })
-    .catch(error => { use.send_error(error, res, 500, error); });
+    .catch(error => { use.sendError(error, res, 500, error); });
 }
 
 exports.search = function(req, res) {
@@ -106,7 +106,7 @@ exports.getBook = function(req, res) {
         result.book.review = values[2] ? values[2].content : undefined;
         res.status(200).json(result);
     })
-    .catch(error => { use.send_error(error, res, 404, error); });
+    .catch(error => { use.sendError(error, res, 404, error); });
 }
 
 exports.setComment = function(req, res) {

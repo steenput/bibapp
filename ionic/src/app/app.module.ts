@@ -8,15 +8,11 @@ import { StatusBar } from '@ionic-native/status-bar';
 
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
-import { NewsPage } from '../pages/news/news';
-import { HeartsPage } from '../pages/hearts/hearts';
-import { ReviewsPage } from '../pages/reviews/reviews';
+import { BooksPage } from '../pages/books/books';
 import { LoginPage } from '../pages/login/login';
 import { RegisterPage } from '../pages/register/register';
 import { BookPage } from '../pages/book/book';
-import { ManageCommentPage } from '../pages/manage-comment/manage-comment';
-import { ManageFavouritePage } from '../pages/manage-favourite/manage-favourite';
-import { ManageReviewPage } from '../pages/manage-review/manage-review';
+import { ContentPage } from '../pages/content/content';
 import { SearchPage } from "../pages/search/search";
 
 import { AuthProvider } from '../providers/auth/auth';
@@ -27,12 +23,8 @@ import { BookProvider } from '../providers/book/book';
   declarations: [
     MyApp,
     HomePage,
-    NewsPage,
-    HeartsPage,
-    ReviewsPage,
-    ManageCommentPage,
-    ManageFavouritePage,
-    ManageReviewPage,
+    BooksPage,
+    ContentPage,
     LoginPage,
     RegisterPage,
     BookPage,
@@ -48,12 +40,8 @@ import { BookProvider } from '../providers/book/book';
   entryComponents: [
     MyApp,
     HomePage,
-    NewsPage,
-    HeartsPage,
-    ReviewsPage,
-    ManageCommentPage,
-    ManageFavouritePage,
-    ManageReviewPage,
+    BooksPage,
+    ContentPage,
     LoginPage,
     RegisterPage,
     BookPage,

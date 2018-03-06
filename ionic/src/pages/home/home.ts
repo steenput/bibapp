@@ -1,17 +1,12 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
-
 import { Page } from '../page-interface';
-
-import { NewsPage } from '../news/news';
-import { HeartsPage } from '../hearts/hearts';
-import { ReviewsPage } from '../reviews/reviews';
-
+import { BooksPage } from '../books/books';
 import { LoginPage } from '../login/login';
 import { AuthProvider } from '../../providers/auth/auth';
 import { SearchPage } from '../search/search';
 import { RegisterPage } from '../register/register';
-
+import { TypeList } from "../typeList";
 
 @Component({
   selector: 'page-home',
@@ -24,9 +19,9 @@ export class HomePage {
   constructor(public navCtrl: NavController, public authService: AuthProvider) {
     this.logText = this.authService.isConnected() ? 'log-out' : 'log-in';
     this.pages = [
-      { title: 'Nouveautés', component: NewsPage },
-      { title: 'Coups de coeur', component: HeartsPage },      
-      { title: 'Revue de presse', component: ReviewsPage }
+      { title: 'Nouveautés', type: TypeList.News, component: BooksPage },
+      { title: 'Coups de coeur', type: TypeList.Favourites, component: BooksPage },      
+      { title: 'Revue de presse', type: TypeList.Reviews, component: BooksPage }
     ];
   }
 
@@ -52,7 +47,7 @@ export class HomePage {
   }
 
   search(val: string) {
-    let page: Page = { title: 'Recherche', component: SearchPage }
+    let page: Page = { title: 'Recherche', type: TypeList.Search, component: SearchPage }
     this.navCtrl.push(page.component, {
       page: page,
       val: val

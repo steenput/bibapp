@@ -3,14 +3,15 @@ import { Http, Headers } from '@angular/http';
 import 'rxjs/add/operator/map';
 
 import { AuthProvider } from '../auth/auth';
+import { TypeList } from '../../pages/typeList';
 
 @Injectable()
 export class BookProvider {
-  url: string;
-  headers: Headers;
-  news: any;
-  favourites: any;
-  reviews: any;
+  private url: string;
+  private headers: Headers;
+  private news: any;
+  private favourites: any;
+  private reviews: any;
 
   constructor(public http: Http, public authService: AuthProvider) {
     this.url = 'http://localhost:8082/';
@@ -20,6 +21,20 @@ export class BookProvider {
     this.news = null;
     this.favourites = null;
     this.reviews = null;
+  }
+
+  getBooks(type: TypeList) {
+    switch (type) {
+      case TypeList.News:
+        console.log('news')
+        return this.getNews();
+      case TypeList.Favourites:
+        return this.getFavourites();
+      case TypeList.Reviews:
+        return this.getReviews();    
+      default:
+        break;
+    }
   }
 
   getBook(id: string) {
@@ -33,11 +48,10 @@ export class BookProvider {
     });
   }
 
-  getNews() {
+  private subGetNews(url: string) {
     if (this.news !== null) {
       return Promise.resolve(this.news);
     }
-
     return new Promise(resolve => {
       this.http.get(this.url + 'news')
         .map(res => res.json())
@@ -48,26 +62,19 @@ export class BookProvider {
     });
   }
 
-  getNewsDate(year: string, month: string) {
-    if (this.news !== null) {
-      return Promise.resolve(this.news);
+  getNews() {
+    console.log('getNews')
+    return this.subGetNews(this.url + 'news');
     }
 
-    return new Promise(resolve => {
-      this.http.get(this.url + 'news/' + year + '/' + month)
-        .map(res => res.json())
-        .subscribe(data => {
-          this.news = data;
-          resolve(this.news);
-        });
-    });
+  getNewsDate(year: string, month: string) {
+    return this.subGetNews(this.url + 'news/' + year + '/' + month);
   }
 
   getFavourites() {
     if (this.favourites !== null) {
       return Promise.resolve(this.favourites);
     }
-
     return new Promise(resolve => {
       this.http.get(this.url + 'favourites/')
         .map(res => res.json())
@@ -98,13 +105,13 @@ export class BookProvider {
       this.http.get(this.url + 'search/' + str).map(res => res.json())
       .subscribe(data => {
         resolve(data.documents);
-      })
+      });
     });
   }
 
   saveComment(data) {
     if (this.news !== null)
-      this.news.documents.find(n => { return n.id === data.id }).comment = data.comment;
+      this.news.documents.find(n => { return n.id === data.id }).comment = data.content;
 
     this.http.post(this.url + 'book/comment', JSON.stringify(data), { headers: this.headers })
     .subscribe(res => {
@@ -135,7 +142,6 @@ export class BookProvider {
     .subscribe(res => {
       console.log(res.json());
     });
-
     if (this.reviews !== null) {
       let found = this.reviews.documents.find(n => { return n.id === data.id });
       if (found) {
@@ -155,11 +161,6 @@ export class BookProvider {
     .subscribe(res => {
       console.log(res.json());
     });
-    if (this.news !== null) {
-      const index = this.news.documents.findIndex(i => { return i.id === id });
-      if (index > -1)
-        this.news.documents.splice(index, 1);
-    }
   }
 
   deleteFavourite(id) {

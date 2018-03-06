@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar color="secondary">
     <ion-title>
-      Ajouter/Modifier une revue de presse
+      Ajouter/Modifier {{ title }}
     </ion-title>
       <ion-buttons end>
         <button ion-button icon-only (click)="close()"><ion-icon name="close"></ion-icon></button>
@@ -11,10 +11,10 @@
  
 <ion-content>
   <ion-item>
-    <ion-label floating>Revue de presse</ion-label>
-    <ion-textarea [(ngModel)]="review"></ion-textarea>
+    <ion-label floating>{{ title }}</ion-label>
+    <ion-textarea [(ngModel)]="content"></ion-textarea>
   </ion-item>
  
-  <button full ion-button color="secondary" (click)="saveReview()">Sauvegarder</button>
+  <button full ion-button color="secondary" (click)="saveContent()">Sauvegarder</button>
  
 </ion-content>
