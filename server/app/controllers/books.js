@@ -41,8 +41,7 @@ function getBooksWithContent(res, search, extraContent) {
     Promise.resolve(search)
     .then(found => {
         if (found.length === 0) {
-            // res.status(200).json({ error: false, date: new Date(), size: 0, documents: [] });
-            return Promise.reject('no documents');
+            res.status(404).json({ error: false, date: new Date(), size: 0, documents: [] });
         }
         else {
             let requests = found.map(f => axios.get(urlWrapper + '/book/' + f.id + '/fast'));
