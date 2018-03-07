@@ -24,9 +24,7 @@ Enter 'Y' when asked to install `node_modules`. This command will generate a `ww
 contain all files needed to deploy the web app. You need to put this `www` folder in your web server (tested on Apache 2.4.18) 
 to serve clients.
 
-Next, you need to add two files in `server/config` : `auth.js` and `db.js`. Here you have to set your secret string for 
-hash authentication and your MongoDB server URL. See `auth_example.js` and `db_example.js` to see an example (default local 
-MongoDB URL used : `mongodb://localhost/bibapp`). You must also add at least an admin user to mongo. To generate a hash of 
+You must also add at least an admin user to mongo. To generate a hash of 
 your password, you can use `server/app/pass.js` to generate a hashed password to add to your user :
 
 ```shell

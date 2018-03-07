@@ -7,7 +7,6 @@ const app = express();
 const mongoose = require('mongoose');
 const morgan = require('morgan');                   // log requests to the console (express4)
 const bodyParser = require('body-parser');         // pull information from HTML POST (express4)
-// const method_override = require('method-override'); // simulate DELETE and PUT (express4)
 
 // My modules and const
 const router = require('./app/routes');
@@ -18,17 +17,9 @@ mongoose.connect(dbConfig.url);
 app.use(morgan('dev'));                                          // log every request to the console
 app.use(bodyParser.urlencoded({ extended: true }));             // parse application/x-www-form-urlencoded
 app.use(bodyParser.json());                                     // parse application/json
-// app.use(body_parser.json({ type: 'application/vnd.api+json' })); // parse application/vnd.api+json as json
-// app.use(method_override());
 app.use(cors());
-
-// app.use(function(req, res, next) {
-//     res.header('Access-Control-Allow-Origin', '*');
-//     res.header('Access-Control-Allow-Methods', 'DELETE, PUT');
-//     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-//     next();
-// });
 
 router(app);
 
 app.listen(8082);
+console.log('server listen on port 8082');

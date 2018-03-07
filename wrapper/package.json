@@ -2,6 +2,7 @@
     "name": "bibapp_wrapper",
     "version": "0.1.0",
     "main": "wrapper.js",
+    "scripts": { "start": "node wrapper.js" },
     "description": "Wrapper for BibApp Hepia server REST",
     "apidoc": {
         "name": "BibApp Wrapper",
