@@ -11,7 +11,7 @@
 <ion-content padding>
   <ion-row>
     <ion-col col-12 col-xs-12 col-sm-12 col-md-6 col-lg-4 col-xl-4>
-      <img class="image" src="http://localhost:8082/images/{{ id }}">
+      <img class="image" src="http://bibapp2.infolibre.ch:8082/images/{{ id }}">
     </ion-col>
     <ion-col col-12 col-xs-12 col-sm-12 col-md-6 col-lg-4 col-xl-4>
       <h1>{{ book.title }}</h1>
@@ -57,7 +57,7 @@
       </ion-buttons>
     
       <ion-buttons *ngIf="userConnected">
-        <a ion-button color="secondary" target="_blank" href="http://localhost:8082/images/add?id={{ id }}&token={{ authProvider.token }}">Ajouter image</a>
+        <a ion-button color="secondary" target="_blank" href="http://bibapp2.infolibre.ch:8082/images/add?id={{ id }}&token={{ authProvider.token }}">Ajouter image</a>
         <button ion-button color="danger" (click)="deleteImage()">Supprimer image</button>
       </ion-buttons>
     </ion-col>

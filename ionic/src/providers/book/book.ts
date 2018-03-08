@@ -14,7 +14,7 @@ export class BookProvider {
   private reviews: any;
 
   constructor(public http: Http, public authService: AuthProvider) {
-    this.url = 'http://localhost:8082/';
+    this.url = 'http://bibapp2.infolibre.ch:8082/';
     this.headers = new Headers();
     this.headers.append('Content-Type', 'application/json');
     this.headers.append('Authorization', this.authService.token);
@@ -26,7 +26,6 @@ export class BookProvider {
   getBooks(type: TypeList) {
     switch (type) {
       case TypeList.News:
-        console.log('news')
         return this.getNews();
       case TypeList.Favourites:
         return this.getFavourites();
@@ -63,9 +62,8 @@ export class BookProvider {
   }
 
   getNews() {
-    console.log('getNews')
     return this.subGetNews(this.url + 'news');
-    }
+  }
 
   getNewsDate(year: string, month: string) {
     return this.subGetNews(this.url + 'news/' + year + '/' + month);

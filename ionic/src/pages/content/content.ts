@@ -9,9 +9,9 @@ export class ContentPage {
   private id: string;
   private content: string;
   private title: string;
-  private params: NavParams
 
-  constructor(private view: ViewController) {
+  constructor(private view: ViewController, public params: NavParams) {
+    console.log(this.params);
     this.id = this.params.get('id');
     this.content = this.params.get('content');
     this.title = this.params.get('title');

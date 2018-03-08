@@ -24,12 +24,14 @@ export class BooksPage {
     this.page = this.navParams.get('page');
     
     this.bookProvider.getBooks(this.page.type).then(data => {
+      console.log('data', data);
       data.documents.forEach(doc => {
         this.books.push(doc);
       });
       this.loading.dismiss();
     })
     .catch(err => {
+      console.log('err', err);      
       this.loading.dismiss();
     });
   }

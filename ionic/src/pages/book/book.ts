@@ -39,7 +39,7 @@ export class BookPage {
 
   addContent(type: string) {
     console.log(type);
-    let content = undefined;
+    let content = 'test';
     let title = '';
     switch (type) {
       case this.comment:
@@ -57,6 +57,7 @@ export class BookPage {
       default:
         break;
     }
+    console.log(content);
     let addModal = this.modalCtrl.create(ContentPage, { id: this.id, content: content, title: title });
     addModal.onDidDismiss((data) => {
       if (data) {

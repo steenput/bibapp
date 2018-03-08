@@ -11,7 +11,7 @@ export class AuthProvider {
 
   constructor(public http: Http, public storage: Storage) {
     this.token = null;
-    this.url = 'http://localhost:8082/auth/';
+    this.url = 'http://bibapp2.infolibre.ch:8082/auth/';
   }
 
   isConnected() {

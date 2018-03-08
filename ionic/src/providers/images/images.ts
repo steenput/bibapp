@@ -10,7 +10,7 @@ export class ImagesProvider {
   headers: Headers;
 
   constructor(public http: Http, public authService: AuthProvider) {
-    this.url = 'http://localhost:8082/images/';
+    this.url = 'http://bibapp2.infolibre.ch:8082/images/';
     this.headers = new Headers();
     this.headers.append('Authorization', this.authService.token);
   }

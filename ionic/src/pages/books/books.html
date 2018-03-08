@@ -12,7 +12,7 @@
   <ion-list>
     <button ion-item text-wrap *ngFor="let b of books" (click)="openBook(b.id)">
       <ion-thumbnail item-start>
-        <img src="http://localhost:8082/images/{{ b.id }}">
+        <img src="http://bibapp2.infolibre.ch:8082/images/{{ b.id }}">
       </ion-thumbnail>
       <h2>{{ b.title }}</h2>
       <h3>{{ b.author }}</h3>
