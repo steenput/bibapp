@@ -23,7 +23,8 @@
 \usepackage{caption}
 \newenvironment{code}{\captionsetup{type=listing}}{}
 \usepackage{array}
-
+\usepackage{etoolbox} 
+\patchcmd{\thebibliography}{\section*{\refname}}{}{}{}
 
 \begin{document}
 
@@ -32,10 +33,18 @@
 \affil{\small Projet de semestre - Prof. Mickaël Hoerdt} 
 \affil{\small Hepia ITI 3\up{ème} année} 
 \maketitle
+\newpage
+
+\tableofcontents
+\listoffigures
+% \renewcommand\listoflistingscaption{Table des scripts de code}
+% \listoflistings
+\newpage
 
 % \mintinline{java}{GameView}
 
-\section{Besoins de la bibliothèque}
+\section{Introduction}
+\subsection{Besoins de la bibliothèque}
 La bibliothèque de l'hepia aimerait attirer plus de monde en créant du contenu personnalisé autour de son 
 catalogue d'ouvrages et revues par le biais d'un site/application mobile. Voici les besoins listés plus 
 précisement :
@@ -49,6 +58,15 @@ Toutes ces actions doivent pouvoir être réalisées via le site web en mode adm
 création, récupération, modification et suppression de contenu (CRUD) sont nécessaires. Un mode utilisateur, ou visiteur, 
 permet de consulter le contenu, depuis un ordinateur ou un appareil mobile. L'idée est de créer une source 
 de contenus basée sur le catalogue Nebis et augmentée par les ajouts des bibliothécaires.
+
+\section{Technologies utilisées}
+\subsection{Ionic}
+\subsection{Node.js}
+\subsection{MongoDB}
+\subsection{JSON Web Tokens}
+
+\section{Tutoriel sur Ionic}
+\textit{Voir BibApp - Ionic.md (pour l'instant)}
 
 % p{.5\linewidth}
 
@@ -113,6 +131,18 @@ Partie front-end de l'application, elle offrira côté utilisateur :
 \end{itemize}
 Côté administrateur (ou rédacteur), les bibliothécaires pourront s'authentifier et auront une section supplémentaire, 
 "Images", où ils pourront ajouter les scans des livres aux entrées existantes. Pour les autres sections, ils 
-pourront ajouter le contenu correspondant aux entrées voulues.
+pourront ajouter le contenu correspondant aux entrées voulues. \cite{ref1}
+
+
+\section{Réalisation}
+\subsection{Captures d'écran}
+
+\section{Conclusion}
+
+\section{Annexes}
+
+\section{Références}
+\bibliographystyle{unsrt}
+\bibliography{bib}
 
 \end{document}
