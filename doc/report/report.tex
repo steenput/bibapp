@@ -11,127 +11,352 @@
 \floatplacement{figure}{H}
 \usepackage{authblk}
 \usepackage{enumitem}
-\usepackage{hyperref} 
+\usepackage{hyperref}
 \hypersetup{
-	colorlinks,
-	citecolor=black,
-	filecolor=black,
-	linkcolor=black,
-	urlcolor=blue
+    colorlinks,
+    citecolor=black,
+    filecolor=black,
+    linkcolor=black,
+    urlcolor=blue
 }
 
 \usepackage{caption}
 \newenvironment{code}{\captionsetup{type=listing}}{}
 \usepackage{array}
-\usepackage{etoolbox} 
+\usepackage{etoolbox}
 \patchcmd{\thebibliography}{\section*{\refname}}{}{}{}
 
 \begin{document}
 
-\title{BibApp Hepia} 
-\author{Steven Liatti} 
-\affil{\small Projet de semestre - Prof. Mickaël Hoerdt} 
-\affil{\small Hepia ITI 3\up{ème} année} 
+\title{BibApp Hepia}
+\author{Steven Liatti}
+\affil{\small Projet de semestre - Prof. Mickaël Hoerdt}
+\affil{\small Hepia ITI 3\up{ème} année}
 \maketitle
+
+\begin{figure}
+	\begin{center}
+		\includegraphics[width=0.5\textwidth]{images/architecture.png}
+	\end{center}
+\end{figure}
+
+\begin{figure}[!b]
+	\centering
+	\begin{minipage}{.5\textwidth}
+		\centering
+		\includegraphics[width=.7\linewidth]{images/hepia.jpg}
+	\end{minipage}%
+	\begin{minipage}{.5\textwidth}
+		\centering
+		\includegraphics[width=.7\linewidth]{images/hesso.jpg}
+	\end{minipage}
+\end{figure}
+\newpage
+
 \newpage
 
 \tableofcontents
+\newpage
 \listoffigures
-% \renewcommand\listoflistingscaption{Table des scripts de code}
-% \listoflistings
+\renewcommand\listoflistingscaption{Table des listings de code source}
+\listoflistings
 \newpage
 
-% \mintinline{java}{GameView}
-
 \section{Introduction}
+\subsection{BibApp V1}
 \subsection{Besoins de la bibliothèque}
-La bibliothèque de l'hepia aimerait attirer plus de monde en créant du contenu personnalisé autour de son 
-catalogue d'ouvrages et revues par le biais d'un site/application mobile. Voici les besoins listés plus 
+La bibliothèque de l'hepia aimerait attirer plus de monde en créant du contenu personnalisé autour de son
+catalogue d'ouvrages et revues par le biais d'un site/application mobile. Voici les besoins listés plus
 précisement :
 \begin{itemize}
-	\item Résumé d'un nouveau livre arrivé à la bibliothèque (nouveautés)
-	\item Coups de coeur des bibliothécaires sur les ouvrages présents
-	\item Revues de presse des périodiques
-	\item Ajouter les images des couvertures scannées par la bibliothèque
+    \item Résumé d'un nouveau livre arrivé à la bibliothèque (nouveautés)
+    \item Coups de coeur des bibliothécaires sur les ouvrages présents
+    \item Revues de presse des périodiques
+    \item Ajouter les images des couvertures scannées par la bibliothèque
 \end{itemize}
-Toutes ces actions doivent pouvoir être réalisées via le site web en mode administrateur. Les opérations de 
-création, récupération, modification et suppression de contenu (CRUD) sont nécessaires. Un mode utilisateur, ou visiteur, 
-permet de consulter le contenu, depuis un ordinateur ou un appareil mobile. L'idée est de créer une source 
+Toutes ces actions doivent pouvoir être réalisées via le site web en mode administrateur. Les opérations de
+création, récupération, modification et suppression de contenu (CRUD) sont nécessaires. Un mode utilisateur, ou visiteur,
+permet de consulter le contenu, depuis un ordinateur ou un appareil mobile. L'idée est de créer une source
 de contenus basée sur le catalogue Nebis et augmentée par les ajouts des bibliothécaires.
 
 \section{Technologies utilisées}
+
+\subsection{Typescript}
+Ionic fait usage de \href{http://www.typescriptlang.org/}{Typescript}, une surcouche à Javascript, offrant des types
+vérifés à la "compilation" (car Typescript est traduit, "transpiled", vers du Javascript conventionnel) et non à
+l'exécution, signalant les erreurs sur les types et offrant ainsi plus de rigueur à l'écriture du code \cite{ref12}.
+
+\begin{code}
+    % \inputminted[breaklines,breaksymbol=,linenos,frame=single,stepnumber=1,tabsize=2]{language}{code}
+    \begin{minted}[breaklines,breaksymbol=,linenos,frame=single,stepnumber=1,tabsize=2]{typescript}
+function add(x : number, y : number) : number {
+    return x + y;
+}
+add('a', 'b'); // compiler error
+
+// Class example :
+class Greeter {
+    greeting: string;
+    constructor (message: string) {
+        this.greeting = message;
+    }
+    greet() {
+        return "Hello, " + this.greeting;
+    }
+}
+    \end{minted}
+    \caption{Syntaxe Typescript}
+    % \label{my_ref}
+\end{code}
+La structure basique des fichiers \textit{composants} Typescript avec Ionic ou Angular est semblable à ceci :
+\begin{code}
+    \begin{minted}[breaklines,breaksymbol=,linenos,frame=single,stepnumber=1,tabsize=2]{typescript}
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'my-app'
+})
+export class AppComponent {
+  title = 'My App';
+  private field: string;
+
+  constructor(public param: string) {
+    this.field = param;
+  }
+}
+    \end{minted}
+    \caption{Exemple d'une classe Typescript sous Ionic ou Angular}
+    % \label{my_ref}
+\end{code}
+Explications : on importe le composant \mintinline{typescript}{Component}, on définit le sélecteur utilisé dans le HTML
+pour faire le rendu et on définit notre classe \mintinline{typescript}{AppComponent} qui pourra être exportée dans
+d'autres modules. Dans cette classe nous définissons deux attributs \mintinline{typescript}{title} et
+\mintinline{typescript}{field} et un constructeur. Typescript amène également une notion de visibilité des attributs 
+et méthodes d'une classe, comme en Java.
+
+\subsection{Angular 4}
+\href{https://angular.io/}{Angular} (\cite{ref15}, \cite{ref21}) est un framework front-end Javascript développé par Google.
+Je ne l'ai pas directement utilisé dans mon travail mais Ionic est construit sur Angular et partage de nombreux concepts
+et fonctionnalités avec lui.
+Angular impose une architecture de modules, où, pour chaque module, sont définis des fichiers HTML pour la structure
+(avec une syntaxe ajoutée, voir plus loin), des fichiers CSS (ou autres préprocesseurs CSS comme
+\href{http://sass-lang.com/}{Sass}) et des fichiers \textit{composant} écrits en Typescript, gérant la logique "métier".
+\begin{figure}
+    \begin{center}
+        \includegraphics[width=0.8\textwidth]{images/angular2.png}
+    \end{center}
+    \caption{Architecture d'un composant Angular \cite{ref13}}
+\end{figure}
+Comme on peut apercevoir sur la figure ci-dessus, le template HTML intéragit avec son composant Typescript.
+Un composant Angular est une simple classe Typescript, possédant attributs et méthodes.
+Un template représente le combo page HTML et CSS, la vue du module, en interaction avec l'utilisateur.
+Selon les actions de l'utilisateur, la vue ou le modèle (données) est mis à jour. On peut accéder aux attributs et méthodes
+du composant depuis le template. Un ou plusieurs services peuvent être utilisés ("injectés") dans un module. On peut
+voir un service comme un composant réutilisable et ne possédant pas (forcément) de template (exemples : services
+d'authentification, de gestion d'images, etc.).
+\bigbreak
+Voici une brève description de balises et directives HTML ajoutées par Angular :
+\begin{code}
+    \begin{minted}[breaklines,breaksymbol=,linenos,frame=single,stepnumber=1,tabsize=2]{html}
+<input [value]="firstName">
+<button (click)="someFunction(event)">
+<p>Hi, {{ name }} {{ 1 + 1 }}</p>
+<input [(ngModel)]="name">
+<p #myParagraph></p>
+<section *ngIf="showSection">
+<li *ngFor="let item of items">
+    \end{minted}
+    \caption{Syntaxe HTML avec Angular}
+    % \label{my_ref}
+\end{code}
+Descriptif ligne par ligne :
+\begin{enumerate}
+    \item Change la propriété \mintinline{html}{value} en lui attribuant la vraie valeur de l'attribut de classe firstName (définit dans une classe Typescript)
+    \item Appelle la fonction \mintinline{javascript}{someFunction()} en lui passant l'événement \mintinline{javascript}{event} au moment du clic sur le bouton
+    \item Évalue les expressions entre {} et les affiche, ici en l'occurence un attribut \mintinline{javascript}{name} et le calcul de 1 + 1, 2
+    \item Applique la valeur de \mintinline{javascript}{name} à l'input, mais s'il y a changement de la part de l'utilisateur, met à jour l'objet associé
+    \item Crée une variable locale au template HTML
+    \item \mintinline{html}{*ngIf} : supprime l'élément du DOM (ici \mintinline{html}{section}) si la condition n'est pas remplie
+    \item \mintinline{html}{*ngFor} : boucle sur un tableau et répète l'élément du DOM
+\end{enumerate}
 \subsection{Ionic}
+\subsection{Promise Javascript}
 \subsection{Node.js}
 \subsection{MongoDB}
 \subsection{JSON Web Tokens}
 
 \section{Tutoriel sur Ionic}
-\textit{Voir BibApp - Ionic.md (pour l'instant)}
+\textit{Ce tutoriel est réalisé avec la version 3.x.x de Ionic avec une machine sous Linux. Pour approfondir l'étude, 
+un tutoriel sur le site de Ionic est disponible (\cite{ref0}).}
+\bigbreak
+Tout d'abord, Ionic nécessite Node.js et \mintinline{text}{npm}, son gestionnaire de paquets/dépendances Javascript. 
+Une fois \mintinline{text}{npm} installé, il faut entrer la commande suivante dans un terminal :
+\begin{code}
+    \begin{minted}[breaklines,breaksymbol=,linenos,frame=single,stepnumber=1,tabsize=2]{bash}
+npm install -g ionic cordova
+    \end{minted}
+    \caption{Installation de Ionic et Cordova}
+    % \label{my_ref}
+\end{code}
+Cela installe Ionic et \href{https://cordova.apache.org}{Cordova}, l'outil permettant de traduire une web app à base de 
+HTML, CSS et Javascript en application hybride (moitié native, moitié web) pour la plateforme choisie (Android, iOS, etc.). 
+Pour créer un nouveau projet, il faut alors faire ceci :
+\begin{code}
+    \begin{minted}[breaklines,breaksymbol=,linenos,frame=single,stepnumber=1,tabsize=2]{bash}
+ionic start myapp
+cd myapp
+ionic serve
+    \end{minted}
+    \caption{Initialisation d'un projet Ionic}
+    % \label{my_ref}
+\end{code}
+La première commande crée l'arborescence de base d'un projet Ionic se nommant "myapp". 
+La dernière commande compile les sources Ionic dans le sous-dossier \mintinline{text}{www}
+et lance un serveur web de développement en écoute sur \url{http://localhost:8100} qui compile à nouveau le projet à chaque 
+changement dans le code.
 
-% p{.5\linewidth}
+\subsection{Arborescence}
+\subsection{Ionic CLI}
+\subsection{Page}
+\subsection{Provider}
 
-% \begin{table}[h]
-% 	\begin{tabular}{|c|c|c|c|}	\hline
-% 		\textbf{Besoin}	& \textbf{Actions} & \textbf{Priorité} & \textbf{Temps demandé} \\ \hline
-% 		&&& \\ \hline
-% 		\end{tabular}
-% \end{table}
+\subsection{Navigation}
+Ionic utilise un système de pile pour la navigation entre ses pages. Selon si la page suivante a une relation 
+semblable à celle "parent-enfant", ça vaut la peine de "push" la nouvelle page sur la première, pour facilement y 
+revenir : par exemple, une liste d'articles, avec pour chaque article la possibilité de naviguer vers lui, il semble 
+naturel de pouvoir facilement revenir à la liste des articles. Au contraire, si on change de section sur notre 
+application ou si les deux pages n'ont pas de lien direct entre elles, il vaut mieux changer la \mintinline{text}{root page}, 
+autrement dit, la "page racine" (\cite{ref50}).
+
+\subsection{Composant HTTP}
+Angular fournit un composant HTTP, utilisable dans Ionic, pour faire des requêtes asynchrones. Exemple ici d'une 
+requête \mintinline{text}{GET}. La fonction \mintinline{javascript}{map()} applique pour chaque élément des données 
+reçues (un tableau par exemple) la fonction passée en argument et retourne un \mintinline{javascript}{Observable}. 
+Ici on parse les données JSON reçues. Ensuite, dans \mintinline{javascript}{subscribe}, trois cas de figure :
+\begin{itemize}
+    \item On accède aux données lorsqu'elles sont "prêtes"
+    \item Si la requête a échoué, on affiche un message d'erreur (dans le cas présent)
+    \item Enfin, on exécute les instructions dans tous les cas de figure
+\end{itemize}
+\begin{code}
+    \begin{minted}[breaklines,breaksymbol=,linenos,frame=single,stepnumber=1,tabsize=2]{typescript}
+this.http.get('http://example.com/api')
+.map(res => res.json())
+.subscribe(
+  data => {
+    // process data
+  },
+  err => {
+    console.log("Error : ", err);
+  },
+  () => {
+    // finally block
+  }
+);
+    \end{minted}
+    \caption{Requête HTTP avec Ionic}
+    % \label{my_ref}
+\end{code}
+
+\subsection{Storage}
+Ionic fournit une méthode simple pour stocker des données sour forme de paires clé/valeur sur le client local, 
+que ce soit dans le navigateur ou dans l'application mobile. Une utilisation possible est de déclarer une classe 
+qui fait appel à \mintinline{text}{storage} de la manière suivante :
+\begin{code}
+    \begin{minted}[breaklines,breaksymbol=,linenos,frame=single,stepnumber=1,tabsize=2]{typescript}
+import { Storage } from '@ionic/storage';
+import { Injectable } from '@angular/core';
+
+@Injectable()
+export class DataProvider {
+
+  constructor(private storage: Storage) {}
+
+  getPairs() {
+    let pairs = [];
+    this.storage.forEach((v, k) => {
+      comments.push({key: k, value: v});
+    });
+    return pairs;
+  }
+
+  get(key: string) {
+    return this.storage.get(key);
+  }
+ 
+  set(key: string, data: string) {
+    this.storage.set(key, data);
+  }
+
+}
+    \end{minted}
+    \caption{Storage avec Ionic}
+    % \label{my_ref}
+\end{code}
+
+\subsection{Déploiement}
+\subsubsection{Browser}
+\subsubsection{Android}
+\subsubsection{iOS}
+\subsection{Composants}
+\subsection{Thèmes}
+
 
 \section{Architecture}
-Actuellement, le catalogue Nebis est utilisé par la bibliothèque. Cependant, il sera abandonné dans quelques 
-années pour un nouveau catalogue, encore inconnu à ce jour. L'objectif étant de réaliser une web app pérenne, 
+Actuellement, le catalogue Nebis est utilisé par la bibliothèque. Cependant, il sera abandonné dans quelques
+années pour un nouveau catalogue, encore inconnu à ce jour. L'objectif étant de réaliser une web app pérenne,
 il faut pouvoir s'adapter à ce changement. Voici ci-dessous l'architecture globale de l'application :
 \begin{figure}
-	\begin{center}
-		\includegraphics[width=0.5\textwidth]{images/architecture.png}
-	\end{center}
-	\caption{Architecture globale de la web app}
+    \begin{center}
+        \includegraphics[width=0.5\textwidth]{images/architecture.png}
+    \end{center}
+    \caption{Architecture globale de la web app}
 \end{figure}
 Le Wrapper et le serveur REST seront faits en Node.js. La base de données sera faite avec MongoDB.
 
 \subsection{Wrapper}
-Ce module fait le pont entre les données issues d'un catalogue et le serveur REST. Son utilité principale est 
-de s'adapter au catalogue utilisé : si le catalogue est amené à changer ou à disparaître au profit d'un autre, 
+Ce module fait le pont entre les données issues d'un catalogue et le serveur REST. Son utilité principale est
+de s'adapter au catalogue utilisé : si le catalogue est amené à changer ou à disparaître au profit d'un autre,
 il suffira de modifier ce Wrapper pour continuer à faire fonctionner l'application. Il devra au minimum fournir :
 \begin{itemize}
-	\item La liste des nouveautés
-	\item Les informations de base sur les ouvrages
-	\item La recherche d'une oeuvre par ISBN et/ou d'autres critères
+    \item La liste des nouveautés
+    \item Les informations de base sur les ouvrages
+    \item La recherche d'une oeuvre par ISBN et/ou d'autres critères
 \end{itemize}
 
 
 \subsection{Serveur REST}
 Ce serveur offre les services suivants :
 \begin{itemize}
-	\item CRUD pour les infos de base des oeuvres (Nebis)
-	\item CRUD pour les résumés/commentaires des livres
-	\item CRUD pour les coups de coeur des bibliothécaires
-	\item CRUD pour les revues de presse
-	\item CRUD pour les images scannées par les bibliothécaires
-	\item Authentification et autorisations des utilisateurs
+    \item CRUD pour les infos de base des oeuvres (Nebis)
+    \item CRUD pour les résumés/commentaires des livres
+    \item CRUD pour les coups de coeur des bibliothécaires
+    \item CRUD pour les revues de presse
+    \item CRUD pour les images scannées par les bibliothécaires
+    \item Authentification et autorisations des utilisateurs
 \end{itemize}
 
-\subsection{Base de données}
+\subsection{Base de données augmentée}
 La base de données sera liée au serveur REST, elle enregistrera le contenu produit par la bibliothèque.
 \begin{figure}
-	\begin{center}
-		\includegraphics[width=0.9\textwidth]{images/bdd.png}
-	\end{center}
-	\caption{Schéma de la base de données}
+    \begin{center}
+        \includegraphics[width=0.9\textwidth]{images/bdd.png}
+    \end{center}
+    \caption{Schéma de la base de données}
 \end{figure}
 \textit{(Ce schéma est amené à évoluer)}
 
 \subsection{Ionic}
 Partie front-end de l'application, elle offrira côté utilisateur :
 \begin{itemize}
-	\item Page d'accueil, avec les sections "Nouveautés", "Coups de coeur" et "Revues de presse"
-	\item Pour chaque section, une page listant les ouvrages ou périodiques avec infos de base 
-		(Titre, auteur, etc. et image si fournie)
-	\item Pour chaque entrée, la possibilité de cliquer dessus et consulter les infos Nebis et le contenu enrichi
+    \item Page d'accueil, avec les sections "Nouveautés", "Coups de coeur" et "Revues de presse"
+    \item Pour chaque section, une page listant les ouvrages ou périodiques avec infos de base
+        (Titre, auteur, etc. et image si fournie)
+    \item Pour chaque entrée, la possibilité de cliquer dessus et consulter les infos Nebis et le contenu enrichi
 \end{itemize}
-Côté administrateur (ou rédacteur), les bibliothécaires pourront s'authentifier et auront une section supplémentaire, 
-"Images", où ils pourront ajouter les scans des livres aux entrées existantes. Pour les autres sections, ils 
-pourront ajouter le contenu correspondant aux entrées voulues. \cite{ref1}
+Côté administrateur (ou rédacteur), les bibliothécaires pourront s'authentifier et auront une section supplémentaire,
+"Images", où ils pourront ajouter les scans des livres aux entrées existantes. Pour les autres sections, ils
+pourront ajouter le contenu correspondant aux entrées voulues.
 
 
 \section{Réalisation}
