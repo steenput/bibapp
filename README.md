@@ -30,6 +30,8 @@ your password, you can use `server/app/pass.js` to generate a hashed password to
 ```shell
 node pass.js yourPassword
 ```
+*You have to install node_modules in `server` folder.*
+
 
 Run `mongo bibapp` command and type this (with hashed password) :
 
@@ -44,5 +46,5 @@ npm install
 npm start
 ```
 
-Server and wrapper will listen on ports 8081 and 8082 respectively. You can use 
+Wrpper and server will listen on ports 8081 and 8082 respectively. You can use 
 [forever](https://www.npmjs.com/package/forever) for more convenience.

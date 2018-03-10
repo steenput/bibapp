@@ -111,7 +111,6 @@ class Greeter {
 }
     \end{minted}
     \caption{Syntaxe Typescript}
-    % \label{my_ref}
 \end{code}
 La structure basique des fichiers \textit{composants} Typescript avec Ionic ou Angular est semblable à ceci :
 \begin{code}
@@ -131,7 +130,6 @@ export class AppComponent {
 }
     \end{minted}
     \caption{Exemple d'une classe Typescript sous Ionic ou Angular}
-    % \label{my_ref}
 \end{code}
 Explications : on importe le composant \mintinline{typescript}{Component}, on définit le sélecteur utilisé dans le HTML
 pour faire le rendu et on définit notre classe \mintinline{typescript}{AppComponent} qui pourra être exportée dans
@@ -172,7 +170,6 @@ Voici une brève description de balises et directives HTML ajoutées par Angular
 <li *ngFor="let item of items">
     \end{minted}
     \caption{Syntaxe HTML avec Angular}
-    % \label{my_ref}
 \end{code}
 Descriptif ligne par ligne :
 \begin{enumerate}
@@ -201,7 +198,7 @@ Une fois \mintinline{text}{npm} installé, il faut entrer la commande suivante d
 npm install -g ionic cordova
     \end{minted}
     \caption{Installation de Ionic et Cordova}
-    % \label{my_ref}
+    \label{install_ionic_cordova}
 \end{code}
 Cela installe Ionic et \href{https://cordova.apache.org}{Cordova}, l'outil permettant de traduire une web app à base de 
 HTML, CSS et Javascript en application hybride (moitié native, moitié web) pour la plateforme choisie (Android, iOS, etc.). 
@@ -213,7 +210,6 @@ cd myapp
 ionic serve
     \end{minted}
     \caption{Initialisation d'un projet Ionic}
-    % \label{my_ref}
 \end{code}
 La première commande crée l'arborescence de base d'un projet Ionic se nommant "myapp". Un menu interactif apparait avec 
 plusieurs choix de template pour notre application : vide, avec des pages déjà intégrées ou un projet complet avec des pages 
@@ -250,7 +246,6 @@ Voici l'arborescence racine pour un projet Ionic, après avoir ajouté les plate
 |-- tslint.json
     \end{minted}
     \caption{Arborescence racine}
-    % \label{my_ref}
 \end{code}
 On peut apercevoir les dossier suivants : 
 \begin{itemize}
@@ -290,7 +285,6 @@ Ensuite, le détail du dossier \mintinline{text}{src} :
 |-- service-worker.js
     \end{minted}
     \caption{Arborescence du dossier src}
-    % \label{my_ref}
 \end{code}
 On peut apercevoir les dossier et fichiers suivants :
 \begin{itemize}
@@ -361,7 +355,6 @@ this.http.get('http://example.com/api')
 );
     \end{minted}
     \caption{Requête HTTP avec Ionic}
-    % \label{my_ref}
 \end{code}
 
 \subsection{Service Storage}
@@ -397,7 +390,6 @@ export class DataProvider {
 }
     \end{minted}
     \caption{Storage avec Ionic}
-    % \label{my_ref}
 \end{code}
 
 \subsection{Déploiement}
@@ -421,7 +413,6 @@ ionic cordova build android --device
 ionic cordova run android --device
     \end{minted}
     \caption{Déploiement sur Android}
-    % \label{my_ref}
 \end{code}
 \textbf{Astuce : } s'assurer que le path du SDK Android est bien configuré dans Cordova \cite{ref60}.
 
@@ -437,7 +428,6 @@ ionic cordova build ios --device
 ionic cordova run ios --device
     \end{minted}
     \caption{Déploiement sur iOS}
-    % \label{my_ref}
 \end{code}
 
 \section{Architecture}
@@ -500,6 +490,42 @@ pourront ajouter le contenu correspondant aux entrées voulues.
 \section{Réalisation}
 \subsection{Captures d'écran}
 \section{Guide de déploiement}
+Pour commencer, il faut cloner \href{https://githepia.hesge.ch/bibapp/bibapp}{le repository du projet} et inscrire la 
+machine (son IP) qui hébergera le Wrapper auprès de la RIB API \cite{ref80}. 
+Ensuite, il faut installer \href{https://nodejs.org/en/}{Node.js} et éventuellement 
+\href{https://www.mongodb.com/}{MongoDB} si la base de données est destinée à être locale. L'installation de ces 
+deux outils est décrite sur leurs sites respectifs. 
+Il faut changer la configuration des fichiers \mintinline{text}{server/config/auth.js} et 
+\mintinline{text}{server/config/db.js}. Le premier fichier contient la clé nécessaire à PassportJS pour générer les JWT. 
+Le deuxième fichier contient l'URL de la base MongoDB.
+Ensuite, dans un terminal, dans les dossiers \mintinline{text}{wrapper} 
+et \mintinline{text}{server}, entrez les commandes suivantes pour installer et lancer les deux serveurs Node.js : 
+\begin{code}
+    \begin{minted}[bgcolor=mygray,breaklines,breaksymbol=,linenos,frame=single,stepnumber=1,tabsize=2]{bash}
+npm install
+npm start
+    \end{minted}
+    \caption{Déploiement du Wrapper et du Serveur}
+\end{code}
+Le Wrapper et Serveur écoutent respectivement sur les ports 8081 et 8082.
+Après, il faut installer Ionic et Cordova : 
+\mintinline{bash}{npm install -g ionic cordova}. La prochaine étape consiste à déployer Ionic sur un serveur HTTP. 
+Remplacez tous les appels à 
+'http://bibapp2.infolibre.ch' par votre nom de domaine. Puis, déplacez-vous dans le dossier \mintinline{text}{ionic} 
+et entrez \mintinline{bash}{ionic build}. Entrez 'Y' lorsque demandé pour installer les \mintinline{text}{node_modules}. 
+Cette dernière commande va générer le dossier \mintinline{text}{www} qui contiendra tous les fichiers nécessaires pour 
+déployer la web app. Il faut ensuite placer ce dossier \mintinline{text}{www} sur son serveur HTTP. L'étape suivante 
+consiste à ajouter un utilisateur admin à MongoDB qui pourra ajouter d'autres utilisateurs. Il faut tout d'abord 
+créer le hash de son mot de passe avec le fichier \mintinline{text}{server/app/pass.js} et entrer 
+\mintinline{bash}{node pass.js yourPassword} dans un terminal. Connectez-vous ensuite à votre shel MongoDB et ajoutez 
+un utilisateur comme ceci :
+\begin{code}
+    \begin{minted}[bgcolor=mygray,breaklines,breaksymbol=,linenos,frame=single,stepnumber=1,tabsize=2]{bash}
+db.users.insert({ email: 'testadmin@mail.com', password: '$2a$10$swh1PhPP6vm2K7g/1KHOTeBCyOncIFgB2doubyPpQHKc8zcddUjV6', role: 'admin' })
+    \end{minted}
+    \caption{Ajout d'un utilisateur à MongoDB}
+\end{code}
+
 \section{Conclusion}
 
 \section{Annexes}
