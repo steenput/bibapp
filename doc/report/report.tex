@@ -59,6 +59,7 @@
 
 \newpage
 
+% \setcounter{tocdepth}{2}
 \tableofcontents
 \newpage
 \listoffigures
@@ -90,7 +91,6 @@ de contenus basée sur le catalogue Nebis et augmentée par les ajouts des bibli
 Ionic fait usage de \href{http://www.typescriptlang.org/}{Typescript}, une surcouche à Javascript, offrant des types
 vérifés à la "compilation" (car Typescript est traduit, "transpiled", vers du Javascript conventionnel) et non à
 l'exécution, signalant les erreurs sur les types et offrant ainsi plus de rigueur à l'écriture du code \cite{ref12}.
-
 \begin{code}
     % \inputminted[bgcolor=mygray,breaklines,breaksymbol=,linenos,frame=single,stepnumber=1,tabsize=2]{language}{code}
     \begin{minted}[bgcolor=mygray,breaklines,breaksymbol=,linenos,frame=single,stepnumber=1,tabsize=2]{typescript}
@@ -113,6 +113,7 @@ class Greeter {
     \caption{Syntaxe Typescript}
 \end{code}
 La structure basique des fichiers \textit{composants} Typescript avec Ionic ou Angular est semblable à ceci :
+\\
 \begin{code}
     \begin{minted}[bgcolor=mygray,breaklines,breaksymbol=,linenos,frame=single,stepnumber=1,tabsize=2]{typescript}
 import { Component } from '@angular/core';
@@ -148,7 +149,7 @@ Angular impose une architecture de modules, où, pour chaque module, sont défin
     \begin{center}
         \includegraphics[width=0.8\textwidth]{images/angular2.png}
     \end{center}
-    \caption{Architecture d'un composant Angular \cite{ref13}}
+    \caption{Architecture d'un composant Angular - Angular \cite{ref13}}
 \end{figure}
 Comme on peut apercevoir sur la figure ci-dessus, le template HTML intéragit avec son composant Typescript.
 Un composant Angular est une simple classe Typescript, possédant attributs et méthodes.
@@ -181,13 +182,100 @@ Descriptif ligne par ligne :
     \item \mintinline{html}{*ngIf} : supprime l'élément du DOM (ici \mintinline{html}{section}) si la condition n'est pas remplie
     \item \mintinline{html}{*ngFor} : boucle sur un tableau et répète l'élément du DOM
 \end{enumerate}
+
 \subsection{Ionic}
+Ionic est un framework, basé sur Angular, permettant de créer des applications écrites avec les langages du web (HTML, CSS et 
+Javascript/Typescript) afin de générer des applications à destination de multiples plateformes, telles qu'Android, 
+iOS ou Windows Phone. Ces applications ainsi générées sont dites "hybrides" car elles s'exécutent dans une 
+\textit{WebView}, une instance de navigateur du device de destination, à la manière d'un site web classique, mais 
+elles ont néanmoins la possibilité d'accéder aux API du système hôte de manière native, en passant par des "wrapper".
+Celui utilisé par Ionic est Apache Cordova. Par conséquent, le développeur n'a qu'à écrire le code qu'une seule fois 
+pour les différentes plateformes mobiles visées. En résumé, Ionic est un "Angular++", offrant des composants graphiques 
+prédéfinis, des thèmes CSS et un accès aux API natives via Cordova 
+(voir le tutoriel sur Ionic à la section \ref{tuto_ionic} pour plus d'informations, voir cette vidéo de 1h15 pour 
+apprendre les bases par la pratique \cite{ref18}).
+
 \subsection{Promise Javascript}
+Une Promise ("promesse" en français) est un objet Javascript qui s'utilise dans des opérations asynchrones. 
+Elle représente l'état de cette opération, qui peut réussir ou échouer. Elle peut être dans un de ces 4 états :
+\begin{itemize}
+    \item pending (en attente) : état initial, la promesse n'est ni remplie, ni rompue
+    \item fulfilled (tenue) : l'opération a réussi
+    \item rejected (rompue) : l'opération a échoué
+    \item settled (acquittée) : la promesse est tenue ou rompue mais elle n'est plus en attente
+\end{itemize}
+\begin{figure}
+    \begin{center}
+        \includegraphics[width=1\textwidth]{images/promises.png}
+    \end{center}
+    \caption{États d'une Promise - MDN Web Docs \cite{ref100}}
+\end{figure}
+Les promesses sont particulièrement utiles dans les cas de requêtes vers des ressources distantes où le temps de 
+réponse et la réussite de l'appel ne sont pas prévisibles. Ainsi, les promesses remplacent les classiques 
+\textit{callbacks} par un moyen élégant d'enchainer les opérations asynchrones :
+\begin{code}
+    \begin{minted}[bgcolor=mygray,breaklines,breaksymbol=,linenos,frame=single,stepnumber=1,tabsize=2]{javascript}
+doSomething(function(result) {
+  doSomethingElse(result, function(newResult) {
+    doThirdThing(newResult, function(finalResult) {
+      console.log('Got the final result: ' + finalResult);
+    }, failureCallback);
+  }, failureCallback);
+}, failureCallback);
+    \end{minted}
+    \caption{"Callback hell" - MDN Web Docs \cite{ref102}}
+\end{code}
+Cet imbriquement de \textit{callbacks} se transforme en chainage de promesses : \\
+\begin{code}
+    \begin{minted}[bgcolor=mygray,breaklines,breaksymbol=,linenos,frame=single,stepnumber=1,tabsize=2]{javascript}
+doSomething().then(function(result) {
+  return doSomethingElse(result);
+})
+.then(function(newResult) {
+  return doThirdThing(newResult);
+})
+.then(function(finalResult) {
+  console.log('Got the final result: ' + finalResult);
+})
+.catch(failureCallback);
+    \end{minted}
+    \caption{Réécriture avec les Promise - MDN Web Docs \cite{ref102}}
+\end{code}
+Ce mécanisme de programmation va être très utilisé dans le Wrapper et Serveur REST.
+\textit{Pour approfondir, voir ces deux ressources sur le MDN Web Docs \cite{ref100} et \cite{ref102}.}
+
 \subsection{Node.js}
+Node.js est un environnement d'exécution de code Javascript côté serveur. Il fait office entre autres de serveur HTTP.
+Node.js est basé sur une architecture orientée événements. Son moteur d'exécution Javascript est celui de Google Chrome, V8. 
+Le fonctionnement de Node est non bloquant, il délègue les opérations I/O à son OS hôte, pour pouvoir continuer à servir 
+les requêtes entrantes.
+\begin{code}
+    \begin{minted}[bgcolor=mygray,breaklines,breaksymbol=,linenos,frame=single,stepnumber=1,tabsize=2]{javascript}
+const http = require('http');
+
+const hostname = '127.0.0.1';
+const port = 3000;
+
+const server = http.createServer((req, res) => {
+  res.statusCode = 200;
+  res.setHeader('Content-Type', 'text/plain');
+  res.end('Hello World\n');
+});
+
+server.listen(port, hostname, () => {
+  console.log(`Server running at http://${hostname}:${port}/`);
+});
+    \end{minted}
+    \caption{Hello World avec Node.js - Node.js \cite{ref170}}
+\end{code}
+
 \subsection{MongoDB}
+
 \subsection{JSON Web Tokens}
 
+
 \section{Tutoriel sur Ionic}
+\label{tuto_ionic}
 \textit{Ce tutoriel est réalisé avec la version 3.x.x de Ionic avec une machine sous Linux. Je me suis basé sur  
 le tutoriel sur le site de Ionic \cite{ref0} et sur les tutoriels de Josh Morony \cite{ref10}, \cite{ref20}.}
 \subsection{Installation}
@@ -517,8 +605,8 @@ Cette dernière commande va générer le dossier \mintinline{text}{www} qui cont
 déployer la web app. Il faut ensuite placer ce dossier \mintinline{text}{www} sur son serveur HTTP. L'étape suivante 
 consiste à ajouter un utilisateur admin à MongoDB qui pourra ajouter d'autres utilisateurs. Il faut tout d'abord 
 créer le hash de son mot de passe avec le fichier \mintinline{text}{server/app/pass.js} et entrer 
-\mintinline{bash}{node pass.js yourPassword} dans un terminal. Connectez-vous ensuite à votre shel MongoDB et ajoutez 
-un utilisateur comme ceci :
+\mintinline{bash}{node pass.js yourPassword} dans un terminal. Connectez-vous ensuite à votre shell MongoDB 
+(\mintinline{bash}{mongo bibapp}) et ajoutez un utilisateur comme ceci :
 \begin{code}
     \begin{minted}[bgcolor=mygray,breaklines,breaksymbol=,linenos,frame=single,stepnumber=1,tabsize=2]{bash}
 db.users.insert({ email: 'testadmin@mail.com', password: '$2a$10$swh1PhPP6vm2K7g/1KHOTeBCyOncIFgB2doubyPpQHKc8zcddUjV6', role: 'admin' })
