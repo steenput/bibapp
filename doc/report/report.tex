@@ -40,7 +40,7 @@
 
 \begin{figure}
 	\begin{center}
-		\includegraphics[width=0.5\textwidth]{images/architecture.png}
+		\includegraphics[width=0.45\textwidth]{images/screenshots/android1.png}
 	\end{center}
 \end{figure}
 
@@ -268,10 +268,52 @@ server.listen(port, hostname, () => {
     \end{minted}
     \caption{Hello World avec Node.js - Node.js \cite{ref170}}
 \end{code}
+On aperçoit à la première ligne la manière d'importer des modules. À la ligne 6, le serveur HTTP est créé avec 
+une fonction anonyme en arguments qui, pour une requête reçue, va renvoyer une réponse HTTP avec code 200, header 
+'text/plain' et le message 'Hello World'. Finalement, le serveur se met en écoute à la ligne 12, sur l'adresse et 
+port définis plus haut. Node.js est un environnement "bas niveau", il est enrichi pas des milliers de paquets écrits 
+par la communauté et disponibles sur le gestionnaire associé à Node, \href{https://www.npmjs.com/}{npm}. Un paquet 
+pratiquement indispensable lors d'un développement d'un serveur web est \href{http://expressjs.com/}{Express}. Il 
+permet de facilement mettre en place des routes pour son application, avec des pattern matching pour trouver la bonne 
+route :
+\begin{code}
+    \begin{minted}[bgcolor=mygray,breaklines,breaksymbol=,linenos,frame=single,stepnumber=1,tabsize=2]{javascript}
+var express = require('express')
+var app = express()
+
+// respond with "hello world" when a GET request is made to the homepage
+app.get('/', function (req, res) {
+  res.send('hello world')
+})
+
+// POST method route
+app.post('/', function (req, res) {
+  res.send('POST request to the homepage')
+})
+    \end{minted}
+    \caption{Exemple de routes avec Express - Express \cite{ref180}}
+\end{code}
 
 \subsection{MongoDB}
+J'ai utilisé MongoDB comme système de base de données car il est facilement intégrable avec Node.js et qu'il n'impose 
+pas de schéma figé pour l'insertion de données, ce qui facilite le développement initial. MongoDB est orienté documents, 
+il est l'un des précurseurs de la mouvance NoSQL. Il stocke les documents au format BSON, du JSON binaire. Par conséquent, 
+tous les types Javascript sont supportés. Voici un face-à-face avec MySQL :
+\begin{figure}
+    \begin{center}
+        \includegraphics[width=1\textwidth]{images/mysql_mongodb.png}
+    \end{center}
+    \caption{MySQL vs MongoDB - Eugeniya Korotya \cite{ref160}}
+\end{figure}
 
 \subsection{JSON Web Tokens}
+J'ai utilisé les JSON Web Tokens pour gérer l'authentification dans mon application. Un JWT est une chaine de 
+caractères séparée en trois parties par un ".". Les deux premières parties, le header et le payload (le corps du 
+message à transmettre) sont encodées en base64 séparément. La dernière partie est la signature pour vérifier le jeton, 
+elle utilise l'algorithme HMAC SHA256 avec un \textit{secret} en arguments. Sur le \href{https://jwt.io/}{site de JWT}, 
+un debugger est disponible pour décoder un JWT. L'utilité d'un JWT c'est que l'on peut facilement vérifier qu'un message 
+n'a pas été altéré et que l'émetteur est bien celui qu'il prétend être. En revanche, aucun chiffrement n'est appliqué, 
+ce n'est donc pas un moyen d'échanger des informations sensibles \cite{ref190}.
 
 
 \section{Tutoriel sur Ionic}
@@ -577,6 +619,49 @@ pourront ajouter le contenu correspondant aux entrées voulues.
 
 \section{Réalisation}
 \subsection{Captures d'écran}
+\begin{figure}
+    \begin{center}
+        \includegraphics[width=0.7\textwidth]{images/screenshots/android_iphone_1.png}
+    \end{center}
+    \caption{Main}
+\end{figure}
+\begin{figure}
+    \begin{center}
+        \includegraphics[width=0.7\textwidth]{images/screenshots/android_iphone_2.png}
+    \end{center}
+    \caption{Main}
+\end{figure}
+\begin{figure}
+    \begin{center}
+        \includegraphics[width=0.7\textwidth]{images/screenshots/android_iphone_3.png}
+    \end{center}
+    \caption{Main}
+\end{figure}
+\begin{figure}
+    \begin{center}
+        \includegraphics[width=0.7\textwidth]{images/screenshots/android_iphone_4.png}
+    \end{center}
+    \caption{Main}
+\end{figure}
+\begin{figure}
+    \begin{center}
+        \includegraphics[width=0.7\textwidth]{images/screenshots/android_iphone_5.png}
+    \end{center}
+    \caption{Main}
+\end{figure}
+\begin{figure}
+    \begin{center}
+        \includegraphics[width=0.7\textwidth]{images/screenshots/android_iphone_6.png}
+    \end{center}
+    \caption{Main}
+\end{figure}
+\begin{figure}
+    \begin{center}
+        \includegraphics[width=0.7\textwidth]{images/screenshots/android_iphone_7.png}
+    \end{center}
+    \caption{Main}
+\end{figure}
+
 \section{Guide de déploiement}
 Pour commencer, il faut cloner \href{https://githepia.hesge.ch/bibapp/bibapp}{le repository du projet} et inscrire la 
 machine (son IP) qui hébergera le Wrapper auprès de la RIB API \cite{ref80}. 
@@ -615,6 +700,11 @@ db.users.insert({ email: 'testadmin@mail.com', password: '$2a$10$swh1PhPP6vm2K7g
 \end{code}
 
 \section{Conclusion}
+
+\section{Remerciements}
+Je tiens à remercier l'ensemble des personnes qui ont participé, de près ou de loin, à l'élaboration de ce travail. En 
+particulier M. Mickaël Hoerdt pour le suivi de ce travail, les bibliothécaires de l'hepia pour leur collaboration et 
+leur investissement dans ce projet et Marie Bessat pour son soutien moral.
 
 \section{Annexes}
 
