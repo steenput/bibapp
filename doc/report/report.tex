@@ -59,9 +59,8 @@
 
 \newpage
 
-% \setcounter{tocdepth}{2}
+\setcounter{tocdepth}{2}
 \tableofcontents
-\newpage
 \listoffigures
 \renewcommand\listoflistingscaption{Table des listings de code source}
 \listoflistings
@@ -196,6 +195,7 @@ prédéfinis, des thèmes CSS et un accès aux API natives via Cordova
 apprendre les bases par la pratique \cite{ref18}).
 
 \subsection{Promise Javascript}
+\label{promise_javascript}
 Une Promise ("promesse" en français) est un objet Javascript qui s'utilise dans des opérations asynchrones. 
 Elle représente l'état de cette opération, qui peut réussir ou échouer. Elle peut être dans un de ces 4 états :
 \begin{itemize}
@@ -298,7 +298,11 @@ app.post('/', function (req, res) {
 J'ai utilisé MongoDB comme système de base de données car il est facilement intégrable avec Node.js et qu'il n'impose 
 pas de schéma figé pour l'insertion de données, ce qui facilite le développement initial. MongoDB est orienté documents, 
 il est l'un des précurseurs de la mouvance NoSQL. Il stocke les documents au format BSON, du JSON binaire. Par conséquent, 
-tous les types Javascript sont supportés. Voici un face-à-face avec MySQL :
+tous les types Javascript sont supportés. Il dispose d'un shell interactif (lancé avec \mintinline{bash}{mongo} dans 
+un terminal) qui permet d'insérer, de mettre à jour, trouver et supprimer des documents dans des collections. La syntaxe 
+de base est la suivante : \mintinline{bash}{db.<nom_collection>.<find()|insert()|update()|remove()>}. MongoDB est pensé 
+pour être hautement scalable de manière horizontale, c'est-à-dire en augmentant le nombre de machines allouées la base de 
+données plutôt que d'augmenter la puissance de calcul brute d'une seule machine. Pour terminer, voici un face-à-face avec MySQL :
 \begin{figure}
     \begin{center}
         \includegraphics[width=1\textwidth]{images/mysql_mongodb.png}
@@ -391,25 +395,24 @@ Ensuite, le détail du dossier \mintinline{text}{src} :
 \\
 \begin{code}
     \begin{minted}[bgcolor=mygray,breaklines,breaksymbol=,linenos,frame=single,stepnumber=1,tabsize=2]{text}
-.
 |-- app
-│  |-- app.component.ts
-│  |-- app.html
-│  |-- app.module.ts
-│  |-- app.scss
-│  |-- main.ts
+|   |-- app.component.ts
+|   |-- app.html
+|   |-- app.module.ts
+|   |-- app.scss
+|   |-- main.ts
 |-- assets
-│  |-- icon
-│  │  |-- favicon.ico
-│  |-- imgs
-│      |-- logo.png
+|   |-- icon
+|   |   |-- favicon.ico
+|   |-- imgs
+|       |-- logo.png
 |-- pages
-│  |-- home
-│      |-- home.html
-│      |-- home.scss
-│      |-- home.ts
+|   |-- home
+|       |-- home.html
+|       |-- home.scss
+|       |-- home.ts
 |-- theme
-│  |-- variables.scss
+|   |-- variables.scss
 |-- index.html
 |-- manifest.json
 |-- service-worker.js
@@ -575,7 +578,8 @@ Le Wrapper et le serveur REST seront faits en Node.js. La base de données sera 
 \subsection{Wrapper}
 Ce module fait le pont entre les données issues d'un catalogue et le serveur REST. Son utilité principale est
 de s'adapter au catalogue utilisé : si le catalogue est amené à changer ou à disparaître au profit d'un autre,
-il suffira de modifier ce Wrapper pour continuer à faire fonctionner l'application. Il devra au minimum fournir :
+il suffira de modifier ce Wrapper pour continuer à faire fonctionner l'application. Le Wrapper sera l'interface 
+du Serveur à Nebis. Il devra au minimum fournir :
 \begin{itemize}
     \item La liste des nouveautés
     \item Les informations de base sur les ouvrages
@@ -584,33 +588,49 @@ il suffira de modifier ce Wrapper pour continuer à faire fonctionner l'applicat
 
 
 \subsection{Serveur REST}
-Ce serveur offre les services suivants :
+Le Serveur sera le coeur de l'application. Il devra récupérer les informations de base des livres chez les providers 
+via le Wrapper et il devra récupérer les informations ajoutées par les bibliothécaires qui se trouveront dans la base 
+de données. Il servira ainsi un aggrégat de données. Il devra également accepter des requêtes pour 
+ajouter/modifier/supprimer le contenu. Il devra être conforme aux principes REST, pour être indépendant de l'interface 
+finale des applications. Ce serveur offrira les services suivants :
 \begin{itemize}
-    \item CRUD pour les infos de base des oeuvres (Nebis)
-    \item CRUD pour les résumés/commentaires des livres
+    \item CRUD (Create, Read, Update et Delete) pour les commentaires des livres
     \item CRUD pour les coups de coeur des bibliothécaires
     \item CRUD pour les revues de presse
     \item CRUD pour les images scannées par les bibliothécaires
-    \item Authentification et autorisations des utilisateurs
+    \item Authentification et autorisations (rôles) des utilisateurs
 \end{itemize}
-
-\subsection{Base de données augmentée}
-La base de données sera liée au serveur REST, elle enregistrera le contenu produit par la bibliothèque.
+Voici, pour schématiser, une requête demandant un livre au serveur, avec l'aggrégat de données entre la base de données 
+et le Wrapper :
 \begin{figure}
     \begin{center}
-        \includegraphics[width=0.9\textwidth]{images/bdd.png}
+        \includegraphics[width=0.7\textwidth]{images/architecture_server.png}
+    \end{center}
+    \caption{Schéma d'une requête d'un livre au Serveur}
+\end{figure}
+
+\subsection{Base de données augmentée}
+La base de données sera liée au serveur REST, elle enregistrera le contenu produit par la bibliothèque. Elle ne gardera pas 
+de contenu provenant du catalogue de livres, elle n'aura que l'ISBN ou l'ISSN pour faire référence à une oeuvre du catalogue. 
+Étant donné que la base sera faite avec MongoDB, elle sera orientée documents, les collections n'auront pas lien entre elles 
+autre que l'id d'un livre (son ISBN ou ISSN). Il y aura donc les 5 collections indépendantes suivantes :
+\begin{figure}
+    \begin{center}
+        \includegraphics[width=0.7\textwidth]{images/bdd.png}
     \end{center}
     \caption{Schéma de la base de données}
 \end{figure}
-\textit{(Ce schéma est amené à évoluer)}
+Les collections pour les commentaires, revues de presse et coups de coeur seront identiques quant à leur architecture. Il y 
+aura également une collection pour stocker les informations sur les images et une collection pour stocker les utilisateurs.
 
 \subsection{Ionic}
 Partie front-end de l'application, elle offrira côté utilisateur :
 \begin{itemize}
-    \item Page d'accueil, avec les sections "Nouveautés", "Coups de coeur" et "Revues de presse"
+    \item Page d'accueil, avec les sections "Nouveautés", "Coups de coeur" et "Revue de presse"
     \item Pour chaque section, une page listant les ouvrages ou périodiques avec infos de base
         (Titre, auteur, etc. et image si fournie)
     \item Pour chaque entrée, la possibilité de cliquer dessus et consulter les infos Nebis et le contenu enrichi
+    \item Un champ de recherche pour rechercher un livre par son nom ou ISBN
 \end{itemize}
 Côté administrateur (ou rédacteur), les bibliothécaires pourront s'authentifier et auront une section supplémentaire,
 "Images", où ils pourront ajouter les scans des livres aux entrées existantes. Pour les autres sections, ils
@@ -618,48 +638,151 @@ pourront ajouter le contenu correspondant aux entrées voulues.
 
 
 \section{Réalisation}
-\subsection{Captures d'écran}
+Dans cette section je vais présenter quelques aspects de mon code qui m'ont parus importants à 
+montrer, que ce soit pour éviter au lecteur d'éviter de commettre des erreurs semblables ou alors que la démarche était 
+particulièrement intéressante.
+
+\subsection{Wrapper}
+Le Wrapper est un serveur HTTP fait avec Node.js. Il consiste en trois routes GET permettant de récupérer les nouveautés 
+d'une certaine date, rechercher un document selon certains critères et obtenir un ouvrage par son ISBN ou ISSN. Une API 
+Doc est disponible à \href{http://liatti.ch/bibappdocwrapper/}{cette adresse} pour voir le détail des routes. J'ai utilisé 
+le package \href{https://www.npmjs.com/package/axios}{axios} pour faire mes requêtes HTTP à l'API Nebis \cite{ref80}. 
+Axios supporte les Promise Javascript (voir section \ref{promise_javascript}), ce qui permet de garder un code clair et 
+compréhensible. Voici la première route du Wrapper, pour récupérer les nouveautés :
+\begin{code}
+    \inputminted[bgcolor=mygray,breaklines,breaksymbol=,linenos,frame=single,stepnumber=1,
+        tabsize=2,firstline=157,lastline=185]{javascript}{../../wrapper/wrapper.js}
+    \caption{Exemple de la requête des nouveautés du Wrapper}
+\end{code}
+On voit bien la chaine où on récupère les infos sur Nebis, on filtre les données et on retourne la réponse au 
+format JSON. Si une erreur survient, le bloc \mintinline{javascript}{catch} est prévu à cet effet.
+
+\subsection{Serveur et base de données}
+Le Server REST et la base de données MongoDB sont le coeur de l'application. Je vais les présenter ensemble car ils 
+sont fortement liés. J'ai monté mon serveur avec une arborescence de fichiers qui se décompose ainsi :
+\begin{code}
+    \begin{minted}[bgcolor=mygray,breaklines,breaksymbol=,linenos,frame=single,stepnumber=1,tabsize=2]{text}
+|-- app
+|   |-- controllers
+|   |   |-- authentication.js
+|   |   |-- books.js
+|   |   |-- images.js
+|   |   |-- use.js
+|   |-- models
+|   |   |-- content.js
+|   |   |-- image.js
+|   |   |-- user.js
+|   |-- static
+|   |   |-- images.html
+|   |-- pass.js
+|   |-- routes.js
+|-- config
+|   |-- auth.js
+|   |-- db.js
+|   |-- passport.js
+|-- images
+|-- server.js
+    \end{minted}
+    \caption{Arborescence du Serveur}
+\end{code}
+Le fichier principal qui lance le serveur sur écoute est \mintinline{text}{server.js}. Toutes les routes sont définies 
+et documentées dans le fichier \mintinline{text}{routes.js} avec Express (une API Doc est disponible à 
+\href{http://liatti.ch/bibappdocserver/}{cette adresse} pour voir le détail des routes). Les fonctions appelées par les 
+routes sont définies dans les contrôleurs. Dans le dossier \mintinline{text}{config} se trouve la configuration de 
+l'application, pour le secret pour générer les hash avec PassportJS (voir plus loin) et pour l'adresse de la base 
+de données MongoDB. J'ai commencé par définir les schémas de la base de données avec 
+\href{http://mongoosejs.com/}{Mongoose}, un package pour Node.js qui permet de définir un schéma pour représenter 
+les données et faire des appels à MongoDB. A partir d'un schéma d'une entité, on peut créer un modèle associé auxquel on 
+peut attacher des fonctions et autres contraintes de validation. À titre d'exemple, voici le schéma pour le contenu 
+ajouté par les bibliothécaires et ses trois schémas dérivés :
+\begin{code}
+    \inputminted[bgcolor=mygray,breaklines,breaksymbol=,linenos,frame=single,stepnumber=1,
+        tabsize=2]{javascript}{../../server/app/models/content.js}
+    \caption{Schéma et modèles pour le contenu, \mintinline{text}{content.js}}
+\end{code}
+Grâce à Mongoose, j'ai pu définir mes schémas et modèles dans le dossier \mintinline{text}{models}.
+Ensuite, je me suis intéressé à l'aspect de l'authentification qui sera 
+nécessaire pour différencier les utilisateurs anonymes des utilisateurs authentifiés. J'ai cherché un mécanisme 
+d'authentification qui serait compatible avec Ionic. Je suis tombé sur cette discussion stackoverflow \cite{ref105} qui proposait 
+comme meilleure solution les tokens. Ces tutoriels de Josh Morony \cite{ref110}, \cite{ref120} et de Gergely Nemeth 
+\cite{ref121} m'ont également beaucoup 
+aidé et m'ont fait découvrir \href{http://www.passportjs.org/}{PassportJS}, un middleware pour l'authentification avec 
+Express. Il permet de gérer de nombreuses stratégies d'authentification locales (classique, token) ou distantes (Google, 
+Facebook, etc.). PassportJS fonctionne de concert avec Mongoose. J'ai donc utilisé 2 stratégies 
+d'authentication : local, avec utilisateur + mot de passe et JWT, qui génère un token lorsqu'un utilisateur réussit 
+l'authentication. La configuration de PassportJS se trouve dans \mintinline{text}{passport.js}. Les fonctions gérant le 
+login, la création de compte et la vérification des rôles se trouvent dans \mintinline{text}{authentication.js}. Dans le fichier 
+\mintinline{text}{user.js} sont définis le schéma d'un utilisateur stocké dans MongoDB. On y définit également une 
+sorte de trigger qui hashe le mot de passe avec \mintinline{text}{bcrypt} avant insertion en base lors de l'inscription 
+d'un utilisateur. Le plupart des routes sont définies dans \mintinline{text}{books.js} et \mintinline{text}{images.js}.
+À nouveau, pour montrer la puissance des promesses Javascript, voici la fonction qui crée un aggrégat de données 
+sur un livre, entre ce que renvoie le Wrapper et ce qu'il existe en base de données :
+\begin{code}
+    \inputminted[bgcolor=mygray,breaklines,breaksymbol=,linenos,frame=single,stepnumber=1,
+        tabsize=2,firstline=96,lastline=108]{javascript}{../../server/app/controllers/books.js}
+    \caption{Fonction \mintinline{javascript}{getBook()} Serveur}
+\end{code}
+On aperçoit à la ligne 99 l'appel à \mintinline{javascript}{Promise.all()} qui exécute en paralèlle la récupération auprès 
+des différentes collections et Wrapper. Ainsi, dans le \mintinline{javascript}{then()}, on a la certitude que toutes les 
+promesses ont été tenues et on peut travailler sur les données retournées. Enfin, en ce qui concerne la gestion des images, 
+je me suis basé sur ces tutoriels de Simon Grimm \cite{ref130}, \cite{ref135}. J'ai utilisé 
+\href{https://www.npmjs.com/package/multer}{multer}, un package Node pour la gestion des fichiers. Grâce à multer, on peut 
+facilement configurer la destination et le nom donné à des images envoyées sur le serveur (voir 
+\mintinline{text}{images.js} pour plus de détails).
+
+\subsection{Ionic}
+
+
+\subsection{Captures d'écran des applications Ionic}
+Je vais présenter la réalisation de l'application Ionic par des captures d'écran, des versions Google Nexus 6 
+pour Android (à gauche sur les images) et iPhone 6 Plus pour iOS (à droite sur les images) ont été utilisées pour les 
+captures d'écran.
 \begin{figure}
     \begin{center}
         \includegraphics[width=0.7\textwidth]{images/screenshots/android_iphone_1.png}
     \end{center}
-    \caption{Main}
+    \caption{Page d'accueil de l'application}
 \end{figure}
 \begin{figure}
     \begin{center}
         \includegraphics[width=0.7\textwidth]{images/screenshots/android_iphone_2.png}
     \end{center}
-    \caption{Main}
+    \caption{Page des nouveautés de l'application}
 \end{figure}
 \begin{figure}
     \begin{center}
         \includegraphics[width=0.7\textwidth]{images/screenshots/android_iphone_3.png}
     \end{center}
-    \caption{Main}
+    \caption{Page d'un livre au clic sur la liste des nouveautés}
 \end{figure}
 \begin{figure}
     \begin{center}
         \includegraphics[width=0.7\textwidth]{images/screenshots/android_iphone_4.png}
     \end{center}
-    \caption{Main}
+    \caption{Page des coups de coeurs de l'application}
 \end{figure}
 \begin{figure}
     \begin{center}
         \includegraphics[width=0.7\textwidth]{images/screenshots/android_iphone_5.png}
     \end{center}
-    \caption{Main}
+    \caption{Page de login de l'application}
 \end{figure}
 \begin{figure}
     \begin{center}
         \includegraphics[width=0.7\textwidth]{images/screenshots/android_iphone_6.png}
     \end{center}
-    \caption{Main}
+    \caption{Page de création de compte de l'application}
 \end{figure}
 \begin{figure}
     \begin{center}
         \includegraphics[width=0.7\textwidth]{images/screenshots/android_iphone_7.png}
     \end{center}
-    \caption{Main}
+    \caption{Vue d'une page "livre" avec utilisateur authentifié}
+% \begin{figure}
+%     \begin{center}
+%         \includegraphics[width=0.7\textwidth]{images/screenshots/android_iphone_8.png}
+%     \end{center}
+%     \caption{Ajout d'un commentaire via l'application}
 \end{figure}
 
 \section{Guide de déploiement}
@@ -700,13 +823,11 @@ db.users.insert({ email: 'testadmin@mail.com', password: '$2a$10$swh1PhPP6vm2K7g
 \end{code}
 
 \section{Conclusion}
-
-\section{Remerciements}
+\subsection{Remarques et améliorations}
+\subsection{Remerciements}
 Je tiens à remercier l'ensemble des personnes qui ont participé, de près ou de loin, à l'élaboration de ce travail. En 
 particulier M. Mickaël Hoerdt pour le suivi de ce travail, les bibliothécaires de l'hepia pour leur collaboration et 
 leur investissement dans ce projet et Marie Bessat pour son soutien moral.
-
-\section{Annexes}
 
 \section{Références}
 \bibliographystyle{unsrt}

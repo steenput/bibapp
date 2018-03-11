@@ -39,30 +39,30 @@
         xhr.send(null);
 
         document.querySelector('#image').addEventListener('change', function(e) {
-        let file = this.files[0];
-        let fd = new FormData();
-        fd.append('image', file);
-        fd.append('id', id);
+            let file = this.files[0];
+            let fd = new FormData();
+            fd.append('image', file);
+            fd.append('id', id);
 
-        xhr = new XMLHttpRequest();
-        xhr.open('POST', '/images');
-        xhr.setRequestHeader('Authorization', getUrlParams('token'));
+            xhr = new XMLHttpRequest();
+            xhr.open('POST', '/images');
+            xhr.setRequestHeader('Authorization', getUrlParams('token'));
 
-        xhr.onload = function() {
-            let resp = '';
-            if (this.status === 200) {
-                resp = JSON.parse(this.response);
-                resp = resp.message;
-            }
-            else {
-                resp = this.response;
-            }
-            
-            console.log('Server got:', resp);
-            document.getElementById('result').innerHTML = resp;
-        };
+            xhr.onload = function() {
+                let resp = '';
+                if (this.status === 200) {
+                    resp = JSON.parse(this.response);
+                    resp = resp.message;
+                }
+                else {
+                    resp = this.response;
+                }
+                
+                console.log('Server got:', resp);
+                document.getElementById('result').innerHTML = resp;
+            };
 
-        xhr.send(fd);
+            xhr.send(fd);
         }, false);
     </script>
 </body>
