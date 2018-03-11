@@ -29,12 +29,12 @@ exports.register = function(req, res, next) {
     const password = req.body.password;
     const role = req.body.role;
 
-    if (!email) return res.status(422).send({error: 'You must enter an email address'});
-    if (!password) return res.status(422).send({error: 'You must enter a password'});
+    if (!email) return res.status(422).json({error: 'You must enter an email address'});
+    if (!password) return res.status(422).json({error: 'You must enter a password'});
 
     User.findOne({email: email}, function(err, existingUser) {
         if (err) return next(err);
-        if (existingUser) return res.status(422).send({error: 'That email address is already in use'});
+        if (existingUser) return res.status(422).json({error: 'That email address is already in use'});
 
         const user = new User({
             email: email,

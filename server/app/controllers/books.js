@@ -79,7 +79,6 @@ exports.search = function(req, res) {
 }
 
 exports.getNews = function(req, res) {
-    // TODO: valid year and month
     const date = new Date();
     const year = req.params.year ? req.params.year : date.getFullYear().toString();
     const month = req.params.month ? req.params.month : date.getMonth() < 9 ? '0' + (date.getMonth() + 1).toString() : (date.getMonth() + 1).toString();

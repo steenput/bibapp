@@ -2,6 +2,10 @@
     "name": "bibapp_server",
     "version": "0.1.0",
     "main": "server.js",
+    "scripts": {
+        "start": "node server.js",
+        "doc": "apidoc -e node_modules"
+    },
     "description": "Server REST for BibApp Hepia",
     "apidoc": {
         "name": "BibApp Server",
