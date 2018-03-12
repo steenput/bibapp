@@ -38,21 +38,26 @@
 \affil{\small Hepia ITI 3\up{ème} année}
 \maketitle
 
+\subparagraph{Résumé}
+Ce projet consiste à développer une application mobile et un site web avec le framework Ionic pour 
+la bibliothèque de l'hepia pour afficher les nouveautés et du contenu enrichi, situé dans une base de 
+données augmentée, par-dessus le catalogue existant. 
+
 \begin{figure}
 	\begin{center}
-		\includegraphics[width=0.45\textwidth]{images/screenshots/android1.png}
+		\includegraphics[width=0.43\textwidth]{images/screenshots/android1.png}
 	\end{center}
 \end{figure}
 
 \begin{figure}[!b]
 	\centering
-	\begin{minipage}{.5\textwidth}
+	\begin{minipage}{.4\textwidth}
 		\centering
-		\includegraphics[width=.7\linewidth]{images/hepia.jpg}
+		\includegraphics[width=.6\linewidth]{images/hepia.jpg}
 	\end{minipage}%
-	\begin{minipage}{.5\textwidth}
+	\begin{minipage}{.4\textwidth}
 		\centering
-		\includegraphics[width=.7\linewidth]{images/hesso.jpg}
+		\includegraphics[width=.6\linewidth]{images/hesso.jpg}
 	\end{minipage}
 \end{figure}
 \newpage
@@ -67,9 +72,9 @@
 \newpage
 
 \section{Introduction}
-La bibliothèque de l'hepia aimerait attirer plus de monde en créant du contenu personnalisé autour de son
+Les bibliothécaires de l'hepia aimeraient attirer plus de monde en créant du contenu personnalisé autour du
 catalogue d'ouvrages et revues par le biais d'un site/application mobile. Une première version de BibApp a été réalisée
-par Michael Minelli et Salvatore Cicciu. Le projet consistait en deux applications natives pour Android et iOS qui
+par Michaël Minelli et Salvatore Cicciù. Le projet consistait en deux applications natives pour Android et iOS qui
 communiquaient avec un backend qui récupérait les nouveautés de la bibliothèque par
 \href{https://fr.wikipedia.org/wiki/Web_scraping}{scrapping} en filtrant les ouvrages par sections correspondant aux
 filières de l'école. L'objectif de cette "BibApp V2" est d'accéder aux données directement (par API), créer une
@@ -78,16 +83,16 @@ bibliothécaires d'ajouter du contenu dans une base de données qui serait augme
 que les ajouts des bibliothécaires (pas de redondance avec le catalogue des ouvrages, en l'occurence Nebis).
 
 \subsection{User stories}
-Voici dans le détail les récits utilisteur auxquels doit répondre le projet. Il va de soit que le rôle "bibliothécaire"
+Voici dans le détail les récits utilisateur auxquels doit répondre le projet. Il va de soi que le rôle "bibliothécaire"
 comprend également toutes les possibilités du rôle "anonyme" et le rôle "administrateur" comprend toutes les possibilités
 du rôle "bibliothécaire" et "anonyme" :
 \begin{itemize}
     \item En tant qu'utilisateur anonyme, je veux pouvoir :
     \begin{itemize}
-        \item Afficher la liste des nouveautés du mois en coeurs
+        \item Afficher la liste des nouveautés du mois en cours
         \item Afficher les coups de coeur des bibliothécaires
         \item Afficher les revues de presse
-        \item Afficher les informations complètes sur un livre de ces listes
+        \item Afficher les informations complètes d'un livre de ces listes
         \item Rechercher un ouvrage par nom ou par ISBN
     \end{itemize}
     \item En tant qu'utilisateur authentifié et ayant le rôle de bibliothécaire, je veux pouvoir, en plus, :
@@ -108,10 +113,9 @@ du rôle "bibliothécaire" et "anonyme" :
 \textit{Pour un aperçu rapide de Typescript et Angular, voir cet article de Josh Morony \cite{ref30}.}
 \subsection{Typescript}
 Ionic fait usage de \href{http://www.typescriptlang.org/}{Typescript}, une surcouche à Javascript, offrant des types
-vérifés à la "compilation" (car Typescript est traduit, "transpiled", vers du Javascript conventionnel) et non à
-l'exécution, signalant les erreurs sur les types et offrant ainsi plus de rigueur à l'écriture du code \cite{ref12}.
+vérifiés à la "compilation" (car Typescript est traduit, "transpiled", vers du Javascript conventionnel) et non à
+l'exécution, signalant les erreurs sur les types et offrant ainsi plus de rigueur à l'écriture du code \cite{ref12}. \\
 \begin{code}
-    % \inputminted[bgcolor=mygray,breaklines,breaksymbol=,linenos,frame=single,stepnumber=1,tabsize=2]{language}{code}
     \begin{minted}[bgcolor=mygray,breaklines,breaksymbol=,linenos,frame=single,stepnumber=1,tabsize=2]{typescript}
 function add(x : number, y : number) : number {
     return x + y;
@@ -131,6 +135,7 @@ class Greeter {
     \end{minted}
     \caption{Syntaxe Typescript}
 \end{code}
+\bigbreak
 La structure basique des fichiers \textit{composants} Typescript avec Ionic ou Angular est semblable à ceci :
 \\
 \begin{code}
@@ -151,6 +156,7 @@ export class AppComponent {
     \end{minted}
     \caption{Exemple d'une classe Typescript sous Ionic ou Angular}
 \end{code}
+\bigbreak
 Explications : on importe le composant \mintinline{typescript}{Component}, on définit le sélecteur utilisé dans le HTML
 pour faire le rendu et on définit notre classe \mintinline{typescript}{AppComponent} qui pourra être exportée dans
 d'autres modules. Dans cette classe nous définissons deux attributs \mintinline{typescript}{title} et
@@ -177,7 +183,6 @@ Selon les actions de l'utilisateur, la vue ou le modèle (données) est mis à j
 du composant depuis le template. Un ou plusieurs services peuvent être utilisés ("injectés") dans un module. On peut
 voir un service comme un composant réutilisable et ne possédant pas (forcément) de template (exemples : services
 d'authentification, de gestion d'images, etc.).
-\bigbreak
 Voici une brève description de balises et directives HTML ajoutées par Angular :
 \begin{code}
     \begin{minted}[bgcolor=mygray,breaklines,breaksymbol=,linenos,frame=single,stepnumber=1,tabsize=2]{html}
@@ -191,11 +196,12 @@ Voici une brève description de balises et directives HTML ajoutées par Angular
     \end{minted}
     \caption{Syntaxe HTML avec Angular}
 \end{code}
+\bigbreak
 Descriptif ligne par ligne :
 \begin{enumerate}
-    \item Change la propriété \mintinline{html}{value} en lui attribuant la vraie valeur de l'attribut de classe firstName (définit dans une classe Typescript)
+    \item Change la propriété \mintinline{html}{value} en lui attribuant la vraie valeur de l'attribut de classe \mintinline{javascript}{firstName} (définit dans une classe Typescript)
     \item Appelle la fonction \mintinline{javascript}{someFunction()} en lui passant l'événement \mintinline{javascript}{event} au moment du clic sur le bouton
-    \item Évalue les expressions entre {} et les affiche, ici en l'occurence un attribut \mintinline{javascript}{name} et le calcul de 1 + 1, 2
+    \item Évalue les expressions entre \{\} et les affiche, ici en l'occurence un attribut \mintinline{javascript}{name} et le calcul de 1 + 1, 2
     \item Applique la valeur de \mintinline{javascript}{name} à l'input, mais s'il y a changement de la part de l'utilisateur, met à jour l'objet associé
     \item Crée une variable locale au template HTML
     \item \mintinline{html}{*ngIf} : supprime l'élément du DOM (ici \mintinline{html}{section}) si la condition n'est pas remplie
@@ -203,7 +209,7 @@ Descriptif ligne par ligne :
 \end{enumerate}
 
 \subsection{Ionic}
-Ionic est un framework, basé sur Angular, permettant de créer des applications écrites avec les langages du web (HTML, CSS et
+\href{https://ionicframework.com/}{Ionic} est un framework, basé sur Angular, permettant de créer des applications écrites avec les langages du web (HTML, CSS et
 Javascript/Typescript) afin de générer des applications à destination de multiples plateformes, telles qu'Android,
 iOS ou Windows Phone. Ces applications ainsi générées sont dites "hybrides" car elles s'exécutent dans une
 \textit{WebView}, une instance de navigateur du device de destination, à la manière d'un site web classique, mais
@@ -245,6 +251,7 @@ doSomething(function(result) {
     \end{minted}
     \caption{"Callback hell" - MDN Web Docs \cite{ref102}}
 \end{code}
+\bigbreak
 Cet imbriquement de \textit{callbacks} se transforme en chainage de promesses : \\
 \begin{code}
     \begin{minted}[bgcolor=mygray,breaklines,breaksymbol=,linenos,frame=single,stepnumber=1,tabsize=2]{javascript}
@@ -261,11 +268,13 @@ doSomething().then(function(result) {
     \end{minted}
     \caption{Réécriture avec les Promise - MDN Web Docs \cite{ref102}}
 \end{code}
+\bigbreak
 Ce mécanisme de programmation va être très utilisé dans le Wrapper et Serveur REST.
 \textit{Pour approfondir, voir ces deux ressources sur le MDN Web Docs \cite{ref100} et \cite{ref102}.}
 
+\newpage
 \subsection{Node.js}
-Node.js est un environnement d'exécution de code Javascript côté serveur. Il fait office entre autres de serveur HTTP.
+\href{https://nodejs.org/en/}{Node.js} est un environnement d'exécution de code Javascript côté serveur. Il fait office entre autres de serveur HTTP.
 Node.js est basé sur une architecture orientée événements. Son moteur d'exécution Javascript est celui de Google Chrome, V8.
 Le fonctionnement de Node est non bloquant, il délègue les opérations I/O à son OS hôte, pour pouvoir continuer à servir
 les requêtes entrantes.
@@ -288,6 +297,7 @@ server.listen(port, hostname, () => {
     \end{minted}
     \caption{Hello World avec Node.js - Node.js \cite{ref170}}
 \end{code}
+\bigbreak
 On aperçoit à la première ligne la manière d'importer des modules. À la ligne 6, le serveur HTTP est créé avec
 une fonction anonyme en arguments qui, pour une requête reçue, va renvoyer une réponse HTTP avec code 200, header
 'text/plain' et le message 'Hello World'. Finalement, le serveur se met en écoute à la ligne 12, sur l'adresse et
@@ -313,9 +323,10 @@ app.post('/', function (req, res) {
     \end{minted}
     \caption{Exemple de routes avec Express - Express \cite{ref180}}
 \end{code}
+\bigbreak
 
 \subsection{MongoDB}
-J'ai utilisé MongoDB comme système de base de données car il est facilement intégrable avec Node.js et qu'il n'impose
+J'ai utilisé \href{https://www.mongodb.com/}{MongoDB} comme système de base de données car il est facilement intégrable avec Node.js et qu'il n'impose
 pas de schéma figé pour l'insertion de données, ce qui facilite le développement initial. MongoDB est orienté documents,
 il est l'un des précurseurs de la mouvance NoSQL. Il stocke les documents au format BSON, du JSON binaire. Par conséquent,
 tous les types Javascript sont supportés. Il dispose d'un shell interactif (lancé avec \mintinline{bash}{mongo} dans
@@ -331,11 +342,11 @@ données plutôt que d'augmenter la puissance de calcul brute d'une seule machin
 \end{figure}
 
 \subsection{JSON Web Tokens}
-J'ai utilisé les JSON Web Tokens pour gérer l'authentification dans mon application. Un JWT est une chaine de
+J'ai utilisé les JSON Web Tokens (JWT) pour gérer l'authentification dans mon application. Un JWT est une chaine de
 caractères séparée en trois parties par un ".". Les deux premières parties, le header et le payload (le corps du
 message à transmettre) sont encodées en base64 séparément. La dernière partie est la signature pour vérifier le jeton,
 elle utilise l'algorithme HMAC SHA256 avec un \textit{secret} en arguments. Sur le \href{https://jwt.io/}{site de JWT},
-un debugger est disponible pour décoder un JWT. L'utilité d'un JWT c'est que l'on peut facilement vérifier qu'un message
+un debugger est disponible pour décoder un JWT. L'utilité d'un JWT est que l'on peut facilement vérifier qu'un message
 n'a pas été altéré et que l'émetteur est bien celui qu'il prétend être. En revanche, aucun chiffrement n'est appliqué,
 ce n'est donc pas un moyen d'échanger des informations sensibles \cite{ref190}.
 
@@ -343,7 +354,7 @@ ce n'est donc pas un moyen d'échanger des informations sensibles \cite{ref190}.
 \section{Tutoriel sur Ionic}
 \label{tuto_ionic}
 \textit{Ce tutoriel est réalisé avec la version 3.x.x de Ionic avec une machine sous Linux. Je me suis basé sur
-le tutoriel sur le site de Ionic \cite{ref0} et sur les tutoriels de Josh Morony \cite{ref10}, \cite{ref20}.}
+le tutoriel du site de Ionic \cite{ref0} et sur les tutoriels de Josh Morony \cite{ref10}, \cite{ref20}.}
 \subsection{Installation}
 Tout d'abord, Ionic nécessite Node.js et \mintinline{text}{npm}, son gestionnaire de paquets/dépendances Javascript.
 Une fois \mintinline{text}{npm} installé, il faut entrer la commande suivante dans un terminal :
@@ -354,6 +365,7 @@ npm install -g ionic cordova
     \caption{Installation de Ionic et Cordova}
     \label{install_ionic_cordova}
 \end{code}
+\bigbreak
 Cela installe Ionic et \href{https://cordova.apache.org}{Cordova}, l'outil permettant de traduire une web app à base de
 HTML, CSS et Javascript en application hybride (moitié native, moitié web) pour la plateforme choisie (Android, iOS, etc.).
 Pour créer un nouveau projet, il faut alors faire ceci :
@@ -365,11 +377,12 @@ ionic serve
     \end{minted}
     \caption{Initialisation d'un projet Ionic}
 \end{code}
+\bigbreak
 La première commande crée l'arborescence de base d'un projet Ionic se nommant "myapp". Un menu interactif apparait avec
 plusieurs choix de template pour notre application : vide, avec des pages déjà intégrées ou un projet complet avec des pages
 et providers correspondant aux bonnes pratiques Ionic.
 La dernière commande compile les sources Ionic dans le sous-dossier \mintinline{text}{www}
-et lance un serveur web de développement en écoute sur \url{http://localhost:8100} qui compile à nouveau le projet à chaque
+et lance un serveur web de développement en écoute sur \url{http://localhost:8100} par défaut et qui compile à nouveau le projet à chaque
 changement dans le code.
 
 \subsection{Ionic CLI}
@@ -377,7 +390,7 @@ Ionic fournit une interface en ligne de commande bien pratique. Elle permet de g
 prédéfinis (\mintinline{bash}{ionic start}), de build l'application (\mintinline{bash}{ionic build}), de lancer l'application
 en mode développement avec \mintinline{bash}{ionic serve} et, commandes les plus pratiques, générer pages et providers entre
 autres (\mintinline{bash}{ionic g [page|provider] NewGenerate}). Un sous-ensemble de
-commandes avec le préfix \mintinline{bash}{ionic cordova} permet de build et lancer l'application Ionic sur des devices
+commandes avec le préfix \mintinline{bash}{ionic cordova} permet de construire et lancer l'application Ionic sur des devices
 Android et iOS. Pour retrouver une aide sur toutes les commandes disponibles, entrez simplement \mintinline{bash}{ionic}
 dans un terminal.
 
@@ -399,8 +412,9 @@ Voici l'arborescence racine pour un projet Ionic, après avoir ajouté les plate
 |-- tsconfig.json
 |-- tslint.json
     \end{minted}
-    \caption{Arborescence racine}
+    \caption{Arborescence racine d'une app Ionic}
 \end{code}
+\bigbreak
 On peut apercevoir les dossier suivants :
 \begin{itemize}
     \item \mintinline{text}{node_modules} : contenant les dépendances Angular + Ionic
@@ -437,8 +451,9 @@ Ensuite, le détail du dossier \mintinline{text}{src} :
 |-- manifest.json
 |-- service-worker.js
     \end{minted}
-    \caption{Arborescence du dossier src}
+    \caption{Arborescence du dossier src d'une app Ionic}
 \end{code}
+\bigbreak
 On peut apercevoir les dossier et fichiers suivants :
 \begin{itemize}
     \item \mintinline{text}{app} : contient \mintinline{text}{app.component.ts} et \mintinline{text}{app.module.ts}, le composant principal et la liste des modules de l'application
@@ -449,7 +464,7 @@ On peut apercevoir les dossier et fichiers suivants :
 \textit{Pour approfondir, je conseille de lire ce tutoriel \cite{ref20}.}
 
 \subsection{Page}
-Une page est constituée au minimum d'un fichier html (la vue) et Typescript (la logique métier). Pour personnaliser le
+Une page est constituée au minimum d'un fichier HTML (la vue) et Typescript (la logique métier). Pour personnaliser le
 design de la page uniquement, il est possible d'ajouter un fichier Sass (.scss) qui sera traduit en CSS. Chaque page doit être
 ajoutée au fichier \mintinline{text}{app.module.ts} pour pouvoir être importée et utilisée dans d'autres pages. Dans le fichier
 \mintinline{text}{app.component.ts} est définie la page principale (\mintinline{text}{root page}). Les pages se retrouvent
@@ -509,6 +524,7 @@ this.http.get('http://example.com/api')
     \end{minted}
     \caption{Requête HTTP avec Ionic}
 \end{code}
+\bigbreak
 
 \subsection{Service Storage}
 Ionic fournit une méthode simple pour stocker des données sour forme de paires clé/valeur sur le client local,
@@ -521,13 +537,12 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class DataProvider {
-
   constructor(private storage: Storage) {}
 
   getPairs() {
     let pairs = [];
     this.storage.forEach((v, k) => {
-      comments.push({key: k, value: v});
+      pairs.push({key: k, value: v});
     });
     return pairs;
   }
@@ -539,14 +554,14 @@ export class DataProvider {
   set(key: string, data: string) {
     this.storage.set(key, data);
   }
-
 }
     \end{minted}
     \caption{Storage avec Ionic}
 \end{code}
+\bigbreak
 
 \subsection{Déploiement}
-Grâce une fois de plus à ls CLI Ionic, le déploiement d'une application Ionic est facilité. Pour plus d'informations, voir
+Grâce une fois de plus à la CLI Ionic, le déploiement d'une application Ionic est facilité. Pour plus d'informations, voir
 \href{https://ionicframework.com/docs/intro/deploying/}{cette page}.
 \subsubsection{Browser}
 Pour un déploiement à destination des navigateurs web, il faut se placer dans le dossier de l'application et, dans
@@ -567,6 +582,7 @@ ionic cordova run android --device
     \end{minted}
     \caption{Déploiement sur Android}
 \end{code}
+\bigbreak
 \textbf{Astuce : } s'assurer que le path du SDK Android est bien configuré dans Cordova \cite{ref60}.
 
 \subsubsection{iOS}
@@ -582,6 +598,7 @@ ionic cordova run ios --device
     \end{minted}
     \caption{Déploiement sur iOS}
 \end{code}
+\bigbreak
 
 \section{Architecture}
 Actuellement, le catalogue Nebis \cite{ref80} est utilisé par la bibliothèque. Cependant, il sera abandonné dans quelques
@@ -632,7 +649,7 @@ et le Wrapper :
 \subsection{Base de données augmentée}
 La base de données sera liée au serveur REST, elle enregistrera le contenu produit par la bibliothèque. Elle ne gardera pas
 de contenu provenant du catalogue de livres, elle n'aura que l'ISBN ou l'ISSN pour faire référence à une oeuvre du catalogue.
-Étant donné que la base sera faite avec MongoDB, elle sera orientée documents, les collections n'auront pas lien entre elles
+Étant donné que la base sera faite avec MongoDB, elle sera orientée documents, les collections n'auront de pas lien entre elles
 autre que l'id d'un livre (son ISBN ou ISSN). Il y aura donc les 5 collections indépendantes suivantes :
 \begin{figure}
     \begin{center}
@@ -674,6 +691,7 @@ compréhensible. Voici la première route du Wrapper, pour récupérer les nouve
         tabsize=2,firstline=157,lastline=185]{javascript}{../../wrapper/wrapper.js}
     \caption{Exemple de la requête des nouveautés du Wrapper}
 \end{code}
+\bigbreak
 On voit bien la chaine où on récupère les infos sur Nebis, on filtre les données et on retourne la réponse au
 format JSON. Si une erreur survient, le bloc \mintinline{javascript}{catch} est prévu à cet effet.
 
@@ -705,6 +723,7 @@ sont fortement liés. J'ai monté mon serveur avec une arborescence de fichiers 
     \end{minted}
     \caption{Arborescence du Serveur}
 \end{code}
+\bigbreak
 Le fichier principal qui lance le serveur sur écoute est \mintinline{text}{server.js}. Toutes les routes sont définies
 et documentées dans le fichier \mintinline{text}{routes.js} avec Express (une API Doc est disponible à
 \href{http://liatti.ch/bibappdocserver/}{cette adresse} pour voir le détail des routes). Les fonctions appelées par les
@@ -720,6 +739,7 @@ ajouté par les bibliothécaires et ses trois schémas dérivés :
         tabsize=2]{javascript}{../../server/app/models/content.js}
     \caption{Schéma et modèles pour le contenu, \mintinline{text}{content.js}}
 \end{code}
+\bigbreak
 Grâce à Mongoose, j'ai pu définir mes schémas et modèles dans le dossier \mintinline{text}{models}.
 Ensuite, je me suis intéressé à l'aspect de l'authentification qui sera
 nécessaire pour différencier les utilisateurs anonymes des utilisateurs authentifiés. J'ai cherché un mécanisme
@@ -730,13 +750,15 @@ aidé et m'ont fait découvrir \href{http://www.passportjs.org/}{PassportJS}, un
 Express. Il permet de gérer de nombreuses stratégies d'authentification locales (classique, token) ou distantes (Google,
 Facebook, etc.). PassportJS fonctionne de concert avec Mongoose. J'ai donc utilisé 2 stratégies
 d'authentication : local, avec utilisateur + mot de passe et JWT, qui génère un token lorsqu'un utilisateur réussit
-l'authentication. La configuration de PassportJS se trouve dans \mintinline{text}{passport.js}. Les fonctions gérant le
+l'authentication. 
+\\
+La configuration de PassportJS se trouve dans \mintinline{text}{passport.js}. Les fonctions gérant le
 login, la création de compte et la vérification des rôles se trouvent dans \mintinline{text}{authentication.js}. À noter
-qu'il faut posséder un rôle utilisateur pour pouvoir ajouter d'autres comptes depuis la route \mintinline{text}{register}.
+qu'il faut posséder un rôle administrateur pour pouvoir ajouter d'autres comptes depuis la route \mintinline{text}{register}.
 Dans le fichier
 \mintinline{text}{user.js} sont définis le schéma d'un utilisateur stocké dans MongoDB. On y définit également une
 sorte de trigger qui hashe le mot de passe avec \mintinline{text}{bcrypt} avant insertion en base lors de l'inscription
-d'un utilisateur. Le plupart des routes sont définies dans \mintinline{text}{books.js} et \mintinline{text}{images.js}.
+d'un utilisateur. La plupart des routes sont définies dans \mintinline{text}{books.js} et \mintinline{text}{images.js}.
 À nouveau, pour montrer la puissance des promesses Javascript, voici la fonction qui crée un aggrégat de données
 sur un livre, entre ce que renvoie le Wrapper et ce qu'il existe en base de données :
 \begin{code}
@@ -744,6 +766,7 @@ sur un livre, entre ce que renvoie le Wrapper et ce qu'il existe en base de donn
         tabsize=2,firstline=96,lastline=108]{javascript}{../../server/app/controllers/books.js}
     \caption{Fonction \mintinline{javascript}{getBook()} Serveur}
 \end{code}
+\bigbreak
 On aperçoit à la ligne 99 l'appel à \mintinline{javascript}{Promise.all()} qui exécute en paralèlle la récupération auprès
 des différentes collections et Wrapper. Ainsi, dans le \mintinline{javascript}{then()}, on a la certitude que toutes les
 promesses ont été tenues et on peut travailler sur les données retournées. Enfin, en ce qui concerne la gestion des images,
@@ -759,7 +782,7 @@ de Travery Media \cite{ref18} sur comment créer une application simple de mét�
 \cite{ref40}, \cite{ref50}, toujours de Josh Morony, sur comment créer une simple "Todo App" et sur comment fonctionne
 la navigation entre pages avec Ionic. J'ai réalisé une première version de BibApp en local qui permettait d'ajouter
 des commentaires à une liste fictive de news. J'ai ensuite remplacé ma liste fictive avec des appels au backend qui
-avait été mis en place par Michael Minelli et Salvatore Cicciu lors de leur projet de semestre sur BibApp Hepia
+avait été mis en place par Michaël Minelli et Salvatore Cicciù lors de leur projet de semestre sur BibApp Hepia
 également. Lorsque mon backend était déjà bien avancé, je me suis aidé aussi de ce tutoriel \cite{ref90} pour adapter
 le prototype existant. Arrivé à la gestion des images, je me suis rendu compte que les composants \mintinline{text}{Camera}
 et \mintinline{text}{FileChooser} de Ionic n'était pas compatibles avec le browser. J'ai alors ajouté une simple page
@@ -772,50 +795,51 @@ pour Android (à gauche sur les images) et iPhone 6 Plus pour iOS (à droite sur
 captures d'écran.
 \begin{figure}
     \begin{center}
-        \includegraphics[width=0.7\textwidth]{images/screenshots/android_iphone_1.png}
+        \fbox{\includegraphics[width=0.7\textwidth]{images/screenshots/android_iphone_1.png}}
     \end{center}
     \caption{Page d'accueil de l'application}
 \end{figure}
 \begin{figure}
     \begin{center}
-        \includegraphics[width=0.7\textwidth]{images/screenshots/android_iphone_2.png}
+        \fbox{\includegraphics[width=0.7\textwidth]{images/screenshots/android_iphone_2.png}}
     \end{center}
     \caption{Page des nouveautés de l'application}
 \end{figure}
 \begin{figure}
     \begin{center}
-        \includegraphics[width=0.7\textwidth]{images/screenshots/android_iphone_3.png}
+        \fbox{\includegraphics[width=0.7\textwidth]{images/screenshots/android_iphone_3.png}}
     \end{center}
     \caption{Page d'un livre au clic sur la liste des nouveautés}
 \end{figure}
 \begin{figure}
     \begin{center}
-        \includegraphics[width=0.7\textwidth]{images/screenshots/android_iphone_4.png}
+        \fbox{\includegraphics[width=0.7\textwidth]{images/screenshots/android_iphone_4.png}}
     \end{center}
     \caption{Page des coups de coeurs de l'application}
 \end{figure}
 \begin{figure}
     \begin{center}
-        \includegraphics[width=0.7\textwidth]{images/screenshots/android_iphone_5.png}
+        \fbox{\includegraphics[width=0.7\textwidth]{images/screenshots/android_iphone_5.png}}
     \end{center}
     \caption{Page de login de l'application}
 \end{figure}
 \begin{figure}
     \begin{center}
-        \includegraphics[width=0.7\textwidth]{images/screenshots/android_iphone_6.png}
+        \fbox{\includegraphics[width=0.7\textwidth]{images/screenshots/android_iphone_6.png}}
     \end{center}
     \caption{Page de création de compte de l'application (réservé aux administrateurs)}
 \end{figure}
 \begin{figure}
     \begin{center}
-        \includegraphics[width=0.7\textwidth]{images/screenshots/android_iphone_7.png}
+        \fbox{\includegraphics[width=0.7\textwidth]{images/screenshots/android_iphone_7.png}}
     \end{center}
     \caption{Vue d'une page "livre" avec utilisateur authentifié}
-% \begin{figure}
-%     \begin{center}
-%         \includegraphics[width=0.7\textwidth]{images/screenshots/android_iphone_8.png}
-%     \end{center}
-%     \caption{Ajout d'un commentaire via l'application}
+\end{figure}
+\begin{figure}
+    \begin{center}
+        \fbox{\includegraphics[width=0.7\textwidth]{images/screenshots/android_iphone_8.png}}
+    \end{center}
+    \caption{Ajout d'un commentaire via l'application}
 \end{figure}
 
 \section{Guide de déploiement}
@@ -836,6 +860,7 @@ npm start
     \end{minted}
     \caption{Déploiement du Wrapper et du Serveur}
 \end{code}
+\bigbreak
 Le Wrapper et Serveur écoutent respectivement sur les ports 8081 et 8082.
 Après, il faut installer Ionic et Cordova :
 \mintinline{bash}{npm install -g ionic cordova}. La prochaine étape consiste à déployer Ionic sur un serveur HTTP.
@@ -854,14 +879,28 @@ db.users.insert({ email: 'testadmin@mail.com', password: '$2a$10$swh1PhPP6vm2K7g
     \end{minted}
     \caption{Ajout d'un utilisateur à MongoDB}
 \end{code}
+\bigbreak
 
 \section{Conclusion}
 \subsection{Remarques et améliorations}
+Ce travail m'a permis d'améliorer mes compétences en développement web avec Node.js et MongoDB, il m'a fait découvrir 
+une approche par modules et le framework Ionic qui s'est avéré tout compte fait bien pratique. J'ai pu comprendre plus 
+en détails le fonctionnement d'un catalogue de livres tel que Nebis et j'ai fait la rencontre des sympathiques bibliothécaires de 
+l'hepia. D'un point de vue technique cependant, plusieurs propositions d'amélioration seraient envisageables :
+\begin{itemize}
+    \item Amélioration de l'authentication dans l'application Ionic : lors d'un refresh de la page dans un browser ou 
+        lorsque l'on quitte l'application et qu'on revient, il faut se reloguer en appuyant sur le bouton de connexion.
+    \item De manière générale, préférer une interface d'administration pour l'ajout de contenu séparée de Ionic. En 
+        effet, j'ai pu apercevoir quelques limitations de ce point de vue, Ionic étant vraiment pensé pour être déployé 
+        sur mobile.
+    \item Améliorer l'expérience sur mobile par l'ajout d'effets de style, manquement dû au temps limité.
+\end{itemize}
 \subsection{Remerciements}
 Je tiens à remercier l'ensemble des personnes qui ont participé, de près ou de loin, à l'élaboration de ce travail. En
 particulier M. Mickaël Hoerdt pour le suivi de ce travail, les bibliothécaires de l'hepia pour leur collaboration et
 leur investissement dans ce projet et Marie Bessat pour son soutien moral.
 
+\newpage
 \section{Références}
 \bibliographystyle{unsrt}
 \bibliography{bib}
