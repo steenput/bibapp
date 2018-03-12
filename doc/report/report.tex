@@ -711,7 +711,9 @@ Express. Il permet de gérer de nombreuses stratégies d'authentification locale
 Facebook, etc.). PassportJS fonctionne de concert avec Mongoose. J'ai donc utilisé 2 stratégies 
 d'authentication : local, avec utilisateur + mot de passe et JWT, qui génère un token lorsqu'un utilisateur réussit 
 l'authentication. La configuration de PassportJS se trouve dans \mintinline{text}{passport.js}. Les fonctions gérant le 
-login, la création de compte et la vérification des rôles se trouvent dans \mintinline{text}{authentication.js}. Dans le fichier 
+login, la création de compte et la vérification des rôles se trouvent dans \mintinline{text}{authentication.js}. À noter 
+qu'il faut posséder un rôle utilisateur pour pouvoir ajouter d'autres comptes depuis la route \mintinline{text}{register}. 
+Dans le fichier 
 \mintinline{text}{user.js} sont définis le schéma d'un utilisateur stocké dans MongoDB. On y définit également une 
 sorte de trigger qui hashe le mot de passe avec \mintinline{text}{bcrypt} avant insertion en base lors de l'inscription 
 d'un utilisateur. Le plupart des routes sont définies dans \mintinline{text}{books.js} et \mintinline{text}{images.js}.
@@ -731,7 +733,18 @@ facilement configurer la destination et le nom donné à des images envoyées su
 \mintinline{text}{images.js} pour plus de détails).
 
 \subsection{Ionic}
-
+J'ai commencé ce projet par cette partie Ionic, étant donné que je n'avais pas encore accès à l'API Nebis \cite{ref80}. 
+J'ai commencé par lire le tutoriel Ionic \cite{ref0}, le guide de Josh Morony \cite{ref10}, cette vidéo d'une heure 
+de Travery Media \cite{ref18} sur comment créer une application simple de météo. J'ai également lu ces deux tutoriels 
+\cite{ref40}, \cite{ref50}, toujours de Josh Morony, sur comment créer une simple "Todo App" et sur comment fonctionne 
+la navigation entre pages avec Ionic. J'ai réalisé une première version de BibApp en local qui permettait d'ajouter 
+des commentaires à une liste fictive de news. J'ai ensuite remplacé ma liste fictive avec des appels au backend qui 
+avait été mis en place par Michael Minelli et Salvatore Cicciu lors de leur projet de semestre sur BibApp Hepia 
+également. Lorsque mon backend était déjà bien avancé, je me suis aidé aussi de ce tutoriel \cite{ref90} pour adapter 
+le prototype existant. Arrivé à la gestion des images, je me suis rendu compte que les composants \mintinline{text}{Camera}
+et \mintinline{text}{FileChooser} de Ionic n'était pas compatibles avec le browser. J'ai alors ajouté une simple page 
+HTML (dans \mintinline{text}{server/app/static/images.html}) en m'aidant de ces deux ressources \cite{ref140}, \cite{ref150} 
+pour pouvoir envoyer des images.
 
 \subsection{Captures d'écran des applications Ionic}
 Je vais présenter la réalisation de l'application Ionic par des captures d'écran, des versions Google Nexus 6 
