@@ -1,6 +1,6 @@
 # BibApp Hepia
 
-Web app and native app for school library to add content about books and news. Build with Node.js, MongoDB and Ionic.
+Web app and native app for school library to add content about books and news. Build with Node.js, MongoDB and Ionic. Available at http://bibapp2.infolibre.ch/.
 
 # Install
 **Note : you have to register to [RIB API](https://dinkum.ethbib.ethz.ch/display/RIB/Home) to run wrapper properly.**
