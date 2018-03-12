@@ -59,7 +59,7 @@
 
 \newpage
 
-\setcounter{tocdepth}{2}
+% \setcounter{tocdepth}{2}
 \tableofcontents
 \listoffigures
 \renewcommand\listoflistingscaption{Table des listings de code source}
@@ -67,22 +67,42 @@
 \newpage
 
 \section{Introduction}
-\subsection{BibApp V1}
-\subsection{User stories}
-\subsection{Besoins de la bibliothèque}
 La bibliothèque de l'hepia aimerait attirer plus de monde en créant du contenu personnalisé autour de son
-catalogue d'ouvrages et revues par le biais d'un site/application mobile. Voici les besoins listés plus
-précisement :
+catalogue d'ouvrages et revues par le biais d'un site/application mobile. Une première version de BibApp a été réalisée
+par Michael Minelli et Salvatore Cicciu. Le projet consistait en deux applications natives pour Android et iOS qui
+communiquaient avec un backend qui récupérait les nouveautés de la bibliothèque par
+\href{https://fr.wikipedia.org/wiki/Web_scraping}{scrapping} en filtrant les ouvrages par sections correspondant aux
+filières de l'école. L'objectif de cette "BibApp V2" est d'accéder aux données directement (par API), créer une
+application unique avec Ionic qui serait compatible Android, iOS et Web Browser et donner la possiblité aux
+bibliothécaires d'ajouter du contenu dans une base de données qui serait augmentée, c'est-à-dire qu'elle ne contiendrait 
+que les ajouts des bibliothécaires (pas de redondance avec le catalogue des ouvrages, en l'occurence Nebis).
+
+\subsection{User stories}
+Voici dans le détail les récits utilisteur auxquels doit répondre le projet. Il va de soit que le rôle "bibliothécaire"
+comprend également toutes les possibilités du rôle "anonyme" et le rôle "administrateur" comprend toutes les possibilités
+du rôle "bibliothécaire" et "anonyme" :
 \begin{itemize}
-    \item Résumé d'un nouveau livre arrivé à la bibliothèque (nouveautés)
-    \item Coups de coeur des bibliothécaires sur les ouvrages présents
-    \item Revues de presse des périodiques
-    \item Ajouter les images des couvertures scannées par la bibliothèque
+    \item En tant qu'utilisateur anonyme, je veux pouvoir :
+    \begin{itemize}
+        \item Afficher la liste des nouveautés du mois en coeurs
+        \item Afficher les coups de coeur des bibliothécaires
+        \item Afficher les revues de presse
+        \item Afficher les informations complètes sur un livre de ces listes
+        \item Rechercher un ouvrage par nom ou par ISBN
+    \end{itemize}
+    \item En tant qu'utilisateur authentifié et ayant le rôle de bibliothécaire, je veux pouvoir, en plus, :
+    \begin{itemize}
+        \item Me connecter à l'application
+        \item Ajouter/modifier/supprimer un commentaire d'un ouvrage
+        \item Ajouter/modifier/supprimer un coup de coeur d'un ouvrage
+        \item Ajouter/modifier/supprimer une revue de presse d'un ouvrage
+        \item Ajouter/modifier/supprimer une image de couverture d'un ouvrage
+    \end{itemize}
+    \item En tant qu'utilisateur authentifié et ayant le rôle d'administrateur, je veux pouvoir, en plus, :
+    \begin{itemize}
+        \item Ajouter des comptes utilisateurs avec rôle "bibliothécaire" ou "administrateur"
+    \end{itemize}
 \end{itemize}
-Toutes ces actions doivent pouvoir être réalisées via le site web en mode administrateur. Les opérations de
-création, récupération, modification et suppression de contenu (CRUD) sont nécessaires. Un mode utilisateur, ou visiteur,
-permet de consulter le contenu, depuis un ordinateur ou un appareil mobile. L'idée est de créer une source
-de contenus basée sur le catalogue Nebis et augmentée par les ajouts des bibliothécaires.
 
 \section{Technologies utilisées}
 \textit{Pour un aperçu rapide de Typescript et Angular, voir cet article de Josh Morony \cite{ref30}.}
@@ -134,7 +154,7 @@ export class AppComponent {
 Explications : on importe le composant \mintinline{typescript}{Component}, on définit le sélecteur utilisé dans le HTML
 pour faire le rendu et on définit notre classe \mintinline{typescript}{AppComponent} qui pourra être exportée dans
 d'autres modules. Dans cette classe nous définissons deux attributs \mintinline{typescript}{title} et
-\mintinline{typescript}{field} et un constructeur. Typescript amène également une notion de visibilité des attributs 
+\mintinline{typescript}{field} et un constructeur. Typescript amène également une notion de visibilité des attributs
 et méthodes d'une classe, comme en Java.
 
 \subsection{Angular 4}
@@ -183,20 +203,20 @@ Descriptif ligne par ligne :
 \end{enumerate}
 
 \subsection{Ionic}
-Ionic est un framework, basé sur Angular, permettant de créer des applications écrites avec les langages du web (HTML, CSS et 
-Javascript/Typescript) afin de générer des applications à destination de multiples plateformes, telles qu'Android, 
-iOS ou Windows Phone. Ces applications ainsi générées sont dites "hybrides" car elles s'exécutent dans une 
-\textit{WebView}, une instance de navigateur du device de destination, à la manière d'un site web classique, mais 
+Ionic est un framework, basé sur Angular, permettant de créer des applications écrites avec les langages du web (HTML, CSS et
+Javascript/Typescript) afin de générer des applications à destination de multiples plateformes, telles qu'Android,
+iOS ou Windows Phone. Ces applications ainsi générées sont dites "hybrides" car elles s'exécutent dans une
+\textit{WebView}, une instance de navigateur du device de destination, à la manière d'un site web classique, mais
 elles ont néanmoins la possibilité d'accéder aux API du système hôte de manière native, en passant par des "wrapper".
-Celui utilisé par Ionic est Apache Cordova. Par conséquent, le développeur n'a qu'à écrire le code qu'une seule fois 
-pour les différentes plateformes mobiles visées. En résumé, Ionic est un "Angular++", offrant des composants graphiques 
-prédéfinis, des thèmes CSS et un accès aux API natives via Cordova 
-(voir le tutoriel sur Ionic à la section \ref{tuto_ionic} pour plus d'informations, voir cette vidéo de 1h15 pour 
+Celui utilisé par Ionic est Apache Cordova. Par conséquent, le développeur n'a qu'à écrire le code qu'une seule fois
+pour les différentes plateformes mobiles visées. En résumé, Ionic est un "Angular++", offrant des composants graphiques
+prédéfinis, des thèmes CSS et un accès aux API natives via Cordova
+(voir le tutoriel sur Ionic à la section \ref{tuto_ionic} pour plus d'informations, voir cette vidéo de 1h15 pour
 apprendre les bases par la pratique \cite{ref18}).
 
 \subsection{Promise Javascript}
 \label{promise_javascript}
-Une Promise ("promesse" en français) est un objet Javascript qui s'utilise dans des opérations asynchrones. 
+Une Promise ("promesse" en français) est un objet Javascript qui s'utilise dans des opérations asynchrones.
 Elle représente l'état de cette opération, qui peut réussir ou échouer. Elle peut être dans un de ces 4 états :
 \begin{itemize}
     \item pending (en attente) : état initial, la promesse n'est ni remplie, ni rompue
@@ -210,8 +230,8 @@ Elle représente l'état de cette opération, qui peut réussir ou échouer. Ell
     \end{center}
     \caption{États d'une Promise - MDN Web Docs \cite{ref100}}
 \end{figure}
-Les promesses sont particulièrement utiles dans les cas de requêtes vers des ressources distantes où le temps de 
-réponse et la réussite de l'appel ne sont pas prévisibles. Ainsi, les promesses remplacent les classiques 
+Les promesses sont particulièrement utiles dans les cas de requêtes vers des ressources distantes où le temps de
+réponse et la réussite de l'appel ne sont pas prévisibles. Ainsi, les promesses remplacent les classiques
 \textit{callbacks} par un moyen élégant d'enchainer les opérations asynchrones :
 \begin{code}
     \begin{minted}[bgcolor=mygray,breaklines,breaksymbol=,linenos,frame=single,stepnumber=1,tabsize=2]{javascript}
@@ -246,8 +266,8 @@ Ce mécanisme de programmation va être très utilisé dans le Wrapper et Serveu
 
 \subsection{Node.js}
 Node.js est un environnement d'exécution de code Javascript côté serveur. Il fait office entre autres de serveur HTTP.
-Node.js est basé sur une architecture orientée événements. Son moteur d'exécution Javascript est celui de Google Chrome, V8. 
-Le fonctionnement de Node est non bloquant, il délègue les opérations I/O à son OS hôte, pour pouvoir continuer à servir 
+Node.js est basé sur une architecture orientée événements. Son moteur d'exécution Javascript est celui de Google Chrome, V8.
+Le fonctionnement de Node est non bloquant, il délègue les opérations I/O à son OS hôte, pour pouvoir continuer à servir
 les requêtes entrantes.
 \begin{code}
     \begin{minted}[bgcolor=mygray,breaklines,breaksymbol=,linenos,frame=single,stepnumber=1,tabsize=2]{javascript}
@@ -268,13 +288,13 @@ server.listen(port, hostname, () => {
     \end{minted}
     \caption{Hello World avec Node.js - Node.js \cite{ref170}}
 \end{code}
-On aperçoit à la première ligne la manière d'importer des modules. À la ligne 6, le serveur HTTP est créé avec 
-une fonction anonyme en arguments qui, pour une requête reçue, va renvoyer une réponse HTTP avec code 200, header 
-'text/plain' et le message 'Hello World'. Finalement, le serveur se met en écoute à la ligne 12, sur l'adresse et 
-port définis plus haut. Node.js est un environnement "bas niveau", il est enrichi pas des milliers de paquets écrits 
-par la communauté et disponibles sur le gestionnaire associé à Node, \href{https://www.npmjs.com/}{npm}. Un paquet 
-pratiquement indispensable lors d'un développement d'un serveur web est \href{http://expressjs.com/}{Express}. Il 
-permet de facilement mettre en place des routes pour son application, avec des pattern matching pour trouver la bonne 
+On aperçoit à la première ligne la manière d'importer des modules. À la ligne 6, le serveur HTTP est créé avec
+une fonction anonyme en arguments qui, pour une requête reçue, va renvoyer une réponse HTTP avec code 200, header
+'text/plain' et le message 'Hello World'. Finalement, le serveur se met en écoute à la ligne 12, sur l'adresse et
+port définis plus haut. Node.js est un environnement "bas niveau", il est enrichi pas des milliers de paquets écrits
+par la communauté et disponibles sur le gestionnaire associé à Node, \href{https://www.npmjs.com/}{npm}. Un paquet
+pratiquement indispensable lors d'un développement d'un serveur web est \href{http://expressjs.com/}{Express}. Il
+permet de facilement mettre en place des routes pour son application, avec des pattern matching pour trouver la bonne
 route :
 \begin{code}
     \begin{minted}[bgcolor=mygray,breaklines,breaksymbol=,linenos,frame=single,stepnumber=1,tabsize=2]{javascript}
@@ -295,13 +315,13 @@ app.post('/', function (req, res) {
 \end{code}
 
 \subsection{MongoDB}
-J'ai utilisé MongoDB comme système de base de données car il est facilement intégrable avec Node.js et qu'il n'impose 
-pas de schéma figé pour l'insertion de données, ce qui facilite le développement initial. MongoDB est orienté documents, 
-il est l'un des précurseurs de la mouvance NoSQL. Il stocke les documents au format BSON, du JSON binaire. Par conséquent, 
-tous les types Javascript sont supportés. Il dispose d'un shell interactif (lancé avec \mintinline{bash}{mongo} dans 
-un terminal) qui permet d'insérer, de mettre à jour, trouver et supprimer des documents dans des collections. La syntaxe 
-de base est la suivante : \mintinline{bash}{db.<nom_collection>.<find()|insert()|update()|remove()>}. MongoDB est pensé 
-pour être hautement scalable de manière horizontale, c'est-à-dire en augmentant le nombre de machines allouées la base de 
+J'ai utilisé MongoDB comme système de base de données car il est facilement intégrable avec Node.js et qu'il n'impose
+pas de schéma figé pour l'insertion de données, ce qui facilite le développement initial. MongoDB est orienté documents,
+il est l'un des précurseurs de la mouvance NoSQL. Il stocke les documents au format BSON, du JSON binaire. Par conséquent,
+tous les types Javascript sont supportés. Il dispose d'un shell interactif (lancé avec \mintinline{bash}{mongo} dans
+un terminal) qui permet d'insérer, de mettre à jour, trouver et supprimer des documents dans des collections. La syntaxe
+de base est la suivante : \mintinline{bash}{db.<nom_collection>.<find()|insert()|update()|remove()>}. MongoDB est pensé
+pour être hautement scalable de manière horizontale, c'est-à-dire en augmentant le nombre de machines allouées la base de
 données plutôt que d'augmenter la puissance de calcul brute d'une seule machine. Pour terminer, voici un face-à-face avec MySQL :
 \begin{figure}
     \begin{center}
@@ -311,21 +331,21 @@ données plutôt que d'augmenter la puissance de calcul brute d'une seule machin
 \end{figure}
 
 \subsection{JSON Web Tokens}
-J'ai utilisé les JSON Web Tokens pour gérer l'authentification dans mon application. Un JWT est une chaine de 
-caractères séparée en trois parties par un ".". Les deux premières parties, le header et le payload (le corps du 
-message à transmettre) sont encodées en base64 séparément. La dernière partie est la signature pour vérifier le jeton, 
-elle utilise l'algorithme HMAC SHA256 avec un \textit{secret} en arguments. Sur le \href{https://jwt.io/}{site de JWT}, 
-un debugger est disponible pour décoder un JWT. L'utilité d'un JWT c'est que l'on peut facilement vérifier qu'un message 
-n'a pas été altéré et que l'émetteur est bien celui qu'il prétend être. En revanche, aucun chiffrement n'est appliqué, 
+J'ai utilisé les JSON Web Tokens pour gérer l'authentification dans mon application. Un JWT est une chaine de
+caractères séparée en trois parties par un ".". Les deux premières parties, le header et le payload (le corps du
+message à transmettre) sont encodées en base64 séparément. La dernière partie est la signature pour vérifier le jeton,
+elle utilise l'algorithme HMAC SHA256 avec un \textit{secret} en arguments. Sur le \href{https://jwt.io/}{site de JWT},
+un debugger est disponible pour décoder un JWT. L'utilité d'un JWT c'est que l'on peut facilement vérifier qu'un message
+n'a pas été altéré et que l'émetteur est bien celui qu'il prétend être. En revanche, aucun chiffrement n'est appliqué,
 ce n'est donc pas un moyen d'échanger des informations sensibles \cite{ref190}.
 
 
 \section{Tutoriel sur Ionic}
 \label{tuto_ionic}
-\textit{Ce tutoriel est réalisé avec la version 3.x.x de Ionic avec une machine sous Linux. Je me suis basé sur  
+\textit{Ce tutoriel est réalisé avec la version 3.x.x de Ionic avec une machine sous Linux. Je me suis basé sur
 le tutoriel sur le site de Ionic \cite{ref0} et sur les tutoriels de Josh Morony \cite{ref10}, \cite{ref20}.}
 \subsection{Installation}
-Tout d'abord, Ionic nécessite Node.js et \mintinline{text}{npm}, son gestionnaire de paquets/dépendances Javascript. 
+Tout d'abord, Ionic nécessite Node.js et \mintinline{text}{npm}, son gestionnaire de paquets/dépendances Javascript.
 Une fois \mintinline{text}{npm} installé, il faut entrer la commande suivante dans un terminal :
 \begin{code}
     \begin{minted}[bgcolor=mygray,breaklines,breaksymbol=,linenos,frame=single,stepnumber=1,tabsize=2]{bash}
@@ -334,8 +354,8 @@ npm install -g ionic cordova
     \caption{Installation de Ionic et Cordova}
     \label{install_ionic_cordova}
 \end{code}
-Cela installe Ionic et \href{https://cordova.apache.org}{Cordova}, l'outil permettant de traduire une web app à base de 
-HTML, CSS et Javascript en application hybride (moitié native, moitié web) pour la plateforme choisie (Android, iOS, etc.). 
+Cela installe Ionic et \href{https://cordova.apache.org}{Cordova}, l'outil permettant de traduire une web app à base de
+HTML, CSS et Javascript en application hybride (moitié native, moitié web) pour la plateforme choisie (Android, iOS, etc.).
 Pour créer un nouveau projet, il faut alors faire ceci :
 \begin{code}
     \begin{minted}[bgcolor=mygray,breaklines,breaksymbol=,linenos,frame=single,stepnumber=1,tabsize=2]{bash}
@@ -345,20 +365,20 @@ ionic serve
     \end{minted}
     \caption{Initialisation d'un projet Ionic}
 \end{code}
-La première commande crée l'arborescence de base d'un projet Ionic se nommant "myapp". Un menu interactif apparait avec 
-plusieurs choix de template pour notre application : vide, avec des pages déjà intégrées ou un projet complet avec des pages 
+La première commande crée l'arborescence de base d'un projet Ionic se nommant "myapp". Un menu interactif apparait avec
+plusieurs choix de template pour notre application : vide, avec des pages déjà intégrées ou un projet complet avec des pages
 et providers correspondant aux bonnes pratiques Ionic.
 La dernière commande compile les sources Ionic dans le sous-dossier \mintinline{text}{www}
-et lance un serveur web de développement en écoute sur \url{http://localhost:8100} qui compile à nouveau le projet à chaque 
+et lance un serveur web de développement en écoute sur \url{http://localhost:8100} qui compile à nouveau le projet à chaque
 changement dans le code.
 
 \subsection{Ionic CLI}
-Ionic fournit une interface en ligne de commande bien pratique. Elle permet de générer un projet avec choix de templates 
-prédéfinis (\mintinline{bash}{ionic start}), de build l'application (\mintinline{bash}{ionic build}), de lancer l'application 
-en mode développement avec \mintinline{bash}{ionic serve} et, commandes les plus pratiques, générer pages et providers entre 
-autres (\mintinline{bash}{ionic g [page|provider] NewGenerate}). Un sous-ensemble de 
-commandes avec le préfix \mintinline{bash}{ionic cordova} permet de build et lancer l'application Ionic sur des devices 
-Android et iOS. Pour retrouver une aide sur toutes les commandes disponibles, entrez simplement \mintinline{bash}{ionic} 
+Ionic fournit une interface en ligne de commande bien pratique. Elle permet de générer un projet avec choix de templates
+prédéfinis (\mintinline{bash}{ionic start}), de build l'application (\mintinline{bash}{ionic build}), de lancer l'application
+en mode développement avec \mintinline{bash}{ionic serve} et, commandes les plus pratiques, générer pages et providers entre
+autres (\mintinline{bash}{ionic g [page|provider] NewGenerate}). Un sous-ensemble de
+commandes avec le préfix \mintinline{bash}{ionic cordova} permet de build et lancer l'application Ionic sur des devices
+Android et iOS. Pour retrouver une aide sur toutes les commandes disponibles, entrez simplement \mintinline{bash}{ionic}
 dans un terminal.
 
 \subsection{Arborescence}
@@ -381,17 +401,17 @@ Voici l'arborescence racine pour un projet Ionic, après avoir ajouté les plate
     \end{minted}
     \caption{Arborescence racine}
 \end{code}
-On peut apercevoir les dossier suivants : 
+On peut apercevoir les dossier suivants :
 \begin{itemize}
     \item \mintinline{text}{node_modules} : contenant les dépendances Angular + Ionic
     \item \mintinline{text}{platforms} : contenant les builds et fichiers nécessaires des plateformes ajoutées avec cordova
     \item \mintinline{text}{plugins} : contenant les plugins Cordova
     \item \mintinline{text}{resources} : contenant les fichiers statiques pour Android et iOS (les icônes des applications notamment)
     \item \mintinline{text}{src} : contenant nos fichiers sources, c'est finalement le seul dossier qu'on utilise en développement
-    \item \mintinline{text}{www} : contenant les fichiers construits ("build") à partir des sources, destinés à être servis par 
+    \item \mintinline{text}{www} : contenant les fichiers construits ("build") à partir des sources, destinés à être servis par
         un serveur web (tel qu'Apache)
 \end{itemize}
-Ensuite, le détail du dossier \mintinline{text}{src} : 
+Ensuite, le détail du dossier \mintinline{text}{src} :
 \\
 \begin{code}
     \begin{minted}[bgcolor=mygray,breaklines,breaksymbol=,linenos,frame=single,stepnumber=1,tabsize=2]{text}
@@ -429,42 +449,42 @@ On peut apercevoir les dossier et fichiers suivants :
 \textit{Pour approfondir, je conseille de lire ce tutoriel \cite{ref20}.}
 
 \subsection{Page}
-Une page est constituée au minimum d'un fichier html (la vue) et Typescript (la logique métier). Pour personnaliser le 
-design de la page uniquement, il est possible d'ajouter un fichier Sass (.scss) qui sera traduit en CSS. Chaque page doit être 
-ajoutée au fichier \mintinline{text}{app.module.ts} pour pouvoir être importée et utilisée dans d'autres pages. Dans le fichier 
-\mintinline{text}{app.component.ts} est définie la page principale (\mintinline{text}{root page}). Les pages se retrouvent 
+Une page est constituée au minimum d'un fichier html (la vue) et Typescript (la logique métier). Pour personnaliser le
+design de la page uniquement, il est possible d'ajouter un fichier Sass (.scss) qui sera traduit en CSS. Chaque page doit être
+ajoutée au fichier \mintinline{text}{app.module.ts} pour pouvoir être importée et utilisée dans d'autres pages. Dans le fichier
+\mintinline{text}{app.component.ts} est définie la page principale (\mintinline{text}{root page}). Les pages se retrouvent
 par défaut dans le dossier \mintinline{text}{src/pages}. Par défaut, chaque page possède son propre dossier à son nom.
 
 \subsection{Provider}
-Un provider est un fournisseur de services aux pages de notre application. Il peut être vu comme une page sans vue, donc 
-uniquement du Typescript, de la logique métier. Les providers servent généralement à fournir une API interne pour 
-manipuler des données, qu'elles soient distantes ou locales. Il se retrouvent par défaut dans le dossier 
+Un provider est un fournisseur de services aux pages de notre application. Il peut être vu comme une page sans vue, donc
+uniquement du Typescript, de la logique métier. Les providers servent généralement à fournir une API interne pour
+manipuler des données, qu'elles soient distantes ou locales. Il se retrouvent par défaut dans le dossier
 \mintinline{text}{src/providers}.
 
 \subsection{Navigation}
-Ionic utilise un système de pile pour la navigation entre ses pages. Selon si la page suivante a une relation 
-semblable à celle "parent-enfant", ça vaut la peine de "push" la nouvelle page sur la première, pour facilement y 
-revenir : par exemple, une liste d'articles, avec pour chaque article la possibilité de naviguer vers lui, il semble 
-naturel de pouvoir facilement revenir à la liste des articles. Au contraire, si on change de section sur notre 
-application ou si les deux pages n'ont pas de lien direct entre elles, il vaut mieux changer la \mintinline{text}{root page}, 
-autrement dit, la "page racine". Une page parente a la possibilité de passer des paramètres à la page enfant. 
+Ionic utilise un système de pile pour la navigation entre ses pages. Selon si la page suivante a une relation
+semblable à celle "parent-enfant", ça vaut la peine de "push" la nouvelle page sur la première, pour facilement y
+revenir : par exemple, une liste d'articles, avec pour chaque article la possibilité de naviguer vers lui, il semble
+naturel de pouvoir facilement revenir à la liste des articles. Au contraire, si on change de section sur notre
+application ou si les deux pages n'ont pas de lien direct entre elles, il vaut mieux changer la \mintinline{text}{root page},
+autrement dit, la "page racine". Une page parente a la possibilité de passer des paramètres à la page enfant.
 Tous ces mécanismes sont accessibles depuis le composant \mintinline{text}{NavController} \cite{ref50}.
 
 \subsection{Composants disponibles}
-Ionic fournit de nombreux composants graphiques  prêts à l'emploi pour l'interface utilisateur. La liste complète 
-est disponible sur \url{https://ionicframework.com/docs/components/}. On y trouve par exemple des boutons prédéfinis 
+Ionic fournit de nombreux composants graphiques  prêts à l'emploi pour l'interface utilisateur. La liste complète
+est disponible sur \url{https://ionicframework.com/docs/components/}. On y trouve par exemple des boutons prédéfinis
 mais personnalisables, des boutons flottants, des gestes (surtout pour le tactile), des listes, des modales, des menus,
 une barre de recherche, des onglets, etc.
 
 \subsection{Design}
-Ionic offre des feuilles de style Sass et CSS préconçues. Une disposition des éléments 
-selon une grille (à la manière de \href{http://getbootstrap.com/}{Bootstrap}) est disponible. Toutes les variables Sass 
+Ionic offre des feuilles de style Sass et CSS préconçues. Une disposition des éléments
+selon une grille (à la manière de \href{http://getbootstrap.com/}{Bootstrap}) est disponible. Toutes les variables Sass
 sont modifiables dans le fichier \mintinline{text}{variables.scss}.
 
 \subsection{Service HTTP}
-Angular fournit un service HTTP, utilisable dans Ionic, pour faire des requêtes asynchrones. Exemple ici d'une 
-requête \mintinline{text}{GET}. La fonction \mintinline{javascript}{map()} applique pour chaque élément des données 
-reçues (un tableau par exemple) la fonction passée en argument et retourne un \mintinline{javascript}{Observable}. 
+Angular fournit un service HTTP, utilisable dans Ionic, pour faire des requêtes asynchrones. Exemple ici d'une
+requête \mintinline{text}{GET}. La fonction \mintinline{javascript}{map()} applique pour chaque élément des données
+reçues (un tableau par exemple) la fonction passée en argument et retourne un \mintinline{javascript}{Observable}.
 Ici on parse les données JSON reçues. Ensuite, dans \mintinline{javascript}{subscribe()}, trois cas de figure :
 \begin{itemize}
     \item On accède aux données lorsqu'elles sont "prêtes"
@@ -491,8 +511,8 @@ this.http.get('http://example.com/api')
 \end{code}
 
 \subsection{Service Storage}
-Ionic fournit une méthode simple pour stocker des données sour forme de paires clé/valeur sur le client local, 
-que ce soit dans le navigateur ou dans l'application mobile. Une utilisation possible est de déclarer une classe 
+Ionic fournit une méthode simple pour stocker des données sour forme de paires clé/valeur sur le client local,
+que ce soit dans le navigateur ou dans l'application mobile. Une utilisation possible est de déclarer une classe
 qui fait appel à \mintinline{text}{storage} de la manière suivante \cite{ref70} :
 \begin{code}
     \begin{minted}[bgcolor=mygray,breaklines,breaksymbol=,linenos,frame=single,stepnumber=1,tabsize=2]{typescript}
@@ -515,7 +535,7 @@ export class DataProvider {
   get(key: string) {
     return this.storage.get(key);
   }
- 
+
   set(key: string, data: string) {
     this.storage.set(key, data);
   }
@@ -526,19 +546,19 @@ export class DataProvider {
 \end{code}
 
 \subsection{Déploiement}
-Grâce une fois de plus à ls CLI Ionic, le déploiement d'une application Ionic est facilité. Pour plus d'informations, voir 
+Grâce une fois de plus à ls CLI Ionic, le déploiement d'une application Ionic est facilité. Pour plus d'informations, voir
 \href{https://ionicframework.com/docs/intro/deploying/}{cette page}.
 \subsubsection{Browser}
-Pour un déploiement à destination des navigateurs web, il faut se placer dans le dossier de l'application et, dans 
-un terminal, entrer \mintinline{bash}{ionic build}. Ceci va compiler les fichiers Typescript, Sass et HTML dans le 
+Pour un déploiement à destination des navigateurs web, il faut se placer dans le dossier de l'application et, dans
+un terminal, entrer \mintinline{bash}{ionic build}. Ceci va compiler les fichiers Typescript, Sass et HTML dans le
 dossier \mintinline{text}{www}. Ce dossier peut ensuite facilement être ajouté à un serveur HTTP tel qu'Apache.
 
 \subsubsection{Android}
-Pour déployer sur un Android device, il faut au préalable avoir installé 
-\href{http://www.oracle.com/technetwork/java/javase/downloads/index-jsp-138363.html}{Java JDK} et 
-\href{https://developer.android.com/studio/index.html}{Android Studio} avec le SDK à jour. Il faut ensuite, dans un 
-terminal, se positionner dans le dossier Ionic de l'application et lancer les commandes suivantes, pour build ou pour 
-run l'application sur un device connecté : 
+Pour déployer sur un Android device, il faut au préalable avoir installé
+\href{http://www.oracle.com/technetwork/java/javase/downloads/index-jsp-138363.html}{Java JDK} et
+\href{https://developer.android.com/studio/index.html}{Android Studio} avec le SDK à jour. Il faut ensuite, dans un
+terminal, se positionner dans le dossier Ionic de l'application et lancer les commandes suivantes, pour build ou pour
+run l'application sur un device connecté :
 \begin{code}
     \begin{minted}[bgcolor=mygray,breaklines,breaksymbol=,linenos,frame=single,stepnumber=1,tabsize=2]{bash}
 ionic cordova build android --device
@@ -550,10 +570,10 @@ ionic cordova run android --device
 \textbf{Astuce : } s'assurer que le path du SDK Android est bien configuré dans Cordova \cite{ref60}.
 
 \subsubsection{iOS}
-Bien que non testée, la procédure est similaire à Android. Il faut tout d'abord disposer d'un Mac avec Xcode 7 ou 
-supérieur, un device avec iOS 9 ou plus et un \href{https://appleid.apple.com/}{Apple ID}. Ensuite dans un 
-terminal, se positionner dans le dossier Ionic de l'application et lancer les commandes suivantes, pour build ou pour 
-run l'application sur un device connecté : 
+Bien que non testée, la procédure est similaire à Android. Il faut tout d'abord disposer d'un Mac avec Xcode 7 ou
+supérieur, un device avec iOS 9 ou plus et un \href{https://appleid.apple.com/}{Apple ID}. Ensuite dans un
+terminal, se positionner dans le dossier Ionic de l'application et lancer les commandes suivantes, pour build ou pour
+run l'application sur un device connecté :
 \begin{code}
     \begin{minted}[bgcolor=mygray,breaklines,breaksymbol=,linenos,frame=single,stepnumber=1,tabsize=2]{bash}
 ionic cordova build ios --device
@@ -578,7 +598,7 @@ Le Wrapper et le serveur REST seront faits en Node.js. La base de données sera 
 \subsection{Wrapper}
 Ce module fait le pont entre les données issues d'un catalogue et le serveur REST. Son utilité principale est
 de s'adapter au catalogue utilisé : si le catalogue est amené à changer ou à disparaître au profit d'un autre,
-il suffira de modifier ce Wrapper pour continuer à faire fonctionner l'application. Le Wrapper sera l'interface 
+il suffira de modifier ce Wrapper pour continuer à faire fonctionner l'application. Le Wrapper sera l'interface
 du Serveur à Nebis. Il devra au minimum fournir :
 \begin{itemize}
     \item La liste des nouveautés
@@ -588,10 +608,10 @@ du Serveur à Nebis. Il devra au minimum fournir :
 
 
 \subsection{Serveur REST}
-Le Serveur sera le coeur de l'application. Il devra récupérer les informations de base des livres chez les providers 
-via le Wrapper et il devra récupérer les informations ajoutées par les bibliothécaires qui se trouveront dans la base 
-de données. Il servira ainsi un aggrégat de données. Il devra également accepter des requêtes pour 
-ajouter/modifier/supprimer le contenu. Il devra être conforme aux principes REST, pour être indépendant de l'interface 
+Le Serveur sera le coeur de l'application. Il devra récupérer les informations de base des livres chez les providers
+via le Wrapper et il devra récupérer les informations ajoutées par les bibliothécaires qui se trouveront dans la base
+de données. Il servira ainsi un aggrégat de données. Il devra également accepter des requêtes pour
+ajouter/modifier/supprimer le contenu. Il devra être conforme aux principes REST, pour être indépendant de l'interface
 finale des applications. Ce serveur offrira les services suivants :
 \begin{itemize}
     \item CRUD (Create, Read, Update et Delete) pour les commentaires des livres
@@ -600,7 +620,7 @@ finale des applications. Ce serveur offrira les services suivants :
     \item CRUD pour les images scannées par les bibliothécaires
     \item Authentification et autorisations (rôles) des utilisateurs
 \end{itemize}
-Voici, pour schématiser, une requête demandant un livre au serveur, avec l'aggrégat de données entre la base de données 
+Voici, pour schématiser, une requête demandant un livre au serveur, avec l'aggrégat de données entre la base de données
 et le Wrapper :
 \begin{figure}
     \begin{center}
@@ -610,9 +630,9 @@ et le Wrapper :
 \end{figure}
 
 \subsection{Base de données augmentée}
-La base de données sera liée au serveur REST, elle enregistrera le contenu produit par la bibliothèque. Elle ne gardera pas 
-de contenu provenant du catalogue de livres, elle n'aura que l'ISBN ou l'ISSN pour faire référence à une oeuvre du catalogue. 
-Étant donné que la base sera faite avec MongoDB, elle sera orientée documents, les collections n'auront pas lien entre elles 
+La base de données sera liée au serveur REST, elle enregistrera le contenu produit par la bibliothèque. Elle ne gardera pas
+de contenu provenant du catalogue de livres, elle n'aura que l'ISBN ou l'ISSN pour faire référence à une oeuvre du catalogue.
+Étant donné que la base sera faite avec MongoDB, elle sera orientée documents, les collections n'auront pas lien entre elles
 autre que l'id d'un livre (son ISBN ou ISSN). Il y aura donc les 5 collections indépendantes suivantes :
 \begin{figure}
     \begin{center}
@@ -620,7 +640,7 @@ autre que l'id d'un livre (son ISBN ou ISSN). Il y aura donc les 5 collections i
     \end{center}
     \caption{Schéma de la base de données}
 \end{figure}
-Les collections pour les commentaires, revues de presse et coups de coeur seront identiques quant à leur architecture. Il y 
+Les collections pour les commentaires, revues de presse et coups de coeur seront identiques quant à leur architecture. Il y
 aura également une collection pour stocker les informations sur les images et une collection pour stocker les utilisateurs.
 
 \subsection{Ionic}
@@ -638,27 +658,27 @@ pourront ajouter le contenu correspondant aux entrées voulues.
 
 
 \section{Réalisation}
-Dans cette section je vais présenter quelques aspects de mon code qui m'ont parus importants à 
-montrer, que ce soit pour éviter au lecteur d'éviter de commettre des erreurs semblables ou alors que la démarche était 
+Dans cette section je vais présenter quelques aspects de mon code qui m'ont parus importants à
+montrer, que ce soit pour éviter au lecteur d'éviter de commettre des erreurs semblables ou alors que la démarche était
 particulièrement intéressante.
 
 \subsection{Wrapper}
-Le Wrapper est un serveur HTTP fait avec Node.js. Il consiste en trois routes GET permettant de récupérer les nouveautés 
-d'une certaine date, rechercher un document selon certains critères et obtenir un ouvrage par son ISBN ou ISSN. Une API 
-Doc est disponible à \href{http://liatti.ch/bibappdocwrapper/}{cette adresse} pour voir le détail des routes. J'ai utilisé 
-le package \href{https://www.npmjs.com/package/axios}{axios} pour faire mes requêtes HTTP à l'API Nebis \cite{ref80}. 
-Axios supporte les Promise Javascript (voir section \ref{promise_javascript}), ce qui permet de garder un code clair et 
+Le Wrapper est un serveur HTTP fait avec Node.js. Il consiste en trois routes GET permettant de récupérer les nouveautés
+d'une certaine date, rechercher un document selon certains critères et obtenir un ouvrage par son ISBN ou ISSN. Une API
+Doc est disponible à \href{http://liatti.ch/bibappdocwrapper/}{cette adresse} pour voir le détail des routes. J'ai utilisé
+le package \href{https://www.npmjs.com/package/axios}{axios} pour faire mes requêtes HTTP à l'API Nebis \cite{ref80}.
+Axios supporte les Promise Javascript (voir section \ref{promise_javascript}), ce qui permet de garder un code clair et
 compréhensible. Voici la première route du Wrapper, pour récupérer les nouveautés :
 \begin{code}
     \inputminted[bgcolor=mygray,breaklines,breaksymbol=,linenos,frame=single,stepnumber=1,
         tabsize=2,firstline=157,lastline=185]{javascript}{../../wrapper/wrapper.js}
     \caption{Exemple de la requête des nouveautés du Wrapper}
 \end{code}
-On voit bien la chaine où on récupère les infos sur Nebis, on filtre les données et on retourne la réponse au 
+On voit bien la chaine où on récupère les infos sur Nebis, on filtre les données et on retourne la réponse au
 format JSON. Si une erreur survient, le bloc \mintinline{javascript}{catch} est prévu à cet effet.
 
 \subsection{Serveur et base de données}
-Le Server REST et la base de données MongoDB sont le coeur de l'application. Je vais les présenter ensemble car ils 
+Le Server REST et la base de données MongoDB sont le coeur de l'application. Je vais les présenter ensemble car ils
 sont fortement liés. J'ai monté mon serveur avec une arborescence de fichiers qui se décompose ainsi :
 \begin{code}
     \begin{minted}[bgcolor=mygray,breaklines,breaksymbol=,linenos,frame=single,stepnumber=1,tabsize=2]{text}
@@ -685,15 +705,15 @@ sont fortement liés. J'ai monté mon serveur avec une arborescence de fichiers 
     \end{minted}
     \caption{Arborescence du Serveur}
 \end{code}
-Le fichier principal qui lance le serveur sur écoute est \mintinline{text}{server.js}. Toutes les routes sont définies 
-et documentées dans le fichier \mintinline{text}{routes.js} avec Express (une API Doc est disponible à 
-\href{http://liatti.ch/bibappdocserver/}{cette adresse} pour voir le détail des routes). Les fonctions appelées par les 
-routes sont définies dans les contrôleurs. Dans le dossier \mintinline{text}{config} se trouve la configuration de 
-l'application, pour le secret pour générer les hash avec PassportJS (voir plus loin) et pour l'adresse de la base 
-de données MongoDB. J'ai commencé par définir les schémas de la base de données avec 
-\href{http://mongoosejs.com/}{Mongoose}, un package pour Node.js qui permet de définir un schéma pour représenter 
-les données et faire des appels à MongoDB. A partir d'un schéma d'une entité, on peut créer un modèle associé auxquel on 
-peut attacher des fonctions et autres contraintes de validation. À titre d'exemple, voici le schéma pour le contenu 
+Le fichier principal qui lance le serveur sur écoute est \mintinline{text}{server.js}. Toutes les routes sont définies
+et documentées dans le fichier \mintinline{text}{routes.js} avec Express (une API Doc est disponible à
+\href{http://liatti.ch/bibappdocserver/}{cette adresse} pour voir le détail des routes). Les fonctions appelées par les
+routes sont définies dans les contrôleurs. Dans le dossier \mintinline{text}{config} se trouve la configuration de
+l'application, pour le secret pour générer les hash avec PassportJS (voir plus loin) et pour l'adresse de la base
+de données MongoDB. J'ai commencé par définir les schémas de la base de données avec
+\href{http://mongoosejs.com/}{Mongoose}, un package pour Node.js qui permet de définir un schéma pour représenter
+les données et faire des appels à MongoDB. A partir d'un schéma d'une entité, on peut créer un modèle associé auxquel on
+peut attacher des fonctions et autres contraintes de validation. À titre d'exemple, voici le schéma pour le contenu
 ajouté par les bibliothécaires et ses trois schémas dérivés :
 \begin{code}
     \inputminted[bgcolor=mygray,breaklines,breaksymbol=,linenos,frame=single,stepnumber=1,
@@ -701,54 +721,54 @@ ajouté par les bibliothécaires et ses trois schémas dérivés :
     \caption{Schéma et modèles pour le contenu, \mintinline{text}{content.js}}
 \end{code}
 Grâce à Mongoose, j'ai pu définir mes schémas et modèles dans le dossier \mintinline{text}{models}.
-Ensuite, je me suis intéressé à l'aspect de l'authentification qui sera 
-nécessaire pour différencier les utilisateurs anonymes des utilisateurs authentifiés. J'ai cherché un mécanisme 
-d'authentification qui serait compatible avec Ionic. Je suis tombé sur cette discussion stackoverflow \cite{ref105} qui proposait 
-comme meilleure solution les tokens. Ces tutoriels de Josh Morony \cite{ref110}, \cite{ref120} et de Gergely Nemeth 
-\cite{ref121} m'ont également beaucoup 
-aidé et m'ont fait découvrir \href{http://www.passportjs.org/}{PassportJS}, un middleware pour l'authentification avec 
-Express. Il permet de gérer de nombreuses stratégies d'authentification locales (classique, token) ou distantes (Google, 
-Facebook, etc.). PassportJS fonctionne de concert avec Mongoose. J'ai donc utilisé 2 stratégies 
-d'authentication : local, avec utilisateur + mot de passe et JWT, qui génère un token lorsqu'un utilisateur réussit 
-l'authentication. La configuration de PassportJS se trouve dans \mintinline{text}{passport.js}. Les fonctions gérant le 
-login, la création de compte et la vérification des rôles se trouvent dans \mintinline{text}{authentication.js}. À noter 
-qu'il faut posséder un rôle utilisateur pour pouvoir ajouter d'autres comptes depuis la route \mintinline{text}{register}. 
-Dans le fichier 
-\mintinline{text}{user.js} sont définis le schéma d'un utilisateur stocké dans MongoDB. On y définit également une 
-sorte de trigger qui hashe le mot de passe avec \mintinline{text}{bcrypt} avant insertion en base lors de l'inscription 
+Ensuite, je me suis intéressé à l'aspect de l'authentification qui sera
+nécessaire pour différencier les utilisateurs anonymes des utilisateurs authentifiés. J'ai cherché un mécanisme
+d'authentification qui serait compatible avec Ionic. Je suis tombé sur cette discussion stackoverflow \cite{ref105} qui proposait
+comme meilleure solution les tokens. Ces tutoriels de Josh Morony \cite{ref110}, \cite{ref120} et de Gergely Nemeth
+\cite{ref121} m'ont également beaucoup
+aidé et m'ont fait découvrir \href{http://www.passportjs.org/}{PassportJS}, un middleware pour l'authentification avec
+Express. Il permet de gérer de nombreuses stratégies d'authentification locales (classique, token) ou distantes (Google,
+Facebook, etc.). PassportJS fonctionne de concert avec Mongoose. J'ai donc utilisé 2 stratégies
+d'authentication : local, avec utilisateur + mot de passe et JWT, qui génère un token lorsqu'un utilisateur réussit
+l'authentication. La configuration de PassportJS se trouve dans \mintinline{text}{passport.js}. Les fonctions gérant le
+login, la création de compte et la vérification des rôles se trouvent dans \mintinline{text}{authentication.js}. À noter
+qu'il faut posséder un rôle utilisateur pour pouvoir ajouter d'autres comptes depuis la route \mintinline{text}{register}.
+Dans le fichier
+\mintinline{text}{user.js} sont définis le schéma d'un utilisateur stocké dans MongoDB. On y définit également une
+sorte de trigger qui hashe le mot de passe avec \mintinline{text}{bcrypt} avant insertion en base lors de l'inscription
 d'un utilisateur. Le plupart des routes sont définies dans \mintinline{text}{books.js} et \mintinline{text}{images.js}.
-À nouveau, pour montrer la puissance des promesses Javascript, voici la fonction qui crée un aggrégat de données 
+À nouveau, pour montrer la puissance des promesses Javascript, voici la fonction qui crée un aggrégat de données
 sur un livre, entre ce que renvoie le Wrapper et ce qu'il existe en base de données :
 \begin{code}
     \inputminted[bgcolor=mygray,breaklines,breaksymbol=,linenos,frame=single,stepnumber=1,
         tabsize=2,firstline=96,lastline=108]{javascript}{../../server/app/controllers/books.js}
     \caption{Fonction \mintinline{javascript}{getBook()} Serveur}
 \end{code}
-On aperçoit à la ligne 99 l'appel à \mintinline{javascript}{Promise.all()} qui exécute en paralèlle la récupération auprès 
-des différentes collections et Wrapper. Ainsi, dans le \mintinline{javascript}{then()}, on a la certitude que toutes les 
-promesses ont été tenues et on peut travailler sur les données retournées. Enfin, en ce qui concerne la gestion des images, 
-je me suis basé sur ces tutoriels de Simon Grimm \cite{ref130}, \cite{ref135}. J'ai utilisé 
-\href{https://www.npmjs.com/package/multer}{multer}, un package Node pour la gestion des fichiers. Grâce à multer, on peut 
-facilement configurer la destination et le nom donné à des images envoyées sur le serveur (voir 
+On aperçoit à la ligne 99 l'appel à \mintinline{javascript}{Promise.all()} qui exécute en paralèlle la récupération auprès
+des différentes collections et Wrapper. Ainsi, dans le \mintinline{javascript}{then()}, on a la certitude que toutes les
+promesses ont été tenues et on peut travailler sur les données retournées. Enfin, en ce qui concerne la gestion des images,
+je me suis basé sur ces tutoriels de Simon Grimm \cite{ref130}, \cite{ref135}. J'ai utilisé
+\href{https://www.npmjs.com/package/multer}{multer}, un package Node pour la gestion des fichiers. Grâce à multer, on peut
+facilement configurer la destination et le nom donné à des images envoyées sur le serveur (voir
 \mintinline{text}{images.js} pour plus de détails).
 
 \subsection{Ionic}
-J'ai commencé ce projet par cette partie Ionic, étant donné que je n'avais pas encore accès à l'API Nebis \cite{ref80}. 
-J'ai commencé par lire le tutoriel Ionic \cite{ref0}, le guide de Josh Morony \cite{ref10}, cette vidéo d'une heure 
-de Travery Media \cite{ref18} sur comment créer une application simple de météo. J'ai également lu ces deux tutoriels 
-\cite{ref40}, \cite{ref50}, toujours de Josh Morony, sur comment créer une simple "Todo App" et sur comment fonctionne 
-la navigation entre pages avec Ionic. J'ai réalisé une première version de BibApp en local qui permettait d'ajouter 
-des commentaires à une liste fictive de news. J'ai ensuite remplacé ma liste fictive avec des appels au backend qui 
-avait été mis en place par Michael Minelli et Salvatore Cicciu lors de leur projet de semestre sur BibApp Hepia 
-également. Lorsque mon backend était déjà bien avancé, je me suis aidé aussi de ce tutoriel \cite{ref90} pour adapter 
+J'ai commencé ce projet par cette partie Ionic, étant donné que je n'avais pas encore accès à l'API Nebis \cite{ref80}.
+J'ai commencé par lire le tutoriel Ionic \cite{ref0}, le guide de Josh Morony \cite{ref10}, cette vidéo d'une heure
+de Travery Media \cite{ref18} sur comment créer une application simple de météo. J'ai également lu ces deux tutoriels
+\cite{ref40}, \cite{ref50}, toujours de Josh Morony, sur comment créer une simple "Todo App" et sur comment fonctionne
+la navigation entre pages avec Ionic. J'ai réalisé une première version de BibApp en local qui permettait d'ajouter
+des commentaires à une liste fictive de news. J'ai ensuite remplacé ma liste fictive avec des appels au backend qui
+avait été mis en place par Michael Minelli et Salvatore Cicciu lors de leur projet de semestre sur BibApp Hepia
+également. Lorsque mon backend était déjà bien avancé, je me suis aidé aussi de ce tutoriel \cite{ref90} pour adapter
 le prototype existant. Arrivé à la gestion des images, je me suis rendu compte que les composants \mintinline{text}{Camera}
-et \mintinline{text}{FileChooser} de Ionic n'était pas compatibles avec le browser. J'ai alors ajouté une simple page 
-HTML (dans \mintinline{text}{server/app/static/images.html}) en m'aidant de ces deux ressources \cite{ref140}, \cite{ref150} 
+et \mintinline{text}{FileChooser} de Ionic n'était pas compatibles avec le browser. J'ai alors ajouté une simple page
+HTML (dans \mintinline{text}{server/app/static/images.html}) en m'aidant de ces deux ressources \cite{ref140}, \cite{ref150}
 pour pouvoir envoyer des images.
 
 \subsection{Captures d'écran des applications Ionic}
-Je vais présenter la réalisation de l'application Ionic par des captures d'écran, des versions Google Nexus 6 
-pour Android (à gauche sur les images) et iPhone 6 Plus pour iOS (à droite sur les images) ont été utilisées pour les 
+Je vais présenter la réalisation de l'application Ionic par des captures d'écran, des versions Google Nexus 6
+pour Android (à gauche sur les images) et iPhone 6 Plus pour iOS (à droite sur les images) ont été utilisées pour les
 captures d'écran.
 \begin{figure}
     \begin{center}
@@ -784,7 +804,7 @@ captures d'écran.
     \begin{center}
         \includegraphics[width=0.7\textwidth]{images/screenshots/android_iphone_6.png}
     \end{center}
-    \caption{Page de création de compte de l'application}
+    \caption{Page de création de compte de l'application (réservé aux administrateurs)}
 \end{figure}
 \begin{figure}
     \begin{center}
@@ -799,16 +819,16 @@ captures d'écran.
 \end{figure}
 
 \section{Guide de déploiement}
-Pour commencer, il faut cloner \href{https://githepia.hesge.ch/bibapp/bibapp}{le repository du projet} et inscrire la 
-machine (son IP) qui hébergera le Wrapper auprès de la RIB API \cite{ref80}. 
-Ensuite, il faut installer \href{https://nodejs.org/en/}{Node.js} et éventuellement 
-\href{https://www.mongodb.com/}{MongoDB} si la base de données est destinée à être locale. L'installation de ces 
-deux outils est décrite sur leurs sites respectifs. 
-Il faut changer la configuration des fichiers \mintinline{text}{server/config/auth.js} et 
-\mintinline{text}{server/config/db.js}. Le premier fichier contient la clé nécessaire à PassportJS pour générer les JWT. 
+Pour commencer, il faut cloner \href{https://githepia.hesge.ch/bibapp/bibapp}{le repository du projet} et inscrire la
+machine (son IP) qui hébergera le Wrapper auprès de la RIB API \cite{ref80}.
+Ensuite, il faut installer \href{https://nodejs.org/en/}{Node.js} et éventuellement
+\href{https://www.mongodb.com/}{MongoDB} si la base de données est destinée à être locale. L'installation de ces
+deux outils est décrite sur leurs sites respectifs.
+Il faut changer la configuration des fichiers \mintinline{text}{server/config/auth.js} et
+\mintinline{text}{server/config/db.js}. Le premier fichier contient la clé nécessaire à PassportJS pour générer les JWT.
 Le deuxième fichier contient l'URL de la base MongoDB.
-Ensuite, dans un terminal, dans les dossiers \mintinline{text}{wrapper} 
-et \mintinline{text}{server}, entrez les commandes suivantes pour installer et lancer les deux serveurs Node.js : 
+Ensuite, dans un terminal, dans les dossiers \mintinline{text}{wrapper}
+et \mintinline{text}{server}, entrez les commandes suivantes pour installer et lancer les deux serveurs Node.js :
 \begin{code}
     \begin{minted}[bgcolor=mygray,breaklines,breaksymbol=,linenos,frame=single,stepnumber=1,tabsize=2]{bash}
 npm install
@@ -817,16 +837,16 @@ npm start
     \caption{Déploiement du Wrapper et du Serveur}
 \end{code}
 Le Wrapper et Serveur écoutent respectivement sur les ports 8081 et 8082.
-Après, il faut installer Ionic et Cordova : 
-\mintinline{bash}{npm install -g ionic cordova}. La prochaine étape consiste à déployer Ionic sur un serveur HTTP. 
-Remplacez tous les appels à 
-'http://bibapp2.infolibre.ch' par votre nom de domaine. Puis, déplacez-vous dans le dossier \mintinline{text}{ionic} 
-et entrez \mintinline{bash}{ionic build}. Entrez 'Y' lorsque demandé pour installer les \mintinline{text}{node_modules}. 
-Cette dernière commande va générer le dossier \mintinline{text}{www} qui contiendra tous les fichiers nécessaires pour 
-déployer la web app. Il faut ensuite placer ce dossier \mintinline{text}{www} sur son serveur HTTP. L'étape suivante 
-consiste à ajouter un utilisateur admin à MongoDB qui pourra ajouter d'autres utilisateurs. Il faut tout d'abord 
-créer le hash de son mot de passe avec le fichier \mintinline{text}{server/app/pass.js} et entrer 
-\mintinline{bash}{node pass.js yourPassword} dans un terminal. Connectez-vous ensuite à votre shell MongoDB 
+Après, il faut installer Ionic et Cordova :
+\mintinline{bash}{npm install -g ionic cordova}. La prochaine étape consiste à déployer Ionic sur un serveur HTTP.
+Remplacez tous les appels à
+'http://bibapp2.infolibre.ch' par votre nom de domaine. Puis, déplacez-vous dans le dossier \mintinline{text}{ionic}
+et entrez \mintinline{bash}{ionic build}. Entrez 'Y' lorsque demandé pour installer les \mintinline{text}{node_modules}.
+Cette dernière commande va générer le dossier \mintinline{text}{www} qui contiendra tous les fichiers nécessaires pour
+déployer la web app. Il faut ensuite placer ce dossier \mintinline{text}{www} sur son serveur HTTP. L'étape suivante
+consiste à ajouter un utilisateur admin à MongoDB qui pourra ajouter d'autres utilisateurs. Il faut tout d'abord
+créer le hash de son mot de passe avec le fichier \mintinline{text}{server/app/pass.js} et entrer
+\mintinline{bash}{node pass.js yourPassword} dans un terminal. Connectez-vous ensuite à votre shell MongoDB
 (\mintinline{bash}{mongo bibapp}) et ajoutez un utilisateur comme ceci :
 \begin{code}
     \begin{minted}[bgcolor=mygray,breaklines,breaksymbol=,linenos,frame=single,stepnumber=1,tabsize=2]{bash}
@@ -838,8 +858,8 @@ db.users.insert({ email: 'testadmin@mail.com', password: '$2a$10$swh1PhPP6vm2K7g
 \section{Conclusion}
 \subsection{Remarques et améliorations}
 \subsection{Remerciements}
-Je tiens à remercier l'ensemble des personnes qui ont participé, de près ou de loin, à l'élaboration de ce travail. En 
-particulier M. Mickaël Hoerdt pour le suivi de ce travail, les bibliothécaires de l'hepia pour leur collaboration et 
+Je tiens à remercier l'ensemble des personnes qui ont participé, de près ou de loin, à l'élaboration de ce travail. En
+particulier M. Mickaël Hoerdt pour le suivi de ce travail, les bibliothécaires de l'hepia pour leur collaboration et
 leur investissement dans ce projet et Marie Bessat pour son soutien moral.
 
 \section{Références}
