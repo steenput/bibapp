@@ -8,14 +8,17 @@ report.pdf: report.tex bib.bib images/*
 	bibtex report
 	$(CC) report.tex
 	$(CC) report.tex
+	make mostlyclean
 
 first_presentation.pdf: first_presentation.tex images/*
 	$(CC) first_presentation.tex
 	$(CC) first_presentation.tex
+	make mostlyclean
 
 second_presentation.pdf: second_presentation.tex images/*
 	$(CC) second_presentation.tex
 	$(CC) second_presentation.tex
+	make mostlyclean
 
 mostlyclean:
 	rm -rf _minted-* *.log *.aux *.out *.lof *.lol *.toc *.bbl *.blg *.nav *.snm
