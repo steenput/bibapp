@@ -56,47 +56,12 @@
 	\frametitle{\secname}
 	\framesubtitle{\subsecname}
     \begin{itemize}
+        \item Bibliothèque se sert du réseau NEBIS
+        \item Nouveautés et périodiques tous les mois
         \item Bibliothèque aimerait devenir plus attractive (manque de fréquentation)
-        \item Réseau NEBIS
-        \item Nouveautés et périodiques
     \end{itemize}
     \Large\textbf{Besoin : ajouter du contenu personnalisé}
 \end{frame}
-
-% \subsection{BibApp V1}
-% \begin{frame}
-% 	\frametitle{\secname}
-% 	\framesubtitle{\subsecname}
-% 	\begin{columns}[T]
-% 		\begin{column}{.65\textwidth}
-%             \begin{columns}[T]
-%                 \begin{column}{.3\textwidth}
-%                     \begin{figure}
-%                         \includegraphics[width=1\textwidth]{images/bibapp.png}
-%                     \end{figure}
-%                 \end{column}
-%                 \begin{column}{.3\textwidth}
-%                     \begin{figure}
-%                         \includegraphics[width=1\textwidth]{images/bibapp2.png}
-%                     \end{figure}
-%                 \end{column}
-%                 \begin{column}{.3\textwidth}
-%                     \begin{figure}
-%                         \includegraphics[width=1\textwidth]{images/bibapp3.png}
-%                     \end{figure}
-%                 \end{column}
-%             \end{columns}
-% 		\end{column}
-% 		\begin{column}{.35\textwidth}
-% 			\begin{itemize}
-% 				\item Nouveautés listées par section
-%                 \item Affiche les détails du livre
-%                 \item Android et iOS
-%                 \item Par Cicciù et Minelli
-% 			\end{itemize}
-% 		\end{column}
-% 	\end{columns}
-% \end{frame}
 
 \subsection{Objectifs}
 \begin{frame}
@@ -109,7 +74,7 @@
         \begin{itemize}
             \item Basée sur les données de NEBIS
             \item Enrichie avec les données saisies par les bibliothécaires
-            \item Accessible via le serveur REST avec mode client et administrateur
+            \item Accessible via le serveur REST avec mode utilisateur anonyme et authentifié
         \end{itemize}
         \item Design et implémentation des interfaces en collaboration avec les bibliothécaires
     \end{itemize}
@@ -136,7 +101,7 @@
         \item Trois routes, retournant des données en JSON :
         \begin{itemize}
             \item Liste des nouveautés pour année et mois donnés
-            \item Recherche de documents selon critères
+            \item Recherche de documents selon certains critères
             \item Obtention des infos d'un ouvrage par ISBN ou ISSN
         \end{itemize}
     \end{itemize}
@@ -148,6 +113,10 @@
 	\framesubtitle{\subsecname}
 	\begin{itemize}
         \item Serveur Node.js
+        \item Appels au Wrapper avec axios
+        \item Authentification avec PassportJS, génération de JWT
+        \item Routes GET, POST et DELETE pour gérer le contenu texte
+        \item Gestion des images avec multer
     \end{itemize}
 \end{frame}
 
@@ -155,29 +124,64 @@
 \begin{frame}
 	\frametitle{\secname}
 	\framesubtitle{\subsecname}
-	\begin{itemize}
-        \item Réalisée avec MongoDB et Mongoose
-    \end{itemize}
+	\begin{columns}[T]
+		\begin{column}{.5\textwidth}
+            \begin{figure}
+                \includegraphics[width=1\textwidth]{images/bdd.png}
+            \end{figure}
+		\end{column}
+		\begin{column}{.5\textwidth}
+            \begin{itemize}
+                \item Réalisée avec MongoDB et Mongoose (définition des schémas)
+                \item Base de données augmentée, orientée documents
+                \item Collections indépendantes, ISBN ou ISSN comme clé
+            \end{itemize}
+		\end{column}
+	\end{columns}
 \end{frame}
 
 \subsection{Ionic}
 \begin{frame}
 	\frametitle{\secname}
-	\framesubtitle{\subsecname}
-	\begin{itemize}
-        \item 
+	\framesubtitle{\subsecname (1)}
+    \begin{itemize}
+        \item Sections nouveautés, coups de coeur et revue de presse
+        \item Page de détails pour un livre
+        \item Pages de login et création de compte
+        \item Champ de recherche
     \end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{\secname}
+	\framesubtitle{\subsecname (2)}
+    \begin{columns}[T]
+        \begin{column}{.3\textwidth}
+            \begin{figure}
+                \includegraphics[width=1\textwidth]{images/screenshots/android1.png}
+            \end{figure}
+        \end{column}
+        \begin{column}{.3\textwidth}
+            \begin{figure}
+                \includegraphics[width=1\textwidth]{images/screenshots/android3.png}
+            \end{figure}
+        \end{column}
+        \begin{column}{.3\textwidth}
+            \begin{figure}
+                \includegraphics[width=1\textwidth]{images/screenshots/android7.png}
+            \end{figure}
+        \end{column}
+    \end{columns}
 \end{frame}
 
 \section{Conclusion}
 \begin{frame}
 	\frametitle{\secname}
 	\begin{itemize}
-        \item Amélioration de mes compétences en développement web
+        \item Perfectionnement de mes compétences en développement web
         \item Découverte du framework Ionic
         \item Améliorations :
         \begin{itemize}
-            \item Authentification côté Ionic
             \item Préférer une interface d'administration dédiée pour l'ajout de contenu
             \item Amélioration de l'expérience utilisateur sur l'app Ionic
         \end{itemize}
