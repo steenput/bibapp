@@ -1030,9 +1030,10 @@ module.exports = function(app) {
      *
      */
     searchRoutes.get('/:str', bookCont.search);
-
+    
     // Images Routes
     router.use('/images', imagesRoutes);
+    imagesRoutes.get('/add', imagesCont.addImage);
 
     /**
      * @api {get} /images/:id GetImage
@@ -1171,7 +1172,6 @@ module.exports = function(app) {
      * }
      */
     imagesRoutes.delete('/:id', reqAuth, authCont.roleAuthorization(['librarian', 'admin']), imagesCont.deleteImage);
-    imagesRoutes.get('/add', imagesCont.addImage);
 
     // Set up routes
     app.use('/', router);
